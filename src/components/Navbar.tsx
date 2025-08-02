@@ -50,50 +50,94 @@ const Navbar = () => {
             {/* Only show these links if user is logged in */}
             {isLoggedIn && (
               <>
-                <DropdownMenu>
-                  <DropdownMenuTrigger className="flex items-center space-x-1 text-xl font-medium text-foreground hover:text-primary transition-colors">
-                    <span>Properties</span>
-                    <ChevronDown className="w-4 h-4" />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem asChild>
-                      <Link to="/properties">Browse Properties</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link to="/maps">Property Maps</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link to="/analytics">Market Analytics</Link>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                {/* Admin Navigation */}
+                {user?.userRole === "admin" ? (
+                  <>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className="flex items-center space-x-1 text-xl font-medium text-foreground hover:text-primary transition-colors">
+                        <span>Admin Panel</span>
+                        <ChevronDown className="w-4 h-4" />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        <DropdownMenuItem asChild>
+                          <Link to="/admin/users">Manage Users</Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link to="/admin/verifications">Verifications</Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link to="/admin/analytics">Admin Analytics</Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link to="/admin/settings">System Settings</Link>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
 
-                <Link
-                  to="/register"
-                  className={`text-xl font-medium transition-colors hover:text-primary ${
-                    isActive("/register") ? "text-primary" : "text-foreground"
-                  }`}
-                >
-                  Register Property
-                </Link>
+                    <Link
+                      to="/admin/reports"
+                      className={`text-xl font-medium transition-colors hover:text-primary ${
+                        isActive("/admin/reports")
+                          ? "text-primary"
+                          : "text-foreground"
+                      }`}
+                    >
+                      Reports
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    {/* Citizen/Registrar Navigation */}
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className="flex items-center space-x-1 text-xl font-medium text-foreground hover:text-primary transition-colors">
+                        <span>Properties</span>
+                        <ChevronDown className="w-4 h-4" />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        <DropdownMenuItem asChild>
+                          <Link to="/properties">Browse Properties</Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link to="/maps">Property Maps</Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link to="/analytics">Market Analytics</Link>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
 
-                <Link
-                  to="/verify"
-                  className={`text-xl font-medium transition-colors hover:text-primary ${
-                    isActive("/verify") ? "text-primary" : "text-foreground"
-                  }`}
-                >
-                  Verify
-                </Link>
+                    <Link
+                      to="/register"
+                      className={`text-xl font-medium transition-colors hover:text-primary ${
+                        isActive("/register")
+                          ? "text-primary"
+                          : "text-foreground"
+                      }`}
+                    >
+                      Register Property
+                    </Link>
 
-                <Link
-                  to="/support"
-                  className={`text-xl font-medium transition-colors hover:text-primary ${
-                    isActive("/support") ? "text-primary" : "text-foreground"
-                  }`}
-                >
-                  Support
-                </Link>
+                    <Link
+                      to="/verify"
+                      className={`text-xl font-medium transition-colors hover:text-primary ${
+                        isActive("/verify") ? "text-primary" : "text-foreground"
+                      }`}
+                    >
+                      Verify
+                    </Link>
+
+                    <Link
+                      to="/support"
+                      className={`text-xl font-medium transition-colors hover:text-primary ${
+                        isActive("/support")
+                          ? "text-primary"
+                          : "text-foreground"
+                      }`}
+                    >
+                      Support
+                    </Link>
+                  </>
+                )}
               </>
             )}
           </div>
@@ -102,7 +146,13 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-4">
             {isLoggedIn ? (
               <>
-                <Link to="/dashboard">
+                <Link
+                  to={
+                    user?.userRole === "admin"
+                      ? "/admin/dashboard"
+                      : "/dashboard"
+                  }
+                >
                   {/* Button Styling: 
                       - size="lg" makes it bigger (change to "xl" if available, or add custom padding)
                       - rounded-full makes it completely round (change to rounded-xl for less round)
@@ -113,7 +163,9 @@ const Navbar = () => {
                     size="lg"
                     className="rounded-full text-xl px-8 py-3"
                   >
-                    Dashboard
+                    {user?.userRole === "admin"
+                      ? "Admin Dashboard"
+                      : "Dashboard"}
                   </Button>
                 </Link>
 

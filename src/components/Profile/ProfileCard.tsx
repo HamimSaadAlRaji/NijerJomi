@@ -41,7 +41,17 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
 
-  const getStatusConfig = (status: string) => {
+  const getStatusConfig = (status: string, userRole: string) => {
+    // Admin users don't need verification
+    if (userRole === "admin") {
+      return {
+        icon: <CheckCircle className="w-4 h-4" />,
+        color: "bg-green-100 text-green-800 border-green-200",
+        emoji: "✅",
+        text: "Verified",
+      };
+    }
+
     switch (status) {
       case "accepted":
         return {
@@ -90,7 +100,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     }
   };
 
-  const statusConfig = getStatusConfig(userData.status);
+  const statusConfig = getStatusConfig(userData.status, userData.userRole);
   const roleConfig = getRoleConfig(userData.userRole);
 
   return (
@@ -152,7 +162,9 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         <div className="bg-gray-50 rounded-lg p-4 mb-6">
           <div className="text-2xl mb-2">{statusConfig.emoji}</div>
           <p className="text-sm text-gray-600">
-            {userData.status === "accepted"
+            {userData.userRole === "admin"
+              ? "Administrator account with full system access."
+              : userData.status === "accepted"
               ? "Your profile has been verified and approved!"
               : userData.status === "rejected"
               ? "Profile verification was declined. Please contact support."

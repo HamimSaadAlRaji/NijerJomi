@@ -45,9 +45,13 @@ const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
   } = useWalletContext();
 
   const handleWalletAction = async () => {
-    // If wallet is connected and user exists, go to dashboard
+    // If wallet is connected and user exists, go to appropriate dashboard
     if (isConnected && user) {
-      navigate("/dashboard");
+      if (user.userRole === "admin") {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/dashboard");
+      }
       return;
     }
 
@@ -78,7 +82,13 @@ const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
               6
             )}...${result.walletAddress.slice(-4)}`,
           });
-          navigate("/dashboard");
+
+          // Navigate based on user role
+          if (result.userData && result.userData.userRole === "admin") {
+            navigate("/admin/dashboard");
+          } else {
+            navigate("/dashboard");
+          }
         } else {
           // New wallet - not in database, needs registration
           toast({

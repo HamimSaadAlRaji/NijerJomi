@@ -5,12 +5,15 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { WalletProvider } from "@/contexts/WalletContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import AdminProtectedRoute from "@/components/AdminProtectedRoute";
+import CitizenProtectedRoute from "@/components/CitizenProtectedRoute";
 import PublicOnlyRoute from "@/components/PublicOnlyRoute";
 import VerificationOnlyRoute from "@/components/VerificationOnlyRoute";
 import Index from "./pages/Index";
 import Properties from "./pages/Properties";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 import Verify from "./pages/Verify";
 import Maps from "./pages/Maps";
 import Analytics from "./pages/Analytics";
@@ -60,79 +63,91 @@ const App = () => (
               }
             />
 
-            {/* Protected Routes */}
+            {/* Admin Protected Routes */}
+            <Route
+              path="/admin/dashboard"
+              element={
+                <AdminProtectedRoute>
+                  <AdminDashboard />
+                </AdminProtectedRoute>
+              }
+            />
+
+            {/* Citizen Protected Routes - Normal users only, admins redirected to admin dashboard */}
             <Route
               path="/properties"
               element={
-                <ProtectedRoute>
+                <CitizenProtectedRoute>
                   <Properties />
-                </ProtectedRoute>
+                </CitizenProtectedRoute>
               }
             />
             <Route
               path="/register"
               element={
-                <ProtectedRoute>
+                <CitizenProtectedRoute>
                   <Register />
-                </ProtectedRoute>
+                </CitizenProtectedRoute>
               }
             />
             <Route
               path="/dashboard"
               element={
-                <ProtectedRoute>
+                <CitizenProtectedRoute>
                   <Dashboard />
-                </ProtectedRoute>
+                </CitizenProtectedRoute>
               }
             />
             <Route
               path="/verify"
               element={
-                <ProtectedRoute>
+                <CitizenProtectedRoute>
                   <Verify />
-                </ProtectedRoute>
+                </CitizenProtectedRoute>
               }
             />
             <Route
               path="/maps"
               element={
-                <ProtectedRoute>
+                <CitizenProtectedRoute>
                   <Maps />
-                </ProtectedRoute>
+                </CitizenProtectedRoute>
               }
             />
             <Route
               path="/analytics"
               element={
-                <ProtectedRoute>
+                <CitizenProtectedRoute>
                   <Analytics />
-                </ProtectedRoute>
+                </CitizenProtectedRoute>
               }
             />
             <Route
               path="/support"
               element={
-                <ProtectedRoute>
+                <CitizenProtectedRoute>
                   <Support />
-                </ProtectedRoute>
+                </CitizenProtectedRoute>
               }
             />
             <Route
               path="/government"
               element={
-                <ProtectedRoute>
+                <CitizenProtectedRoute>
                   <Government />
-                </ProtectedRoute>
+                </CitizenProtectedRoute>
               }
             />
             <Route
               path="/admin"
               element={
-                <ProtectedRoute>
+                <CitizenProtectedRoute>
                   <Admin />
-                </ProtectedRoute>
+                </CitizenProtectedRoute>
               }
             />
+
+            {/* Profile Route - Available to all authenticated users (including admins) */}
             <Route
               path="/profile/:walletAddress"
               element={

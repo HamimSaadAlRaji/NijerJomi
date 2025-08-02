@@ -64,7 +64,9 @@ const Profile: React.FC = () => {
             phoneNumber: response.data.phoneNumber || "",
             presentAddress: response.data.presentAddress || "",
             permanentAddress: response.data.permanentAddress || "",
-            isVerified: response.data.status === "accepted",
+            isVerified:
+              response.data.userRole === "admin" ||
+              response.data.status === "accepted",
             status:
               (response.data.status as "pending" | "accepted" | "rejected") ||
               "pending",
