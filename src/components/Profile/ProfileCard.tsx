@@ -15,6 +15,7 @@ interface UserData {
   permanentAddress: string;
   profilePicture?: string;
   status: "pending" | "accepted" | "rejected";
+  userRole: "admin" | "register" | "citizen";
   createdAt: string;
   updatedAt: string;
 }
@@ -66,7 +67,31 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     }
   };
 
+  const getRoleConfig = (role: string) => {
+    switch (role) {
+      case "admin":
+        return {
+          color: "bg-purple-100 text-purple-800 border-purple-200",
+          emoji: "👑",
+          text: "Administrator",
+        };
+      case "register":
+        return {
+          color: "bg-blue-100 text-blue-800 border-blue-200",
+          emoji: "📋",
+          text: "Registrar",
+        };
+      default:
+        return {
+          color: "bg-gray-100 text-gray-800 border-gray-200",
+          emoji: "👤",
+          text: "Citizen",
+        };
+    }
+  };
+
   const statusConfig = getStatusConfig(userData.status);
+  const roleConfig = getRoleConfig(userData.userRole);
 
   return (
     <Card className="shadow-xl border-0">
@@ -98,6 +123,14 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         <h1 className="text-2xl font-bold text-gray-800 mb-2">
           {userData.fullName} 👤
         </h1>
+
+        {/* Role Badge */}
+        <div className="flex justify-center mb-4">
+          <Badge className={`${roleConfig.color} px-3 py-1`}>
+            <span className="mr-1">{roleConfig.emoji}</span>
+            {roleConfig.text}
+          </Badge>
+        </div>
 
         {/* Wallet Address */}
         <div className="flex items-center justify-center space-x-2 mb-6">

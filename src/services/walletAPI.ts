@@ -16,6 +16,7 @@ export interface ConnectWalletResponse {
     permanentAddress?: string;
     profilePicture?: string;
     status?: string;
+    userRole?: string;
     submittedAt?: string;
   };
   error?: string;

@@ -4,6 +4,7 @@ import { Link, Clock } from "lucide-react";
 
 interface UserData {
   walletAddress: string;
+  userRole: "admin" | "register" | "citizen";
   createdAt: string;
   updatedAt: string;
 }
@@ -28,6 +29,34 @@ const BlockchainInfoCard: React.FC<BlockchainInfoCardProps> = ({
   const truncateAddress = (address: string) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
+
+  const getRoleConfig = (role: string) => {
+    switch (role) {
+      case "admin":
+        return {
+          color: "bg-purple-100 text-purple-800 border-purple-200",
+          emoji: "👑",
+          text: "Administrator",
+          description: "Full system access and user management",
+        };
+      case "register":
+        return {
+          color: "bg-blue-100 text-blue-800 border-blue-200",
+          emoji: "📋",
+          text: "Registrar",
+          description: "Can verify and manage user registrations",
+        };
+      default:
+        return {
+          color: "bg-gray-100 text-gray-800 border-gray-200",
+          emoji: "👤",
+          text: "Citizen",
+          description: "Standard user with basic access",
+        };
+    }
+  };
+
+  const roleConfig = getRoleConfig(userData.userRole);
 
   return (
     <Card className="shadow-xl border-0">
@@ -61,6 +90,21 @@ const BlockchainInfoCard: React.FC<BlockchainInfoCardProps> = ({
               <p className="text-xs text-gray-500 mt-2">
                 Short: {truncateAddress(userData.walletAddress)}
               </p>
+            </div>
+          </div>
+
+          <div>
+            <label className="text-sm font-medium text-gray-500 mb-2 block">
+              🎭 User Role
+            </label>
+            <div
+              className={`inline-flex items-center px-4 py-2 rounded-lg border ${roleConfig.color}`}
+            >
+              <span className="text-lg mr-2">{roleConfig.emoji}</span>
+              <div>
+                <p className="font-semibold">{roleConfig.text}</p>
+                <p className="text-xs opacity-75">{roleConfig.description}</p>
+              </div>
             </div>
           </div>
 

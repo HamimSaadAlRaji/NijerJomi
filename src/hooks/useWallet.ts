@@ -18,6 +18,7 @@ export interface User {
   permanentAddress?: string;
   profilePicture?: string;
   status?: string;
+  userRole?: string;
   submittedAt?: string;
 }
 

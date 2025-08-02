@@ -22,6 +22,7 @@ interface UserData {
   permanentAddress: string;
   isVerified: boolean;
   status: "pending" | "accepted" | "rejected";
+  userRole: "admin" | "register" | "citizen";
   createdAt: string;
   updatedAt: string;
   profilePicture?: string;
@@ -67,6 +68,9 @@ const Profile: React.FC = () => {
             status:
               (response.data.status as "pending" | "accepted" | "rejected") ||
               "pending",
+            userRole:
+              (response.data.userRole as "admin" | "register" | "citizen") ||
+              "citizen",
             createdAt: response.data.submittedAt || new Date().toISOString(),
             updatedAt: response.data.submittedAt || new Date().toISOString(),
             profilePicture: response.data.profilePicture,
