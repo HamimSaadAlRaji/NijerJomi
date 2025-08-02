@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { WalletProvider } from "@/contexts/WalletContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import PublicOnlyRoute from "@/components/PublicOnlyRoute";
+import VerificationOnlyRoute from "@/components/VerificationOnlyRoute";
 import Index from "./pages/Index";
 import Properties from "./pages/Properties";
 import Register from "./pages/Register";
@@ -29,10 +31,33 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            {/* Public Routes */}
-            <Route path="/" element={<Index />} />
-            <Route path="/connect-wallet" element={<ConnectWallet />} />
-            <Route path="/user-verification" element={<UserVerification />} />
+            {/* Public Only Routes - Logged in users will be redirected */}
+            <Route
+              path="/"
+              element={
+                <PublicOnlyRoute>
+                  <Index />
+                </PublicOnlyRoute>
+              }
+            />
+            <Route
+              path="/connect-wallet"
+              element={
+                <PublicOnlyRoute>
+                  <ConnectWallet />
+                </PublicOnlyRoute>
+              }
+            />
+
+            {/* User Verification - Special case: only for connected wallets without user data */}
+            <Route
+              path="/user-verification"
+              element={
+                <VerificationOnlyRoute>
+                  <UserVerification />
+                </VerificationOnlyRoute>
+              }
+            />
 
             {/* Protected Routes */}
             <Route

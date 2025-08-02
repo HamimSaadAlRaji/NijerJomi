@@ -2,8 +2,15 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useWalletContext } from "@/contexts/WalletContext";
-import { Loader2, Wallet } from "lucide-react";
+import { Loader2, Wallet, ChevronDown, User, LogOut } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 
 interface WalletConnectButtonProps {
   size?: "sm" | "lg" | "default";
@@ -15,12 +22,14 @@ interface WalletConnectButtonProps {
     | "ghost"
     | "link"
     | "destructive";
+  showDropdown?: boolean;
 }
 
 const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
   size = "lg",
   className = "",
   variant = "default",
+  showDropdown = false,
 }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -88,11 +97,62 @@ const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
     }
   };
 
+  const handleDisconnect = () => {
+    disconnectWallet();
+    toast({
+      title: "Wallet Disconnected",
+      description: "Your wallet has been disconnected successfully.",
+    });
+    navigate("/");
+  };
+
+  const handleViewProfile = () => {
+    // TODO: Navigate to profile page when implemented
+    toast({
+      title: "Profile",
+      description: "Profile page coming soon!",
+    });
+  };
+
   const formatAddress = (address: string) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
 
   // Single button with different text based on connection status
+  if (showDropdown && isConnected && user) {
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            size={size}
+            variant={variant}
+            className={`bg-gradient-hero hover:opacity-90 rounded-full text-xl px-8 py-3 ${className}`}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
+              <Wallet className="w-4 h-4 mr-2" />
+            )}
+            {formatAddress(walletAddress!)}
+            <ChevronDown className="w-4 h-4 ml-2" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenuItem onClick={handleViewProfile}>
+            <User className="w-4 h-4 mr-2" />
+            View Profile
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={handleDisconnect} className="text-red-600">
+            <LogOut className="w-4 h-4 mr-2" />
+            Disconnect Wallet
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  }
+
   return (
     <Button
       onClick={handleWalletAction}
@@ -107,7 +167,7 @@ const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
         <Wallet className="w-4 h-4 mr-2" />
       )}
       {isConnected && user
-        ? `Dashboard - ${formatAddress(walletAddress!)}`
+        ? `${formatAddress(walletAddress!)}`
         : "Connect Wallet"}
     </Button>
   );

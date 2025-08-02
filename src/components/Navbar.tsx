@@ -117,15 +117,11 @@ const Navbar = () => {
                   </Button>
                 </Link>
 
-                <Button
+                <WalletConnectButton
                   size="lg"
+                  showDropdown={true}
                   className="bg-gradient-hero hover:opacity-90 rounded-full text-xl px-8 py-3"
-                >
-                  <WalletConnectButton
-                    size="lg"
-                    className="bg-transparent border-none p-0 hover:bg-transparent"
-                  />
-                </Button>
+                />
               </>
             ) : (
               <>
@@ -204,6 +200,7 @@ const Navbar = () => {
                     {/* Mobile Button - Bigger and rounder */}
                     <WalletConnectButton
                       size="lg"
+                      showDropdown={true}
                       className="w-full bg-gradient-hero hover:opacity-90 rounded-full text-xl py-3"
                     />
                   </div>
