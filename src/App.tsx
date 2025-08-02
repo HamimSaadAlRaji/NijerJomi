@@ -14,6 +14,7 @@ import Properties from "./pages/Properties";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminVerifyUser from "./pages/AdminVerifyUser";
 import Verify from "./pages/Verify";
 import Maps from "./pages/Maps";
 import Analytics from "./pages/Analytics";
@@ -69,6 +70,14 @@ const App = () => (
               element={
                 <AdminProtectedRoute>
                   <AdminDashboard />
+                </AdminProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/verify-user"
+              element={
+                <AdminProtectedRoute>
+                  <AdminVerifyUser />
                 </AdminProtectedRoute>
               }
             />

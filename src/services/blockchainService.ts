@@ -5,7 +5,7 @@ import {
   TransferRequest,
   UserRole,
   ContractEvent,
-} from "types.ts";
+} from "../../types";
 
 // Helper to fetch and parse JSON from a URI (like IPFS)
 // const fetchMetadata = async (tokenURI: string): Promise<PropertyMetadata | null> => {

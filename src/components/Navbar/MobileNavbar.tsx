@@ -38,6 +38,20 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({
               <>
                 {/* Admin Mobile Links */}
                 <Link
+                  to="/admin/dashboard"
+                  className="text-xl font-medium text-foreground hover:text-primary transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Admin Dashboard
+                </Link>
+                <Link
+                  to="/admin/verify-user"
+                  className="text-xl font-medium text-foreground hover:text-primary transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Verify Users
+                </Link>
+                <Link
                   to="/admin/users"
                   className="text-xl font-medium text-foreground hover:text-primary transition-colors"
                   onClick={() => setIsOpen(false)}
@@ -71,13 +85,6 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({
                   onClick={() => setIsOpen(false)}
                 >
                   Reports
-                </Link>
-                <Link
-                  to="/admin/dashboard"
-                  className="text-xl font-medium text-foreground hover:text-primary transition-colors"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Admin Dashboard
                 </Link>
               </>
             ) : (
