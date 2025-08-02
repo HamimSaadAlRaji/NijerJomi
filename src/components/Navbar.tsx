@@ -8,14 +8,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import WalletConnectButton from "./WalletConnectButton";
+import { useWalletContext } from "@/contexts/WalletContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { isConnected, user } = useWalletContext();
 
-  // Add user authentication state - replace this with your actual auth logic
-  const [user, setUser] = useState("sdf"); // This should come from your auth context/state
-  const isLoggedIn = !!user;
+  // User is considered logged in if wallet is connected and user data exists
+  const isLoggedIn = isConnected && user;
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -33,67 +35,68 @@ const Navbar = () => {
             </div>
           </Link>
 
-          {/* Desktop Navigation - Only show if user is logged in */}
-          {isLoggedIn && (
-            <div className="hidden md:flex items-center space-x-8">
-              {/* Navigation Links - Changed from text-xl to text-xl for larger text */}
-              <Link
-                to="/"
-                className={`text-xl font-medium transition-colors hover:text-primary ${
-                  isActive("/") ? "text-primary" : "text-foreground"
-                }`}
-              >
-                Home
-              </Link>
+          {/* Desktop Navigation - Show different content based on login status */}
+          <div className="hidden md:flex items-center space-x-8">
+            {/* Always show Home */}
+            <Link
+              to="/"
+              className={`text-xl font-medium transition-colors hover:text-primary ${
+                isActive("/") ? "text-primary" : "text-foreground"
+              }`}
+            >
+              Home
+            </Link>
 
-              <DropdownMenu>
-                {/* Dropdown Trigger - Changed from text-sm to text-xl */}
-                <DropdownMenuTrigger className="flex items-center space-x-1 text-xl font-medium text-foreground hover:text-primary transition-colors">
-                  <span>Properties</span>
-                  <ChevronDown className="w-4 h-4" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem asChild>
-                    <Link to="/properties">Browse Properties</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/maps">Property Maps</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/analytics">Market Analytics</Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+            {/* Only show these links if user is logged in */}
+            {isLoggedIn && (
+              <>
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="flex items-center space-x-1 text-xl font-medium text-foreground hover:text-primary transition-colors">
+                    <span>Properties</span>
+                    <ChevronDown className="w-4 h-4" />
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem asChild>
+                      <Link to="/properties">Browse Properties</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to="/maps">Property Maps</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link to="/analytics">Market Analytics</Link>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
 
-              {/* Navigation Links - Changed from text-sm to text-xl */}
-              <Link
-                to="/register"
-                className={`text-xl font-medium transition-colors hover:text-primary ${
-                  isActive("/register") ? "text-primary" : "text-foreground"
-                }`}
-              >
-                Register Property
-              </Link>
+                <Link
+                  to="/register"
+                  className={`text-xl font-medium transition-colors hover:text-primary ${
+                    isActive("/register") ? "text-primary" : "text-foreground"
+                  }`}
+                >
+                  Register Property
+                </Link>
 
-              <Link
-                to="/verify"
-                className={`text-xl font-medium transition-colors hover:text-primary ${
-                  isActive("/verify") ? "text-primary" : "text-foreground"
-                }`}
-              >
-                Verify
-              </Link>
+                <Link
+                  to="/verify"
+                  className={`text-xl font-medium transition-colors hover:text-primary ${
+                    isActive("/verify") ? "text-primary" : "text-foreground"
+                  }`}
+                >
+                  Verify
+                </Link>
 
-              <Link
-                to="/support"
-                className={`text-xl font-medium transition-colors hover:text-primary ${
-                  isActive("/support") ? "text-primary" : "text-foreground"
-                }`}
-              >
-                Support
-              </Link>
-            </div>
-          )}
+                <Link
+                  to="/support"
+                  className={`text-xl font-medium transition-colors hover:text-primary ${
+                    isActive("/support") ? "text-primary" : "text-foreground"
+                  }`}
+                >
+                  Support
+                </Link>
+              </>
+            )}
+          </div>
 
           {/* Action Buttons */}
           <div className="hidden md:flex items-center space-x-4">
@@ -118,27 +121,21 @@ const Navbar = () => {
                   size="lg"
                   className="bg-gradient-hero hover:opacity-90 rounded-full text-xl px-8 py-3"
                 >
-                  Connect Wallet
+                  <WalletConnectButton
+                    size="lg"
+                    className="bg-transparent border-none p-0 hover:bg-transparent"
+                  />
                 </Button>
               </>
             ) : (
               <>
-                <Link to="/login">
-                  {/* Log In Button - More round and bigger with xl text */}
+                <Link to="/connect-wallet">
+                  {/* Connect Wallet Button - More round and bigger with xl text */}
                   <Button
                     size="lg"
                     className="rounded-full text-xl px-8 py-3 bg-transparent"
                   >
-                    Log In
-                  </Button>
-                </Link>
-                <Link to="/signup">
-                  {/* Sign Up Button - More round and bigger with xl text */}
-                  <Button
-                    size="lg"
-                    className="bg-gradient-hero hover:opacity-90 rounded-full text-xl px-8 py-3"
-                  >
-                    Sign Up
+                    Connect Wallet
                   </Button>
                 </Link>
               </>
@@ -190,6 +187,13 @@ const Navbar = () => {
                     Verify
                   </Link>
                   <Link
+                    to="/support"
+                    className="text-xl font-medium text-foreground hover:text-primary transition-colors"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Support
+                  </Link>
+                  <Link
                     to="/dashboard"
                     className="text-xl font-medium text-foreground hover:text-primary transition-colors"
                     onClick={() => setIsOpen(false)}
@@ -198,30 +202,27 @@ const Navbar = () => {
                   </Link>
                   <div className="pt-4 border-t border-border">
                     {/* Mobile Button - Bigger and rounder */}
-                    <Button
+                    <WalletConnectButton
                       size="lg"
                       className="w-full bg-gradient-hero hover:opacity-90 rounded-full text-xl py-3"
-                    >
-                      Connect Wallet
-                    </Button>
+                    />
                   </div>
                 </>
               ) : (
                 <>
-                  {/* Mobile Sign Up/Log In Links - Changed from text-sm to text-xl */}
+                  {/* Mobile Connect Wallet Button when not logged in */}
+                  <div className="text-center">
+                    <WalletConnectButton
+                      size="lg"
+                      className="w-full bg-gradient-hero hover:opacity-90 rounded-full text-xl py-3"
+                    />
+                  </div>
                   <Link
-                    to="/signup"
-                    className="text-xl font-medium text-foreground hover:text-primary transition-colors"
+                    to="/connect-wallet"
+                    className="text-xl font-medium text-foreground hover:text-primary transition-colors text-center"
                     onClick={() => setIsOpen(false)}
                   >
-                    Sign Up
-                  </Link>
-                  <Link
-                    to="/login"
-                    className="text-xl font-medium text-foreground hover:text-primary transition-colors"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Log In
+                    Connect Wallet
                   </Link>
                 </>
               )}

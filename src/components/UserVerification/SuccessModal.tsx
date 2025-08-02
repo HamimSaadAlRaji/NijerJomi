@@ -6,11 +6,13 @@ import { CheckCircle, Shield, ArrowRight } from "lucide-react";
 interface SuccessModalProps {
   isOpen: boolean;
   onDashboardClick: () => void;
+  walletAddress?: string;
 }
 
 const SuccessModal: React.FC<SuccessModalProps> = ({
   isOpen,
   onDashboardClick,
+  walletAddress,
 }) => {
   if (!isOpen) return null;
 
@@ -29,6 +31,14 @@ const SuccessModal: React.FC<SuccessModalProps> = ({
               Your registration is currently being verified by the
               Administration.
             </p>
+            {walletAddress && (
+              <div className="bg-gray-50 rounded-lg p-3 mb-4">
+                <p className="text-sm text-gray-500 mb-1">Registered Wallet:</p>
+                <p className="font-mono text-sm text-gray-800">
+                  {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
+                </p>
+              </div>
+            )}
             <div className="flex items-center justify-center text-sm text-gray-500 mb-6">
               <Shield className="w-4 h-4 mr-2" />
               <span>Secure verification in progress</span>
