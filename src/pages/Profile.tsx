@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useWalletContext } from "@/contexts/WalletContext";
 import { walletAPI } from "@/services/walletAPI";
+import { UserRole } from "../../types";
+import { isRole } from "@/lib/roleUtils";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -22,7 +24,13 @@ interface UserData {
   permanentAddress: string;
   isVerified: boolean;
   status: "pending" | "accepted" | "rejected";
-  userRole: "admin" | "register" | "citizen";
+  userRole:
+    | "ADMIN"
+    | "REGISTRAR"
+    | "CITIZEN"
+    | "admin"
+    | "register"
+    | "citizen"; // Support both formats
   createdAt: string;
   updatedAt: string;
   profilePicture?: string;
@@ -65,14 +73,19 @@ const Profile: React.FC = () => {
             presentAddress: response.data.presentAddress || "",
             permanentAddress: response.data.permanentAddress || "",
             isVerified:
-              response.data.userRole === "admin" ||
+              isRole(response.data.userRole || "", UserRole.ADMIN) ||
               response.data.status === "accepted",
             status:
               (response.data.status as "pending" | "accepted" | "rejected") ||
               "pending",
             userRole:
-              (response.data.userRole as "admin" | "register" | "citizen") ||
-              "citizen",
+              (response.data.userRole as
+                | "ADMIN"
+                | "REGISTRAR"
+                | "CITIZEN"
+                | "admin"
+                | "register"
+                | "citizen") || "CITIZEN",
             createdAt: response.data.submittedAt || new Date().toISOString(),
             updatedAt: response.data.submittedAt || new Date().toISOString(),
             profilePicture: response.data.profilePicture,

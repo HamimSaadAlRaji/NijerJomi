@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Calendar, Copy, Wallet } from "lucide-react";
 import { CheckCircle, XCircle, Clock } from "lucide-react";
+import { UserRole } from "../../../types";
+import { isRole, mapBackendRoleToEnum } from "@/lib/roleUtils";
 
 interface UserData {
   _id: string;
@@ -13,11 +15,18 @@ interface UserData {
   phoneNumber: string;
   presentAddress: string;
   permanentAddress: string;
-  profilePicture?: string;
+  isVerified: boolean;
   status: "pending" | "accepted" | "rejected";
-  userRole: "admin" | "register" | "citizen";
+  userRole:
+    | "ADMIN"
+    | "REGISTRAR"
+    | "CITIZEN"
+    | "admin"
+    | "register"
+    | "citizen"; // Support both formats
   createdAt: string;
   updatedAt: string;
+  profilePicture?: string;
 }
 
 interface ProfileCardProps {
@@ -43,7 +52,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
   const getStatusConfig = (status: string, userRole: string) => {
     // Admin users don't need verification
-    if (userRole === "admin") {
+    if (isRole(userRole, UserRole.ADMIN)) {
       return {
         icon: <CheckCircle className="w-4 h-4" />,
         color: "bg-green-100 text-green-800 border-green-200",
@@ -78,14 +87,15 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   };
 
   const getRoleConfig = (role: string) => {
-    switch (role) {
-      case "admin":
+    const mappedRole = mapBackendRoleToEnum(role);
+    switch (mappedRole) {
+      case UserRole.ADMIN:
         return {
           color: "bg-purple-100 text-purple-800 border-purple-200",
           emoji: "👑",
           text: "Administrator",
         };
-      case "register":
+      case UserRole.REGISTRAR:
         return {
           color: "bg-blue-100 text-blue-800 border-blue-200",
           emoji: "📋",
@@ -162,7 +172,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         <div className="bg-gray-50 rounded-lg p-4 mb-6">
           <div className="text-2xl mb-2">{statusConfig.emoji}</div>
           <p className="text-sm text-gray-600">
-            {userData.userRole === "admin"
+            {isRole(userData.userRole, UserRole.ADMIN)
               ? "Administrator account with full system access."
               : userData.status === "accepted"
               ? "Your profile has been verified and approved!"

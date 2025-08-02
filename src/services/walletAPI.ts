@@ -16,7 +16,7 @@ export interface ConnectWalletResponse {
     permanentAddress?: string;
     profilePicture?: string;
     status?: string;
-    userRole?: string;
+    userRole?: string; // Can be either uppercase or lowercase format
     submittedAt?: string;
   };
   error?: string;
@@ -74,9 +74,37 @@ export const walletAPI = {
     presentAddress: string;
     permanentAddress: string;
     profilePicture?: string;
+    userRole?: string; // Will be uppercase format (ADMIN, REGISTRAR, etc.)
   }) => {
     try {
       const response = await fetch(`${API_BASE_URL}/register-user`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      const data = await response.json();
+      return data;
+    } catch (error: any) {
+      throw new Error(`Failed to register user: ${error.message}`);
+    }
+  },
+
+  // Register user for verification (used by user verification page)
+  register: async (userData: {
+    walletAddress: string;
+    fullName: string;
+    nidNumber: string;
+    phoneNumber: string;
+    presentAddress: string;
+    permanentAddress: string;
+    profilePicture?: string;
+    userRole?: string; // Will be uppercase format (ADMIN, REGISTRAR, etc.)
+  }) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

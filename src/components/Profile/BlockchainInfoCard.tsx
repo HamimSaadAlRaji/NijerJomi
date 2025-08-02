@@ -1,10 +1,18 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link, Clock } from "lucide-react";
+import { UserRole } from "../../../types";
+import { mapBackendRoleToEnum } from "@/lib/roleUtils";
 
 interface UserData {
   walletAddress: string;
-  userRole: "admin" | "register" | "citizen";
+  userRole:
+    | "ADMIN"
+    | "REGISTRAR"
+    | "CITIZEN"
+    | "admin"
+    | "register"
+    | "citizen"; // Support both formats
   createdAt: string;
   updatedAt: string;
 }
@@ -31,15 +39,16 @@ const BlockchainInfoCard: React.FC<BlockchainInfoCardProps> = ({
   };
 
   const getRoleConfig = (role: string) => {
-    switch (role) {
-      case "admin":
+    const mappedRole = mapBackendRoleToEnum(role);
+    switch (mappedRole) {
+      case UserRole.ADMIN:
         return {
           color: "bg-purple-100 text-purple-800 border-purple-200",
           emoji: "👑",
           text: "Administrator",
           description: "Full system access and user management",
         };
-      case "register":
+      case UserRole.REGISTRAR:
         return {
           color: "bg-blue-100 text-blue-800 border-blue-200",
           emoji: "📋",

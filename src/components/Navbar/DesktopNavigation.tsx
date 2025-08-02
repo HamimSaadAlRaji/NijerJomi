@@ -2,6 +2,8 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import AdminNavbarLinks from "./AdminNavbarLinks";
 import CitizenNavbarLinks from "./CitizenNavbarLinks";
+import { UserRole } from "../../../types";
+import { isRole } from "@/lib/roleUtils";
 
 interface DesktopNavigationProps {
   isLoggedIn: boolean;
@@ -30,7 +32,7 @@ const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
       {/* Show role-specific navigation if user is logged in */}
       {isLoggedIn && (
         <>
-          {user?.userRole === "admin" ? (
+          {isRole(user?.userRole || "", UserRole.ADMIN) ? (
             <AdminNavbarLinks />
           ) : (
             <CitizenNavbarLinks />
