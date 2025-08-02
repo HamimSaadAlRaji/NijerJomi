@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { User, MapPin, CheckCircle } from "lucide-react";
+import { useWalletContext } from "@/contexts/WalletContext";
 
 // User Verification Components
 import BackgroundImage from "@/components/UserVerification/BackgroundImage";
@@ -13,6 +14,37 @@ import NavigationButtons from "@/components/UserVerification/NavigationButtons";
 import SuccessModal from "@/components/UserVerification/SuccessModal";
 
 const UserVerification = () => {
+  const { walletAddress, isConnected } = useWalletContext();
+
+  // Redirect or show error if wallet is not connected
+  if (!isConnected || !walletAddress) {
+    return (
+      <BackgroundImage>
+        <div className="flex items-center justify-center min-h-screen">
+          <Card className="bg-white border-2 border-gray-100 shadow-2xl max-w-md mx-4">
+            <CardHeader className="bg-red-500 text-white rounded-t-lg">
+              <CardTitle className="text-2xl text-center">
+                Wallet Not Connected
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-8 text-center">
+              <p className="text-gray-600 mb-4">
+                Please connect your wallet to access the user verification
+                process.
+              </p>
+              <button
+                onClick={() => (window.location.href = "/")}
+                className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors"
+              >
+                Go to Home
+              </button>
+            </CardContent>
+          </Card>
+        </div>
+      </BackgroundImage>
+    );
+  }
+
   const [formData, setFormData] = useState({
     image: null,
     fullName: "",
@@ -178,6 +210,12 @@ const UserVerification = () => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const handleSubmit = async () => {
+    // Check if wallet is connected
+    if (!isConnected || !walletAddress) {
+      alert("Please connect your wallet first");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -191,9 +229,9 @@ const UserVerification = () => {
         });
       }
 
-      // Prepare JSON data for submission (not FormData)
+      // Prepare JSON data for submission (not FormData) - using actual wallet address
       const submitData = {
-        walletAddress: "0x1234567890abcdef123456789rgfwef345678",
+        walletAddress: walletAddress,
         fullName: formData.fullName,
         nidNumber: formData.nidNumber,
         phoneNumber: formData.phoneNumber,
@@ -203,6 +241,8 @@ const UserVerification = () => {
           : `${formData.permanentHouse}, ${formData.permanentRoad}, ${formData.permanentAddress}, ${formData.permanentCity}, ${formData.permanentPostCode}, ${formData.permanentDivision}`,
         profilePicture: profilePictureBase64,
       };
+
+      console.log("Submitting registration data:", submitData);
 
       // Submit to backend - Fixed URL and headers
       const response = await fetch("http://localhost:3000/api/register", {
@@ -233,7 +273,10 @@ const UserVerification = () => {
       {/* Header Section */}
       <HeaderSection
         title="User Verification"
-        subtitle="Complete your profile to access secure land registry services"
+        subtitle={`Complete your profile to access secure land registry services\nWallet: ${walletAddress?.slice(
+          0,
+          6
+        )}...${walletAddress?.slice(-4)}`}
       />
 
       {/* Progress Bar */}
@@ -293,6 +336,7 @@ const UserVerification = () => {
       {/* Success Modal */}
       <SuccessModal
         isOpen={showSuccessModal}
+        walletAddress={walletAddress}
         onDashboardClick={() => {
           // Navigate to dashboard - you can replace this with your routing logic
           window.location.href = "/dashboard";
