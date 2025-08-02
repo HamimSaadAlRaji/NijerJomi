@@ -21,6 +21,12 @@ const AdminNavbarLinks: React.FC = () => {
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem asChild>
+            <Link to="/admin/dashboard">Dashboard</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link to="/admin/verify-user">Verify Users</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <Link to="/admin/users">Manage Users</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
