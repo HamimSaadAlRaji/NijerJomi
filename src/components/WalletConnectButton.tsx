@@ -2,6 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useWalletContext } from "@/contexts/WalletContext";
+import { UserRole } from "../../types";
+import { isRole } from "@/lib/roleUtils";
 import { Loader2, Wallet, ChevronDown, User, LogOut } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import {
@@ -47,7 +49,7 @@ const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
   const handleWalletAction = async () => {
     // If wallet is connected and user exists, go to appropriate dashboard
     if (isConnected && user) {
-      if (user.userRole === "admin") {
+      if (isRole(user.userRole || "", UserRole.ADMIN)) {
         navigate("/admin/dashboard");
       } else {
         navigate("/dashboard");
@@ -84,7 +86,10 @@ const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
           });
 
           // Navigate based on user role
-          if (result.userData && result.userData.userRole === "admin") {
+          if (
+            result.userData &&
+            isRole(result.userData.userRole || "", UserRole.ADMIN)
+          ) {
             navigate("/admin/dashboard");
           } else {
             navigate("/dashboard");

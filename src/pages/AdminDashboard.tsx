@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useWalletContext } from "@/contexts/WalletContext";
+import { UserRole } from "../../types";
+import { isRole } from "@/lib/roleUtils";
 import { walletAPI } from "@/services/walletAPI";
 import Navbar from "@/components/Navbar";
 import {
@@ -36,7 +38,7 @@ const AdminDashboard: React.FC = () => {
 
   // Redirect if not admin
   useEffect(() => {
-    if (!isConnected || !user || user.userRole !== "admin") {
+    if (!isConnected || !user || !isRole(user.userRole || "", UserRole.ADMIN)) {
       navigate("/dashboard");
       return;
     }
@@ -67,12 +69,12 @@ const AdminDashboard: React.FC = () => {
       }
     };
 
-    if (user?.userRole === "admin") {
+    if (isRole(user?.userRole || "", UserRole.ADMIN)) {
       fetchDashboardStats();
     }
   }, [user]);
 
-  if (!user || user.userRole !== "admin") {
+  if (!user || !isRole(user.userRole || "", UserRole.ADMIN)) {
     return null;
   }
 

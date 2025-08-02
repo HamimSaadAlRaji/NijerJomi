@@ -1,5 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { X } from "lucide-react";
+import { UserRole } from "../../../types";
+import { isRole } from "@/lib/roleUtils";
 import WalletConnectButton from "../WalletConnectButton";
 
 interface MobileNavbarProps {
@@ -31,7 +34,7 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({
               Home
             </Link>
 
-            {user?.userRole === "admin" ? (
+            {isRole(user?.userRole || "", UserRole.ADMIN) ? (
               <>
                 {/* Admin Mobile Links */}
                 <Link

@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import WalletConnectButton from "../WalletConnectButton";
+import { UserRole } from "../../../types";
+import { isRole } from "@/lib/roleUtils";
 
 interface NavbarActionsProps {
   isLoggedIn: boolean;
@@ -9,23 +11,26 @@ interface NavbarActionsProps {
 }
 
 const NavbarActions: React.FC<NavbarActionsProps> = ({ isLoggedIn, user }) => {
-  const getDashboardLink = () => {
-    return user?.userRole === "admin" ? "/admin/dashboard" : "/dashboard";
+  const getDashboardPath = () => {
+    return isRole(user?.userRole || "", UserRole.ADMIN)
+      ? "/admin/dashboard"
+      : "/dashboard";
   };
 
   const getDashboardText = () => {
-    return user?.userRole === "admin" ? "Admin Dashboard" : "Dashboard";
+    return isRole(user?.userRole || "", UserRole.ADMIN)
+      ? "Admin Dashboard"
+      : "Dashboard";
   };
 
   return (
     <div className="hidden md:flex items-center space-x-4">
       {isLoggedIn ? (
         <>
-          <Link to={getDashboardLink()}>
+          <Link to={getDashboardPath()}>
             <Button
-              variant="outline"
-              size="lg"
-              className="rounded-full text-xl px-8 py-3"
+              variant="ghost"
+              className="text-foreground hover:text-primary"
             >
               {getDashboardText()}
             </Button>

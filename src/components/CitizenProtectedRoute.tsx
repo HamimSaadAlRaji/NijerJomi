@@ -2,6 +2,8 @@ import React from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useWalletContext } from "@/contexts/WalletContext";
 import { Loader2 } from "lucide-react";
+import { UserRole } from "../../types";
+import { isRole } from "@/lib/roleUtils";
 
 interface CitizenProtectedRouteProps {
   children: React.ReactNode;
@@ -35,7 +37,7 @@ const CitizenProtectedRoute: React.FC<CitizenProtectedRouteProps> = ({
   }
 
   // If user is admin, redirect to admin dashboard
-  if (user && user.userRole === "admin") {
+  if (user && isRole(user.userRole || "", UserRole.ADMIN)) {
     return (
       <Navigate to="/admin/dashboard" state={{ from: location }} replace />
     );

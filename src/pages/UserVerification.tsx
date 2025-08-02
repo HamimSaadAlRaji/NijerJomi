@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { User, MapPin, CheckCircle } from "lucide-react";
 import { useWalletContext } from "@/contexts/WalletContext";
+import { walletAPI } from "@/services/walletAPI";
+import { mapEnumToBackendRole } from "@/lib/roleUtils";
 
 // User Verification Components
 import BackgroundImage from "@/components/UserVerification/BackgroundImage";
@@ -14,7 +16,7 @@ import NavigationButtons from "@/components/UserVerification/NavigationButtons";
 import SuccessModal from "@/components/UserVerification/SuccessModal";
 
 const UserVerification = () => {
-  const { walletAddress, isConnected } = useWalletContext();
+  const { walletAddress, isConnected, web3State } = useWalletContext();
 
   // Redirect or show error if wallet is not connected
   if (!isConnected || !walletAddress) {
@@ -240,22 +242,15 @@ const UserVerification = () => {
           ? `${formData.presentHouse}, ${formData.presentRoad}, ${formData.presentAddress}, ${formData.presentCity}, ${formData.presentPostCode}, ${formData.presentDivision}`
           : `${formData.permanentHouse}, ${formData.permanentRoad}, ${formData.permanentAddress}, ${formData.permanentCity}, ${formData.permanentPostCode}, ${formData.permanentDivision}`,
         profilePicture: profilePictureBase64,
+        userRole: mapEnumToBackendRole(web3State.role), // Include role from blockchain as string
       };
 
       console.log("Submitting registration data:", submitData);
 
-      // Submit to backend - Fixed URL and headers
-      const response = await fetch("http://localhost:3000/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(submitData),
-      });
+      // Submit to backend using walletAPI
+      const result = await walletAPI.register(submitData);
 
-      const result = await response.json();
-
-      if (response.ok && result.success) {
+      if (result.success) {
         setShowSuccessModal(true);
       } else {
         throw new Error(result.message || "Registration failed");
