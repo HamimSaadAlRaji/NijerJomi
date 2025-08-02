@@ -107,11 +107,9 @@ const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
   };
 
   const handleViewProfile = () => {
-    // TODO: Navigate to profile page when implemented
-    toast({
-      title: "Profile",
-      description: "Profile page coming soon!",
-    });
+    if (walletAddress) {
+      navigate(`/profile/${walletAddress}`);
+    }
   };
 
   const formatAddress = (address: string) => {

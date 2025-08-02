@@ -19,6 +19,7 @@ import Government from "./pages/Government";
 import Admin from "./pages/Admin";
 import UserVerification from "./pages/UserVerification";
 import ConnectWallet from "./pages/ConnectWallet";
+import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -129,6 +130,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Admin />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile/:walletAddress"
+              element={
+                <ProtectedRoute>
+                  <Profile />
                 </ProtectedRoute>
               }
             />

@@ -42,6 +42,28 @@ export const walletAPI = {
     }
   },
 
+  // Get user data by wallet address
+  getUserByWalletAddress: async (walletAddress: string) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/user/${walletAddress}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to fetch user data");
+      }
+
+      return data;
+    } catch (error: any) {
+      throw new Error(`Failed to fetch user: ${error.message}`);
+    }
+  },
+
   // Register new user with wallet
   registerUser: async (userData: {
     walletAddress: string;
