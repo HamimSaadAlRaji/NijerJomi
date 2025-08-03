@@ -52,6 +52,13 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({
                   Verify Users
                 </Link>
                 <Link
+                  to="/admin/set-user-role"
+                  className="text-xl font-medium text-foreground hover:text-primary transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Manage Roles
+                </Link>
+                <Link
                   to="/admin/users"
                   className="text-xl font-medium text-foreground hover:text-primary transition-colors"
                   onClick={() => setIsOpen(false)}

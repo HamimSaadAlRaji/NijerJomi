@@ -15,6 +15,7 @@ import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminVerifyUser from "./pages/AdminVerifyUser";
+import AdminSetUserRole from "./pages/AdminSetUserRole";
 import Verify from "./pages/Verify";
 import Maps from "./pages/Maps";
 import Analytics from "./pages/Analytics";
@@ -78,6 +79,14 @@ const App = () => (
               element={
                 <AdminProtectedRoute>
                   <AdminVerifyUser />
+                </AdminProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/set-user-role"
+              element={
+                <AdminProtectedRoute>
+                  <AdminSetUserRole />
                 </AdminProtectedRoute>
               }
             />
