@@ -11,7 +11,13 @@ import { useWalletContext } from "@/contexts/WalletContext";
 import { UserRole } from "../../../types";
 import { isRole } from "@/lib/roleUtils";
 
-const AdminNavbarLinks: React.FC = () => {
+interface AdminNavbarLinksProps {
+  isDarkTheme?: boolean;
+}
+
+const AdminNavbarLinks: React.FC<AdminNavbarLinksProps> = ({
+  isDarkTheme = false,
+}) => {
   const location = useLocation();
   const { user } = useWalletContext();
   const isActive = (path: string) => location.pathname === path;
@@ -20,7 +26,13 @@ const AdminNavbarLinks: React.FC = () => {
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger className="flex items-center space-x-1 text-xl font-medium text-foreground hover:text-primary transition-colors">
+        <DropdownMenuTrigger
+          className={`flex items-center space-x-1 text-xl font-medium transition-colors ${
+            isDarkTheme
+              ? "text-black hover:text-gray-600"
+              : "text-white hover:text-gray-300"
+          }`}
+        >
           <span>{isAdmin ? "Admin Panel" : "Registrar Panel"}</span>
           <ChevronDown className="w-4 h-4" />
         </DropdownMenuTrigger>

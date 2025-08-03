@@ -42,6 +42,18 @@ export default {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
+        },
+        info: {
+          DEFAULT: "hsl(var(--info))",
+          foreground: "hsl(var(--info-foreground))",
+        },
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
@@ -69,8 +81,15 @@ export default {
         },
         property: {
           verified: "hsl(var(--property-verified))",
+          "verified-foreground": "hsl(var(--property-verified-foreground))",
           pending: "hsl(var(--property-pending))",
+          "pending-foreground": "hsl(var(--property-pending-foreground))",
+          approved: "hsl(var(--property-approved))",
+          "approved-foreground": "hsl(var(--property-approved-foreground))",
           disputed: "hsl(var(--property-disputed))",
+          "disputed-foreground": "hsl(var(--property-disputed-foreground))",
+          rejected: "hsl(var(--property-rejected))",
+          "rejected-foreground": "hsl(var(--property-rejected-foreground))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
@@ -126,12 +145,6 @@ export default {
         "nft-glow": "nft-glow 2s ease-in-out infinite",
         "slide-up": "slide-up 0.6s ease-out",
         "scale-in": "scale-in 0.4s ease-out",
-      },
-      backgroundImage: {
-        "gradient-hero": "var(--gradient-hero)",
-        "gradient-card": "var(--gradient-card)",
-        "gradient-nft": "var(--gradient-nft)",
-        "gradient-property": "var(--gradient-property)",
       },
       boxShadow: {
         property: "var(--shadow-property)",

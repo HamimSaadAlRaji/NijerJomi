@@ -5,83 +5,113 @@
 
 /* ...existing styles... */
 
-/* Bangladesh Land Registry Design System - Blockchain Real Estate Platform
-Primary: #FAF9EE (Warm Off-White) - 60%
-Secondary: #1B4D3E (Deep Forest Green) - 30%  
-Accent: #10B981 (Vibrant Emerald) - 10%
-Supporting: #000000 (Pure Black)
+/* Black and White Design System - Clean Modern Theme
+Primary: #FFFFFF (Pure White) - 60%
+Secondary: #000000 (Pure Black) - 30%  
+Accent: Light Green for Success / Light Red for Error - 10%
+Supporting: Various grays for borders and muted content
 */
 
 @layer base {
   :root {
-    /* Core Background - Warm Off-White (#FAF9EE) */
-    --background: 48 100% 96%;
-    --foreground: 0 0% 0%;
+    /* Custom Theme Variables */
+    --theme-white: 0 0% 100%;
+    --theme-black: 0 0% 0%;
+    --theme-gray-light: 0 0% 95%;
+    --theme-gray-medium: 0 0% 85%;
+    --theme-gray-dark: 0 0% 60%;
+
+    /* Status Colors */
+    --theme-success: 120 60% 90%;
+    --theme-success-foreground: 120 100% 25%;
+    --theme-error: 0 60% 90%;
+    --theme-error-foreground: 0 100% 40%;
+    --theme-warning: 45 95% 85%;
+    --theme-warning-foreground: 45 100% 35%;
+    --theme-info: 210 60% 90%;
+    --theme-info-foreground: 210 100% 30%;
+
+    /* Specific Status Colors */
+    --theme-verified: 120 60% 90%;
+    --theme-verified-foreground: 120 100% 25%;
+    --theme-pending: 45 95% 85%;
+    --theme-pending-foreground: 45 100% 35%;
+    --theme-approved: 160 60% 85%;
+    --theme-approved-foreground: 160 100% 25%;
+    --theme-rejected: 0 60% 90%;
+    --theme-rejected-foreground: 0 100% 40%;
+    --theme-disputed: 15 85% 90%;
+    --theme-disputed-foreground: 15 100% 40%;
+
+    /* Core Background - Pure White */
+    --background: var(--theme-white);
+    --foreground: var(--theme-black);
 
     /* Card System */
-    --card: 48 100% 98%;
-    --card-foreground: 0 0% 0%;
+    --card: var(--theme-white);
+    --card-foreground: var(--theme-black);
 
     /* Popover System */
-    --popover: 48 100% 98%;
-    --popover-foreground: 0 0% 0%;
+    --popover: var(--theme-white);
+    --popover-foreground: var(--theme-black);
 
-    /* Primary - Deep Forest Green (#1B4D3E) */
-    --primary: 160 60% 20%;
-    --primary-foreground: 48 100% 96%;
+    /* Primary - Black buttons and elements */
+    --primary: var(--theme-black);
+    --primary-foreground: var(--theme-white);
 
-    /* Secondary - Lighter Forest Green */
-    --secondary: 160 30% 45%;
-    --secondary-foreground: 48 100% 96%;
+    /* Secondary - Light gray */
+    --secondary: var(--theme-gray-light);
+    --secondary-foreground: var(--theme-black);
 
     /* Muted variations */
-    --muted: 160 15% 85%;
-    --muted-foreground: 160 20% 35%;
+    --muted: var(--theme-gray-light);
+    --muted-foreground: var(--theme-gray-dark);
 
-    /* Accent - Vibrant Emerald (#10B981) */
-    --accent: 160 70% 40%;
-    --accent-foreground: 48 100% 96%;
+    /* Accent - Black */
+    --accent: var(--theme-black);
+    --accent-foreground: var(--theme-white);
 
-    /* Destructive colors */
-    --destructive: 0 70% 50%;
-    --destructive-foreground: 48 100% 96%;
+    /* Destructive colors - Light red */
+    --destructive: var(--theme-error);
+    --destructive-foreground: var(--theme-error-foreground);
+
+    /* Success colors - Light green */
+    --success: var(--theme-success);
+    --success-foreground: var(--theme-success-foreground);
+
+    /* Warning colors - Light yellow/orange */
+    --warning: var(--theme-warning);
+    --warning-foreground: var(--theme-warning-foreground);
+
+    /* Info colors - Light blue */
+    --info: var(--theme-info);
+    --info-foreground: var(--theme-info-foreground);
 
     /* Border and input */
-    --border: 160 15% 85%;
-    --input: 160 10% 90%;
-    --ring: 160 70% 40%;
+    --border: var(--theme-gray-medium);
+    --input: var(--theme-white);
+    --ring: var(--theme-black);
 
-    /* Blockchain theme colors */
-    --blockchain-primary: 160 70% 40%;
-    --blockchain-secondary: 160 60% 20%;
-    --blockchain-accent: 48 100% 75%;
-    --nft-glow: 160 70% 40%;
-    --property-verified: 120 60% 50%;
-    --property-pending: 40 90% 55%;
-    --property-disputed: 0 70% 50%;
-
-    /* Gradients */
-    --gradient-hero: linear-gradient(
-      135deg,
-      hsl(160 70% 40%),
-      hsl(160 60% 20%)
-    );
-    --gradient-card: linear-gradient(
-      145deg,
-      hsl(48 100% 98%),
-      hsl(48 100% 95%)
-    );
-    --gradient-nft: linear-gradient(135deg, hsl(160 70% 40%), hsl(280 70% 50%));
-    --gradient-property: linear-gradient(
-      180deg,
-      hsl(48 100% 98%),
-      hsl(160 15% 95%)
-    );
+    /* Blockchain theme colors - Status-aware */
+    --blockchain-primary: var(--theme-black);
+    --blockchain-secondary: var(--theme-gray-dark);
+    --blockchain-accent: var(--theme-white);
+    --nft-glow: var(--theme-black);
+    --property-verified: var(--theme-verified);
+    --property-verified-foreground: var(--theme-verified-foreground);
+    --property-pending: var(--theme-pending);
+    --property-pending-foreground: var(--theme-pending-foreground);
+    --property-approved: var(--theme-approved);
+    --property-approved-foreground: var(--theme-approved-foreground);
+    --property-disputed: var(--theme-disputed);
+    --property-disputed-foreground: var(--theme-disputed-foreground);
+    --property-rejected: var(--theme-rejected);
+    --property-rejected-foreground: var(--theme-rejected-foreground);
 
     /* Shadows */
-    --shadow-property: 0 10px 30px -5px hsl(160 60% 20% / 0.2);
-    --shadow-nft: 0 0 30px hsl(160 70% 40% / 0.3);
-    --shadow-elevated: 0 20px 40px -10px hsl(160 60% 20% / 0.25);
+    --shadow-property: 0 10px 30px -5px hsl(var(--theme-black) / 0.1);
+    --shadow-nft: 0 0 30px hsl(var(--theme-black) / 0.2);
+    --shadow-elevated: 0 20px 40px -10px hsl(var(--theme-black) / 0.15);
 
     /* Animation */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -89,59 +119,54 @@ Supporting: #000000 (Pure Black)
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: var(--theme-white);
+    --sidebar-foreground: var(--theme-black);
+    --sidebar-primary: var(--theme-black);
+    --sidebar-primary-foreground: var(--theme-white);
+    --sidebar-accent: var(--theme-gray-light);
+    --sidebar-accent-foreground: var(--theme-black);
+    --sidebar-border: var(--theme-gray-medium);
+    --sidebar-ring: var(--theme-black);
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    /* Dark mode uses inverted colors */
+    --background: var(--theme-black);
+    --foreground: var(--theme-white);
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: var(--theme-black);
+    --card-foreground: var(--theme-white);
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: var(--theme-black);
+    --popover-foreground: var(--theme-white);
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: var(--theme-white);
+    --primary-foreground: var(--theme-black);
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: var(--theme-white);
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 70%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: var(--theme-white);
+    --accent-foreground: var(--theme-black);
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 60% 20%;
+    --destructive-foreground: var(--theme-white);
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: var(--theme-white);
+
+    --sidebar-background: var(--theme-black);
+    --sidebar-foreground: var(--theme-white);
+    --sidebar-primary: var(--theme-white);
+    --sidebar-primary-foreground: var(--theme-black);
+    --sidebar-accent: 0 0% 15%;
+    --sidebar-accent-foreground: var(--theme-white);
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: var(--theme-white);
   }
 }
 
@@ -176,6 +201,16 @@ Supporting: #000000 (Pure Black)
   }
 }
 
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
 /* Animation Classes */
 .animate-fade-in {
   animation: fade-in 0.6s ease-out;
@@ -183,6 +218,10 @@ Supporting: #000000 (Pure Black)
 
 .animate-slide-up {
   animation: slide-up 0.6s ease-out;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
 }
 
 /* Animation Delay Classes */

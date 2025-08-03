@@ -9,9 +9,9 @@ const Register = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      
+
       <main className="pt-20">
-        <section className="py-20 bg-gradient-property">
+        <section className="py-20 bg-white">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <Badge className="bg-primary/10 text-primary border-primary/20 mb-4">
@@ -21,7 +21,8 @@ const Register = () => {
                 Register Your Property on Blockchain
               </h1>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Convert your traditional property documents into secure, blockchain-verified NFTs
+                Convert your traditional property documents into secure,
+                blockchain-verified NFTs
               </p>
             </div>
 
@@ -32,7 +33,9 @@ const Register = () => {
                   <CardTitle>Step 1: Documents</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">Upload property papers and legal documents</p>
+                  <p className="text-muted-foreground">
+                    Upload property papers and legal documents
+                  </p>
                 </CardContent>
               </Card>
 
@@ -42,7 +45,9 @@ const Register = () => {
                   <CardTitle>Step 2: Location</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">GPS mapping and boundary verification</p>
+                  <p className="text-muted-foreground">
+                    GPS mapping and boundary verification
+                  </p>
                 </CardContent>
               </Card>
 
@@ -52,7 +57,9 @@ const Register = () => {
                   <CardTitle>Step 3: Verification</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">Government approval and validation</p>
+                  <p className="text-muted-foreground">
+                    Government approval and validation
+                  </p>
                 </CardContent>
               </Card>
 
@@ -62,20 +69,25 @@ const Register = () => {
                   <CardTitle>Step 4: Tokenization</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">NFT minting and blockchain registration</p>
+                  <p className="text-muted-foreground">
+                    NFT minting and blockchain registration
+                  </p>
                 </CardContent>
               </Card>
             </div>
 
             <div className="text-center mt-12">
-              <Button size="lg" className="bg-gradient-hero hover:opacity-90">
+              <Button
+                size="lg"
+                className="bg-black hover:bg-gray-800 text-white"
+              >
                 Start Registration Process
               </Button>
             </div>
           </div>
         </section>
       </main>
-      
+
       <Footer />
     </div>
   );

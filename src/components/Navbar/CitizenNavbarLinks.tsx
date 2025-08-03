@@ -8,14 +8,26 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const CitizenNavbarLinks: React.FC = () => {
+interface CitizenNavbarLinksProps {
+  isDarkTheme?: boolean;
+}
+
+const CitizenNavbarLinks: React.FC<CitizenNavbarLinksProps> = ({
+  isDarkTheme = false,
+}) => {
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
 
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger className="flex items-center space-x-1 text-xl font-medium text-foreground hover:text-primary transition-colors">
+        <DropdownMenuTrigger
+          className={`flex items-center space-x-1 text-xl font-medium transition-colors ${
+            isDarkTheme
+              ? "text-black hover:text-gray-600"
+              : "text-white hover:text-gray-300"
+          }`}
+        >
           <span>Properties</span>
           <ChevronDown className="w-4 h-4" />
         </DropdownMenuTrigger>
@@ -37,8 +49,8 @@ const CitizenNavbarLinks: React.FC = () => {
 
       <Link
         to="/register"
-        className={`text-xl font-medium transition-colors hover:text-primary ${
-          isActive("/register") ? "text-primary" : "text-foreground"
+        className={`text-xl font-medium transition-colors hover:text-gray-300 ${
+          isActive("/register") ? "text-white" : "text-white"
         }`}
       >
         Register Property

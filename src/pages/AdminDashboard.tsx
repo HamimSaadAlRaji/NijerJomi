@@ -80,7 +80,7 @@ const AdminDashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100">
+      <div className="min-h-screen bg-white">
         <Navbar />
         <div className="flex items-center justify-center min-h-screen">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
@@ -90,7 +90,7 @@ const AdminDashboard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100">
+    <div className="min-h-screen bg-white">
       <Navbar />
 
       <div className="container mx-auto px-4 py-8 mt-20">
@@ -110,7 +110,7 @@ const AdminDashboard: React.FC = () => {
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {/* Total Users */}
-          <Card className="shadow-lg border-0 bg-gradient-to-r from-blue-500 to-blue-600 text-white">
+          <Card className="shadow-lg border-0 bg-info text-white">
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center text-lg">
                 <Users className="w-5 h-5 mr-2" />
@@ -124,7 +124,7 @@ const AdminDashboard: React.FC = () => {
           </Card>
 
           {/* Pending Verifications */}
-          <Card className="shadow-lg border-0 bg-gradient-to-r from-yellow-500 to-orange-500 text-white">
+          <Card className="shadow-lg border-0 bg-warning text-white">
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center text-lg">
                 <Clock className="w-5 h-5 mr-2" />
@@ -140,7 +140,7 @@ const AdminDashboard: React.FC = () => {
           </Card>
 
           {/* Verified Users */}
-          <Card className="shadow-lg border-0 bg-gradient-to-r from-green-500 to-green-600 text-white">
+          <Card className="shadow-lg border-0 bg-success text-white">
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center text-lg">
                 <CheckCircle className="w-5 h-5 mr-2" />
@@ -156,7 +156,7 @@ const AdminDashboard: React.FC = () => {
           </Card>
 
           {/* Rejected Users */}
-          <Card className="shadow-lg border-0 bg-gradient-to-r from-red-500 to-red-600 text-white">
+          <Card className="shadow-lg border-0 bg-destructive text-white">
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center text-lg">
                 <XCircle className="w-5 h-5 mr-2" />
@@ -172,7 +172,7 @@ const AdminDashboard: React.FC = () => {
           </Card>
 
           {/* Total Admins */}
-          <Card className="shadow-lg border-0 bg-gradient-to-r from-purple-500 to-purple-600 text-white">
+          <Card className="shadow-lg border-0 bg-black text-white">
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center text-lg">
                 <Shield className="w-5 h-5 mr-2" />
@@ -188,7 +188,7 @@ const AdminDashboard: React.FC = () => {
           </Card>
 
           {/* Total Registrars */}
-          <Card className="shadow-lg border-0 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white">
+          <Card className="shadow-lg border-0 bg-info text-white">
             <CardHeader className="pb-2">
               <CardTitle className="flex items-center text-lg">
                 <UserCheck className="w-5 h-5 mr-2" />
@@ -208,7 +208,7 @@ const AdminDashboard: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Admin Actions */}
           <Card className="shadow-lg border-0">
-            <CardHeader className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-t-lg">
+            <CardHeader className="bg-black text-white rounded-t-lg">
               <CardTitle className="flex items-center">
                 <Settings className="w-5 h-5 mr-2" />
                 Quick Actions
@@ -253,7 +253,7 @@ const AdminDashboard: React.FC = () => {
 
           {/* Recent Activity */}
           <Card className="shadow-lg border-0">
-            <CardHeader className="bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-t-lg">
+            <CardHeader className="bg-success text-white rounded-t-lg">
               <CardTitle className="flex items-center">
                 <Activity className="w-5 h-5 mr-2" />
                 Recent Activity

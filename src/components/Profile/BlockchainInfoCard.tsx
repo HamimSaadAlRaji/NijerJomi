@@ -69,7 +69,7 @@ const BlockchainInfoCard: React.FC<BlockchainInfoCardProps> = ({
 
   return (
     <Card className="shadow-xl border-0">
-      <CardHeader className="bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-t-lg">
+      <CardHeader className="bg-black text-white rounded-t-lg">
         <CardTitle className="flex items-center">
           <Link className="w-5 h-5 mr-2" />
           Blockchain Information ⛓️
@@ -81,7 +81,7 @@ const BlockchainInfoCard: React.FC<BlockchainInfoCardProps> = ({
             <label className="text-sm font-medium text-gray-500 mb-2 block">
               🔗 Wallet Address
             </label>
-            <div className="bg-gradient-to-r from-purple-50 to-pink-50 p-4 rounded-lg border border-purple-200">
+            <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
               <div className="flex items-center justify-between">
                 <code className="text-sm font-mono text-purple-800 break-all">
                   {userData.walletAddress}

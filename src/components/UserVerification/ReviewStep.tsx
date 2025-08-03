@@ -55,7 +55,7 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ formData, imagePreview }) => {
       {/* Information Cards */}
       <div className="space-y-6">
         {/* Personal Information Card */}
-        <div className="bg-gradient-to-r from-green-50 to-white p-6 rounded-xl border-l-4 border-green-500 shadow-lg">
+        <div className="bg-green-50 p-6 rounded-xl border-l-4 border-green-500 shadow-lg">
           <div className="flex items-center mb-4">
             <User className="w-6 h-6 text-green-500 mr-3" />
             <h4 className="text-xl font-bold text-black">
@@ -91,7 +91,7 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ formData, imagePreview }) => {
         </div>
 
         {/* Address Information Card */}
-        <div className="bg-gradient-to-r from-blue-50 to-white p-6 rounded-xl border-l-4 border-blue-500 shadow-lg">
+        <div className="bg-blue-50 p-6 rounded-xl border-l-4 border-blue-500 shadow-lg">
           <div className="flex items-center mb-4">
             <MapPin className="w-6 h-6 text-blue-500 mr-3" />
             <h4 className="text-xl font-bold text-black">

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Navbar from "@/components/Navbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -250,7 +251,8 @@ const AdminVerifyUser = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
+      <Navbar />
+      <div className="container mx-auto px-4 py-8 pt-24">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">
@@ -326,7 +328,7 @@ const AdminVerifyUser = () => {
           <div className="space-y-6">
             {pendingUsers.map((pendingUser) => (
               <Card key={pendingUser._id} className="overflow-hidden">
-                <CardHeader className="bg-gradient-to-r from-blue-50 to-purple-50">
+                <CardHeader className="bg-gray-50">
                   <div className="flex items-center justify-between">
                     <CardTitle className="flex items-center">
                       <User className="w-5 h-5 mr-2" />

@@ -9,9 +9,9 @@ const Government = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      
+
       <main className="pt-20">
-        <section className="py-20 bg-gradient-property">
+        <section className="py-20 bg-white">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <Badge className="bg-primary/10 text-primary border-primary/20 mb-4">
@@ -32,8 +32,12 @@ const Government = () => {
                   <CardTitle>Registrar Portal</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground mb-4">Approve property registrations and verifications</p>
-                  <Button variant="outline" className="w-full">Access Portal</Button>
+                  <p className="text-muted-foreground mb-4">
+                    Approve property registrations and verifications
+                  </p>
+                  <Button variant="outline" className="w-full">
+                    Access Portal
+                  </Button>
                 </CardContent>
               </Card>
 
@@ -43,8 +47,12 @@ const Government = () => {
                   <CardTitle>Document Validation</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground mb-4">Validate legal documents and certificates</p>
-                  <Button variant="outline" className="w-full">Validate Docs</Button>
+                  <p className="text-muted-foreground mb-4">
+                    Validate legal documents and certificates
+                  </p>
+                  <Button variant="outline" className="w-full">
+                    Validate Docs
+                  </Button>
                 </CardContent>
               </Card>
 
@@ -54,8 +62,12 @@ const Government = () => {
                   <CardTitle>Court Integration</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground mb-4">Manage disputes and legal proceedings</p>
-                  <Button variant="outline" className="w-full">Court Portal</Button>
+                  <p className="text-muted-foreground mb-4">
+                    Manage disputes and legal proceedings
+                  </p>
+                  <Button variant="outline" className="w-full">
+                    Court Portal
+                  </Button>
                 </CardContent>
               </Card>
 
@@ -65,8 +77,12 @@ const Government = () => {
                   <CardTitle>Tax Authority</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground mb-4">Property tax calculation and collection</p>
-                  <Button variant="outline" className="w-full">Tax Portal</Button>
+                  <p className="text-muted-foreground mb-4">
+                    Property tax calculation and collection
+                  </p>
+                  <Button variant="outline" className="w-full">
+                    Tax Portal
+                  </Button>
                 </CardContent>
               </Card>
             </div>
@@ -79,10 +95,17 @@ const Government = () => {
                 <CardContent>
                   <div className="space-y-4">
                     {[1, 2, 3, 4].map((i) => (
-                      <div key={i} className="flex items-center justify-between p-4 border rounded-lg">
+                      <div
+                        key={i}
+                        className="flex items-center justify-between p-4 border rounded-lg"
+                      >
                         <div>
-                          <h4 className="font-medium">Property Registration #{1000 + i}</h4>
-                          <p className="text-sm text-muted-foreground">Submitted 2 days ago</p>
+                          <h4 className="font-medium">
+                            Property Registration #{1000 + i}
+                          </h4>
+                          <p className="text-sm text-muted-foreground">
+                            Submitted 2 days ago
+                          </p>
                         </div>
                         <Badge className="bg-property-pending/10 text-property-pending border-property-pending/20">
                           Pending
@@ -100,12 +123,16 @@ const Government = () => {
                 <CardContent>
                   <div className="space-y-4">
                     <div className="flex justify-between items-center p-4 border rounded-lg">
-                      <span className="font-medium">Total Registered Properties</span>
+                      <span className="font-medium">
+                        Total Registered Properties
+                      </span>
                       <span className="text-primary font-bold">15,847</span>
                     </div>
                     <div className="flex justify-between items-center p-4 border rounded-lg">
                       <span className="font-medium">Pending Approvals</span>
-                      <span className="text-property-pending font-bold">234</span>
+                      <span className="text-property-pending font-bold">
+                        234
+                      </span>
                     </div>
                     <div className="flex justify-between items-center p-4 border rounded-lg">
                       <span className="font-medium">Revenue Collected</span>
@@ -118,7 +145,7 @@ const Government = () => {
           </div>
         </section>
       </main>
-      
+
       <Footer />
     </div>
   );

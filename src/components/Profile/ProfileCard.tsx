@@ -125,7 +125,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-white shadow-lg"
             />
           ) : (
-            <div className="w-32 h-32 rounded-full mx-auto bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white text-4xl font-bold shadow-lg">
+            <div className="w-32 h-32 rounded-full mx-auto bg-black flex items-center justify-center text-white text-4xl font-bold shadow-lg">
               {userData.fullName.charAt(0)}
             </div>
           )}

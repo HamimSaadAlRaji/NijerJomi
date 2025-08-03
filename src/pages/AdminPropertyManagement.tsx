@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Navbar from "@/components/Navbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -249,6 +250,7 @@ const AdminPropertyManagement = () => {
       toast({
         title: "Property Registered",
         description: `Property at ${location} has been registered successfully.`,
+        variant: "success" as any,
       });
 
       // Reset form
@@ -286,6 +288,7 @@ const AdminPropertyManagement = () => {
       toast({
         title: "Transfer Approved",
         description: "Transfer request has been approved as registrar.",
+        variant: "success" as any,
       });
 
       await refreshData();
@@ -316,6 +319,7 @@ const AdminPropertyManagement = () => {
       toast({
         title: "Dispute Resolved",
         description: `Dispute has been ${resolved ? "resolved" : "rejected"}.`,
+        variant: "success" as any,
       });
 
       await refreshData();
@@ -343,6 +347,7 @@ const AdminPropertyManagement = () => {
       toast({
         title: "Tax Marked as Paid",
         description: "Property tax has been marked as paid.",
+        variant: "success" as any,
       });
 
       await refreshData();
@@ -383,15 +388,15 @@ const AdminPropertyManagement = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Completed":
-        return "bg-green-100 text-green-800";
+        return "bg-success text-success-foreground";
       case "Ready to Execute":
-        return "bg-blue-100 text-blue-800";
+        return "bg-info text-info-foreground";
       case "Approved by Registrar":
-        return "bg-purple-100 text-purple-800";
+        return "bg-property-approved text-property-approved-foreground";
       case "Pending Registrar Approval":
-        return "bg-orange-100 text-orange-800";
+        return "bg-warning text-warning-foreground";
       default:
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-property-pending text-property-pending-foreground";
     }
   };
 
@@ -436,7 +441,8 @@ const AdminPropertyManagement = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
+      <Navbar />
+      <div className="container mx-auto px-4 py-8 pt-24">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
@@ -657,12 +663,12 @@ const AdminPropertyManagement = () => {
                         </h3>
                         <div className="flex flex-col space-y-1">
                           {property.isForSale && (
-                            <Badge className="bg-green-100 text-green-800 text-xs">
+                            <Badge className="bg-success text-success-foreground text-xs">
                               For Sale
                             </Badge>
                           )}
                           {property.hasDispute && (
-                            <Badge variant="destructive" className="text-xs">
+                            <Badge className="bg-property-disputed text-property-disputed-foreground text-xs">
                               Dispute
                             </Badge>
                           )}

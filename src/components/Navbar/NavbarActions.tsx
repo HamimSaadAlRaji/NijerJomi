@@ -8,9 +8,14 @@ import { isRole } from "@/lib/roleUtils";
 interface NavbarActionsProps {
   isLoggedIn: boolean;
   user: any;
+  isDarkTheme?: boolean;
 }
 
-const NavbarActions: React.FC<NavbarActionsProps> = ({ isLoggedIn, user }) => {
+const NavbarActions: React.FC<NavbarActionsProps> = ({
+  isLoggedIn,
+  user,
+  isDarkTheme = false,
+}) => {
   const getDashboardPath = () => {
     return isRole(user?.userRole || "", UserRole.ADMIN)
       ? "/admin/dashboard"
@@ -30,7 +35,11 @@ const NavbarActions: React.FC<NavbarActionsProps> = ({ isLoggedIn, user }) => {
           <Link to={getDashboardPath()}>
             <Button
               variant="ghost"
-              className="text-foreground hover:text-primary"
+              className={`${
+                isDarkTheme
+                  ? "text-black hover:text-gray-600"
+                  : "text-white hover:text-gray-300"
+              }`}
             >
               {getDashboardText()}
             </Button>
@@ -39,7 +48,11 @@ const NavbarActions: React.FC<NavbarActionsProps> = ({ isLoggedIn, user }) => {
           <WalletConnectButton
             size="lg"
             showDropdown={true}
-            className="bg-gradient-hero hover:opacity-90 rounded-full text-xl px-8 py-3"
+            className={`rounded-full text-xl px-8 py-3 border ${
+              isDarkTheme
+                ? "bg-black hover:bg-gray-800 text-white border-gray-800"
+                : "bg-white hover:bg-gray-200 text-black border-gray-300"
+            }`}
           />
         </>
       ) : (
@@ -47,7 +60,11 @@ const NavbarActions: React.FC<NavbarActionsProps> = ({ isLoggedIn, user }) => {
           <Link to="/connect-wallet">
             <Button
               size="lg"
-              className="rounded-full text-xl px-8 py-3 bg-transparent"
+              className={`rounded-full text-xl px-8 py-3 border ${
+                isDarkTheme
+                  ? "bg-black hover:bg-gray-800 text-white border-gray-800"
+                  : "bg-white hover:bg-gray-200 text-black border-gray-300"
+              }`}
             >
               Connect Wallet
             </Button>

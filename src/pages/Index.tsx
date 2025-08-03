@@ -1,7 +1,9 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import FeaturedProperties from "@/components/FeaturedProperties";
-import HowItWorks from "@/components/HowItWorks";
+import PlatformOverview from "@/components/PlatformOverview";
+import KeyFeatures from "@/components/KeyFeatures";
+import SecurityTrust from "@/components/SecurityTrust";
+import GlobalReach from "@/components/GlobalReach";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -9,8 +11,10 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Navbar />
       <Hero />
-      <FeaturedProperties />
-      <HowItWorks />
+      <PlatformOverview />
+      <KeyFeatures />
+      <SecurityTrust />
+      <GlobalReach />
       <Footer />
     </div>
   );
