@@ -20,7 +20,7 @@ const AdminNavbarLinks: React.FC = () => {
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger className="flex items-center space-x-1 text-xl font-medium text-foreground hover:text-primary transition-colors">
+        <DropdownMenuTrigger className="flex items-center space-x-1 text-xl font-medium text-white hover:text-gray-300 transition-colors">
           <span>{isAdmin ? "Admin Panel" : "Registrar Panel"}</span>
           <ChevronDown className="w-4 h-4" />
         </DropdownMenuTrigger>

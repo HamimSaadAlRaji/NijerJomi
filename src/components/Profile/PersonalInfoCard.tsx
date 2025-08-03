@@ -15,7 +15,7 @@ interface PersonalInfoCardProps {
 const PersonalInfoCard: React.FC<PersonalInfoCardProps> = ({ userData }) => {
   return (
     <Card className="shadow-xl border-0">
-      <CardHeader className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-t-lg">
+      <CardHeader className="bg-black text-white rounded-t-lg">
         <CardTitle className="flex items-center">
           <User className="w-5 h-5 mr-2" />
           Personal Information 📋

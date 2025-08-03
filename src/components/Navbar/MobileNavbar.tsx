@@ -163,7 +163,7 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({
               <WalletConnectButton
                 size="lg"
                 showDropdown={true}
-                className="w-full bg-gradient-hero hover:opacity-90 rounded-full text-xl py-3"
+                className="w-full bg-black hover:bg-gray-800 text-white rounded-full text-xl py-3"
               />
             </div>
           </>
@@ -173,7 +173,7 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({
             <div className="text-center">
               <WalletConnectButton
                 size="lg"
-                className="w-full bg-gradient-hero hover:opacity-90 rounded-full text-xl py-3"
+                className="w-full bg-black hover:bg-gray-800 text-white rounded-full text-xl py-3"
               />
             </div>
             <Link

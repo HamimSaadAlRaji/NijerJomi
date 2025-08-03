@@ -10,10 +10,10 @@ const Properties = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      
+
       <main className="pt-20">
         {/* Header */}
-        <section className="py-12 bg-gradient-property">
+        <section className="py-12 bg-white">
           <div className="container mx-auto px-4">
             <div className="text-center mb-8">
               <h1 className="text-4xl font-bold text-foreground mb-4">
@@ -23,18 +23,18 @@ const Properties = () => {
                 Browse verified properties tokenized as NFTs on the blockchain
               </p>
             </div>
-            
+
             {/* Search Bar */}
             <div className="max-w-2xl mx-auto">
               <div className="flex bg-card rounded-xl border border-border shadow-property p-2">
                 <div className="flex-1 flex items-center px-4">
                   <Search className="w-5 h-5 text-muted-foreground mr-3" />
-                  <Input 
+                  <Input
                     placeholder="Search by location, property type, or ID..."
                     className="border-0 bg-transparent focus-visible:ring-0"
                   />
                 </div>
-                <Button className="bg-gradient-hero hover:opacity-90">
+                <Button className="bg-black hover:bg-gray-800 text-white">
                   Search
                 </Button>
               </div>
@@ -59,7 +59,7 @@ const Properties = () => {
                   Verified Only
                 </Badge>
               </div>
-              
+
               <div className="flex items-center space-x-2">
                 <Button variant="outline" size="sm">
                   <Grid className="w-4 h-4" />
@@ -76,15 +76,20 @@ const Properties = () => {
         <section className="py-12">
           <div className="container mx-auto px-4">
             <div className="mb-6">
-              <p className="text-muted-foreground">Showing 1,247 verified properties</p>
+              <p className="text-muted-foreground">
+                Showing 1,247 verified properties
+              </p>
             </div>
-            
+
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[...Array(9)].map((_, i) => (
-                <Card key={i} className="hover:shadow-elevated transition-all duration-300">
+                <Card
+                  key={i}
+                  className="hover:shadow-elevated transition-all duration-300"
+                >
                   <CardHeader className="p-0">
-                    <div className="relative h-48 bg-gradient-card rounded-t-lg overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20"></div>
+                    <div className="relative h-48 bg-gray-100 rounded-t-lg overflow-hidden">
+                      <div className="absolute inset-0 bg-black/5"></div>
                       <div className="absolute top-4 left-4">
                         <Badge className="bg-property-verified/10 text-property-verified border-property-verified/20">
                           <Shield className="w-3 h-3 mr-1" />
@@ -102,9 +107,11 @@ const Properties = () => {
                       </div>
                     </div>
                   </CardHeader>
-                  
+
                   <CardContent className="p-6">
-                    <Badge variant="secondary" className="mb-3">Residential</Badge>
+                    <Badge variant="secondary" className="mb-3">
+                      Residential
+                    </Badge>
                     <h3 className="text-lg font-semibold text-foreground mb-2">
                       Modern Apartment in Gulshan
                     </h3>
@@ -114,23 +121,31 @@ const Properties = () => {
                     </div>
                     <div className="flex justify-between items-center">
                       <div>
-                        <div className="text-xl font-bold text-primary">৳1,80,00,000</div>
-                        <div className="text-sm text-muted-foreground">1,800 sq ft</div>
+                        <div className="text-xl font-bold text-primary">
+                          ৳1,80,00,000
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          1,800 sq ft
+                        </div>
                       </div>
-                      <Button variant="outline" size="sm">View Details</Button>
+                      <Button variant="outline" size="sm">
+                        View Details
+                      </Button>
                     </div>
                   </CardContent>
                 </Card>
               ))}
             </div>
-            
+
             <div className="text-center mt-12">
-              <Button variant="outline" size="lg">Load More Properties</Button>
+              <Button variant="outline" size="lg">
+                Load More Properties
+              </Button>
             </div>
           </div>
         </section>
       </main>
-      
+
       <Footer />
     </div>
   );

@@ -139,7 +139,7 @@ const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
           <Button
             size={size}
             variant={variant}
-            className={`bg-gradient-hero hover:opacity-90 rounded-full text-xl px-8 py-3 ${className}`}
+            className={`bg-primary hover:bg-primary/90 text-primary-foreground rounded-full text-xl px-8 py-3 ${className}`}
             disabled={isLoading}
           >
             {isLoading ? (
@@ -157,7 +157,10 @@ const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
             View Profile
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleDisconnect} className="text-red-600">
+          <DropdownMenuItem
+            onClick={handleDisconnect}
+            className="text-destructive-foreground"
+          >
             <LogOut className="w-4 h-4 mr-2" />
             Disconnect Wallet
           </DropdownMenuItem>
@@ -171,7 +174,7 @@ const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
       onClick={handleWalletAction}
       size={size}
       variant={variant}
-      className={`bg-gradient-hero hover:opacity-90 rounded-full text-xl px-8 py-3 ${className}`}
+      className={`bg-primary hover:bg-primary/90 text-primary-foreground rounded-full text-xl px-8 py-3 ${className}`}
       disabled={isLoading}
     >
       {isLoading ? (

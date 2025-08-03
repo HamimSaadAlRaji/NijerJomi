@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Navbar from "@/components/Navbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -212,6 +213,21 @@ const AdminSetUserRole = () => {
     }
   };
 
+  const getStatusBadgeColor = (status: string) => {
+    switch (status.toLowerCase()) {
+      case "accepted":
+      case "approved":
+        return "bg-green-100 text-green-800 border-green-200";
+      case "pending":
+        return "bg-yellow-100 text-yellow-800 border-yellow-200";
+      case "rejected":
+      case "declined":
+        return "bg-red-100 text-red-800 border-red-200";
+      default:
+        return "bg-gray-100 text-gray-800 border-gray-200";
+    }
+  };
+
   const truncateAddress = (address: string) => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
@@ -230,7 +246,8 @@ const AdminSetUserRole = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
+      <Navbar />
+      <div className="container mx-auto px-4 py-8 pt-24">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">
@@ -305,7 +322,7 @@ const AdminSetUserRole = () => {
                     setSelectedUser(user || null);
                   }}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="border border-gray-300 bg-white">
                     <SelectValue placeholder="Choose a user" />
                   </SelectTrigger>
                   <SelectContent>
@@ -324,7 +341,7 @@ const AdminSetUserRole = () => {
                   value={selectedRole}
                   onValueChange={(value) => setSelectedRole(value as UserRole)}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="border border-gray-300 bg-white">
                     <SelectValue placeholder="Choose a role" />
                   </SelectTrigger>
                   <SelectContent>
@@ -415,11 +432,14 @@ const AdminSetUserRole = () => {
         ) : (
           <div className="space-y-4">
             {filteredUsers.map((userData) => (
-              <Card key={userData._id} className="overflow-hidden">
+              <Card
+                key={userData._id}
+                className="overflow-hidden bg-gray-50 border-gray-200"
+              >
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
-                      <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                      <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center">
                         <span className="text-white font-semibold text-lg">
                           {userData.fullName.charAt(0).toUpperCase()}
                         </span>
@@ -445,13 +465,7 @@ const AdminSetUserRole = () => {
                         {userData.userRole.replace("_", " ")}
                       </Badge>
 
-                      <Badge
-                        variant={
-                          userData.status === "accepted"
-                            ? "default"
-                            : "secondary"
-                        }
-                      >
+                      <Badge className={getStatusBadgeColor(userData.status)}>
                         {userData.status}
                       </Badge>
                     </div>

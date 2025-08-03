@@ -15,7 +15,7 @@ const CitizenNavbarLinks: React.FC = () => {
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger className="flex items-center space-x-1 text-xl font-medium text-foreground hover:text-primary transition-colors">
+        <DropdownMenuTrigger className="flex items-center space-x-1 text-xl font-medium text-white hover:text-gray-300 transition-colors">
           <span>Properties</span>
           <ChevronDown className="w-4 h-4" />
         </DropdownMenuTrigger>
@@ -37,8 +37,8 @@ const CitizenNavbarLinks: React.FC = () => {
 
       <Link
         to="/register"
-        className={`text-xl font-medium transition-colors hover:text-primary ${
-          isActive("/register") ? "text-primary" : "text-foreground"
+        className={`text-xl font-medium transition-colors hover:text-gray-300 ${
+          isActive("/register") ? "text-white" : "text-white"
         }`}
       >
         Register Property

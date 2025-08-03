@@ -19,16 +19,6 @@ const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
 
   return (
     <div className="hidden md:flex items-center space-x-8">
-      {/* Always show Home */}
-      <Link
-        to="/"
-        className={`text-xl font-medium transition-colors hover:text-primary ${
-          isActive("/") ? "text-primary" : "text-foreground"
-        }`}
-      >
-        Home
-      </Link>
-
       {/* Show role-specific navigation if user is logged in */}
       {isLoggedIn && (
         <>

@@ -28,10 +28,7 @@ const NavbarActions: React.FC<NavbarActionsProps> = ({ isLoggedIn, user }) => {
       {isLoggedIn ? (
         <>
           <Link to={getDashboardPath()}>
-            <Button
-              variant="ghost"
-              className="text-foreground hover:text-primary"
-            >
+            <Button variant="ghost" className="text-white hover:text-gray-300">
               {getDashboardText()}
             </Button>
           </Link>
@@ -39,7 +36,7 @@ const NavbarActions: React.FC<NavbarActionsProps> = ({ isLoggedIn, user }) => {
           <WalletConnectButton
             size="lg"
             showDropdown={true}
-            className="bg-gradient-hero hover:opacity-90 rounded-full text-xl px-8 py-3"
+            className="bg-white hover:bg-gray-200 text-black rounded-full text-xl px-8 py-3 border border-gray-300"
           />
         </>
       ) : (
@@ -47,7 +44,7 @@ const NavbarActions: React.FC<NavbarActionsProps> = ({ isLoggedIn, user }) => {
           <Link to="/connect-wallet">
             <Button
               size="lg"
-              className="rounded-full text-xl px-8 py-3 bg-transparent"
+              className="rounded-full text-xl px-8 py-3 bg-white hover:bg-gray-200 text-black border border-gray-300"
             >
               Connect Wallet
             </Button>

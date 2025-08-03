@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Navbar from "@/components/Navbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { User, MapPin, CheckCircle } from "lucide-react";
 import { useWalletContext } from "@/contexts/WalletContext";
@@ -265,6 +266,7 @@ const UserVerification = () => {
 
   return (
     <BackgroundImage>
+      <Navbar />
       {/* Header Section */}
       <HeaderSection
         title="User Verification"
