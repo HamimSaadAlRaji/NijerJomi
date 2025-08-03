@@ -27,6 +27,9 @@ const AdminNavbarLinks: React.FC = () => {
             <Link to="/admin/verify-user">Verify Users</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
+            <Link to="/admin/set-user-role">Manage Roles</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <Link to="/admin/users">Manage Users</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
