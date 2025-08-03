@@ -203,6 +203,37 @@ export const getProperties = async (
   return properties;
 };
 
+export const getPropertiesByOwner = async (
+  contract: ethers.Contract,
+  ownerAddress: string
+): Promise<Property[]> => {
+  try {
+    const nextId = await contract.nextPropertyId();
+    const userProperties: Property[] = [];
+
+    // Check each property to see if user owns it
+    for (let i = 0; i < Number(nextId); i++) {
+      try {
+        const currentOwner = await contract.ownerOf(i);
+        if (currentOwner.toLowerCase() === ownerAddress.toLowerCase()) {
+          const property = await getPropertyData(contract, i);
+          if (property) {
+            userProperties.push(property);
+          }
+        }
+      } catch (error) {
+        // Property might not exist, continue to next
+        console.warn(`Property ${i} not found or error:`, error);
+        continue;
+      }
+    }
+    return userProperties;
+  } catch (error) {
+    console.error("Error fetching user properties:", error);
+    return [];
+  }
+};
+
 export const getAllTransferRequests = async (
   contract: ethers.Contract
 ): Promise<TransferRequest[]> => {

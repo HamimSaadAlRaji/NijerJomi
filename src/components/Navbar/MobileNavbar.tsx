@@ -105,6 +105,13 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({
                   Browse Properties
                 </Link>
                 <Link
+                  to="/my-properties"
+                  className="text-xl font-medium text-foreground hover:text-primary transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  My Properties
+                </Link>
+                <Link
                   to="/register"
                   className="text-xl font-medium text-foreground hover:text-primary transition-colors"
                   onClick={() => setIsOpen(false)}

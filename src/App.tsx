@@ -16,6 +16,7 @@ import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminVerifyUser from "./pages/AdminVerifyUser";
 import AdminSetUserRole from "./pages/AdminSetUserRole";
+import MyProperties from "./pages/MyProperties";
 import Verify from "./pages/Verify";
 import Maps from "./pages/Maps";
 import Analytics from "./pages/Analytics";
@@ -113,6 +114,14 @@ const App = () => (
               element={
                 <CitizenProtectedRoute>
                   <Dashboard />
+                </CitizenProtectedRoute>
+              }
+            />
+            <Route
+              path="/my-properties"
+              element={
+                <CitizenProtectedRoute>
+                  <MyProperties />
                 </CitizenProtectedRoute>
               }
             />

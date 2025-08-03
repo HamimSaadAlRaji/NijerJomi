@@ -24,6 +24,9 @@ const CitizenNavbarLinks: React.FC = () => {
             <Link to="/properties">Browse Properties</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
+            <Link to="/my-properties">My Properties</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <Link to="/maps">Property Maps</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
