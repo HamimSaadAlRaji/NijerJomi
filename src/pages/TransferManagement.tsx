@@ -1,0 +1,811 @@
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useWalletContext } from "@/contexts/WalletContext";
+import {
+  getAllTransferRequests,
+  getTransferRequest,
+  approveTransferAsBuyer,
+  getAllProperties,
+} from "@/services/blockchainService";
+import {
+  FileText,
+  CheckCircle,
+  XCircle,
+  Eye,
+  Send,
+  Clock,
+  DollarSign,
+  RefreshCw,
+  Loader2,
+  MapPin,
+  User,
+  AlertCircle,
+} from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { ethers } from "ethers";
+
+interface Property {
+  id: number;
+  ownerAddress: string;
+  tokenURI: string;
+  isForSale: boolean;
+  hasDispute: boolean;
+  marketValue: bigint;
+  location: string;
+  area: number;
+  imageUrl: string;
+}
+
+interface TransferRequest {
+  id: number;
+  propertyId: number;
+  seller: string;
+  buyer: string;
+  agreedPrice: bigint;
+  buyerApproved: boolean;
+  sellerApproved: boolean;
+  registrarApproved: boolean;
+  completed: boolean;
+}
+
+const TransferManagement = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const { isConnected, user, web3State } = useWalletContext();
+
+  // State
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [transferRequests, setTransferRequests] = useState<TransferRequest[]>(
+    []
+  );
+  const [userTransfers, setUserTransfers] = useState<{
+    asBuyer: TransferRequest[];
+    asSeller: TransferRequest[];
+  }>({ asBuyer: [], asSeller: [] });
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [userVerificationStatus, setUserVerificationStatus] = useState<
+    boolean | null
+  >(null);
+
+  // Dialog states
+  const [selectedTransfer, setSelectedTransfer] =
+    useState<TransferRequest | null>(null);
+  const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
+
+  // Check user access
+  useEffect(() => {
+    if (!isConnected || !user || !web3State.account) {
+      navigate("/connect-wallet");
+      return;
+    }
+  }, [isConnected, user, web3State.account, navigate]);
+
+  // Fetch data
+  const fetchData = async () => {
+    if (!web3State.contract || !web3State.account) return;
+
+    try {
+      setLoading(true);
+
+      const [allProperties, allTransfers] = await Promise.all([
+        getAllProperties(web3State.contract),
+        getAllTransferRequests(web3State.contract),
+      ]);
+
+      setProperties(allProperties);
+      setTransferRequests(allTransfers);
+      setUserVerificationStatus(user?.status === "accepted" || false);
+
+      // Filter transfers for current user
+      const userAddress = web3State.account.toLowerCase();
+      const asBuyer = allTransfers.filter(
+        (t) => t.buyer.toLowerCase() === userAddress
+      );
+      const asSeller = allTransfers.filter(
+        (t) => t.seller.toLowerCase() === userAddress
+      );
+
+      setUserTransfers({ asBuyer, asSeller });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load transfer data. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const refreshData = async () => {
+    setRefreshing(true);
+    await fetchData();
+    setRefreshing(false);
+  };
+
+  useEffect(() => {
+    if (web3State.contract && web3State.account) {
+      fetchData();
+    }
+  }, [web3State.contract, web3State.account]);
+
+  // Approve transfer as buyer
+  const handleApproveAsBuyer = async (transferId: number) => {
+    if (!web3State.contract || !web3State.account) return;
+
+    try {
+      setActionLoading(`approve-buyer-${transferId}`);
+
+      // Check if buyer (current user) is verified
+      if (user?.status !== "accepted") {
+        toast({
+          title: "Buyer Not Verified",
+          description:
+            "You must be verified before approving transfers. Please complete your verification first.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      await approveTransferAsBuyer(web3State.contract, transferId);
+
+      toast({
+        title: "Transfer Approved",
+        description: "You have approved this transfer as the buyer.",
+      });
+
+      await refreshData();
+    } catch (error) {
+      console.error("Error approving transfer:", error);
+      toast({
+        title: "Approval Failed",
+        description: "Failed to approve transfer. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  // Show transfer details
+  const showTransferDetails = async (transferId: number) => {
+    if (!web3State.contract) return;
+
+    try {
+      const transfer = await getTransferRequest(web3State.contract, transferId);
+      if (transfer) {
+        setSelectedTransfer(transfer);
+        setDetailsDialogOpen(true);
+      }
+    } catch (error) {
+      console.error("Error fetching transfer details:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load transfer details.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const formatEther = (value: bigint) => {
+    return parseFloat(ethers.formatEther(value)).toFixed(4);
+  };
+
+  const truncateAddress = (address: string) => {
+    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  };
+
+  const getTransferStatus = (transfer: TransferRequest) => {
+    if (transfer.completed) return "Completed";
+    if (
+      transfer.buyerApproved &&
+      transfer.sellerApproved &&
+      transfer.registrarApproved
+    )
+      return "Ready to Execute";
+    if (transfer.registrarApproved) return "Approved by Registrar";
+    if (transfer.buyerApproved && transfer.sellerApproved)
+      return "Pending Registrar Approval";
+    if (transfer.buyerApproved) return "Waiting for Seller";
+    if (transfer.sellerApproved) return "Waiting for Buyer";
+    return "Pending All Approvals";
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "Completed":
+        return "bg-green-100 text-green-800";
+      case "Ready to Execute":
+        return "bg-blue-100 text-blue-800";
+      case "Approved by Registrar":
+        return "bg-purple-100 text-purple-800";
+      case "Pending Registrar Approval":
+        return "bg-orange-100 text-orange-800";
+      case "Waiting for Seller":
+        return "bg-yellow-100 text-yellow-800";
+      case "Waiting for Buyer":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  const getPropertyForTransfer = (propertyId: number) => {
+    return properties.find((p) => p.id === propertyId);
+  };
+
+  const canApproveAsBuyer = (transfer: TransferRequest) => {
+    return (
+      !transfer.buyerApproved &&
+      !transfer.completed &&
+      transfer.buyer.toLowerCase() === web3State.account?.toLowerCase()
+    );
+  };
+
+  if (!user || !web3State.account) {
+    return null;
+  }
+
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-foreground mb-2">
+              Transfer Management
+            </h1>
+            <p className="text-muted-foreground">
+              Manage your property transfer requests and approvals
+            </p>
+          </div>
+          <Button onClick={refreshData} disabled={refreshing} variant="outline">
+            <RefreshCw
+              className={`w-4 h-4 mr-2 ${refreshing ? "animate-spin" : ""}`}
+            />
+            Refresh
+          </Button>
+        </div>
+
+        {/* Verification Status Alert */}
+        {user?.status !== "accepted" && (
+          <div className="mb-6">
+            <Card className="border-orange-200 bg-orange-50">
+              <CardContent className="p-4">
+                <div className="flex items-center">
+                  <AlertCircle className="w-5 h-5 text-orange-600 mr-2" />
+                  <div>
+                    <p className="text-orange-800 font-medium">
+                      Account Not Verified
+                    </p>
+                    <p className="text-orange-700 text-sm">
+                      You must be verified to create or approve transfer
+                      requests. Please complete your verification first.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {/* Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <Send className="w-8 h-8 text-blue-500" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-muted-foreground">
+                    As Seller
+                  </p>
+                  <p className="text-2xl font-bold">
+                    {userTransfers.asSeller.length}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <FileText className="w-8 h-8 text-green-500" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-muted-foreground">
+                    As Buyer
+                  </p>
+                  <p className="text-2xl font-bold">
+                    {userTransfers.asBuyer.length}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <Clock className="w-8 h-8 text-orange-500" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Pending Action
+                  </p>
+                  <p className="text-2xl font-bold">
+                    {
+                      userTransfers.asBuyer.filter((t) => canApproveAsBuyer(t))
+                        .length
+                    }
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center">
+                <CheckCircle className="w-8 h-8 text-purple-500" />
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Completed
+                  </p>
+                  <p className="text-2xl font-bold">
+                    {
+                      [
+                        ...userTransfers.asBuyer,
+                        ...userTransfers.asSeller,
+                      ].filter((t) => t.completed).length
+                    }
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Tabs defaultValue="as-buyer" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="as-buyer">
+              As Buyer ({userTransfers.asBuyer.length})
+            </TabsTrigger>
+            <TabsTrigger value="as-seller">
+              As Seller ({userTransfers.asSeller.length})
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="as-buyer" className="space-y-4">
+            {loading ? (
+              <div className="flex items-center justify-center py-12">
+                <Loader2 className="w-8 h-8 animate-spin" />
+                <span className="ml-2">Loading transfers...</span>
+              </div>
+            ) : userTransfers.asBuyer.length === 0 ? (
+              <Card>
+                <CardContent className="p-12 text-center">
+                  <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold mb-2">
+                    No Purchase Requests
+                  </h3>
+                  <p className="text-muted-foreground">
+                    You haven't been involved in any property purchases yet.
+                  </p>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="space-y-4">
+                {userTransfers.asBuyer.map((transfer) => {
+                  const property = getPropertyForTransfer(transfer.propertyId);
+                  const status = getTransferStatus(transfer);
+                  const needsApproval = canApproveAsBuyer(transfer);
+
+                  return (
+                    <Card
+                      key={transfer.id}
+                      className={
+                        needsApproval ? "border-orange-200 bg-orange-50" : ""
+                      }
+                    >
+                      <CardContent className="p-6">
+                        <div className="flex items-center justify-between">
+                          <div className="space-y-2">
+                            <div className="flex items-center space-x-2">
+                              <h4 className="font-semibold">
+                                Purchase Request #{transfer.id}
+                              </h4>
+                              {needsApproval && (
+                                <Badge
+                                  variant="destructive"
+                                  className="text-xs"
+                                >
+                                  Action Required
+                                </Badge>
+                              )}
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                              <div>
+                                <p>
+                                  <strong>Property:</strong>{" "}
+                                  {property?.location ||
+                                    `ID #${transfer.propertyId}`}
+                                </p>
+                                <p>
+                                  <strong>Seller:</strong>{" "}
+                                  {truncateAddress(transfer.seller)}
+                                </p>
+                              </div>
+                              <div>
+                                <p>
+                                  <strong>Price:</strong>{" "}
+                                  {formatEther(transfer.agreedPrice)} ETH
+                                </p>
+                                <p>
+                                  <strong>Area:</strong>{" "}
+                                  {property?.area || "N/A"} sq ft
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="flex space-x-2 text-xs">
+                              <Badge
+                                variant={
+                                  transfer.buyerApproved
+                                    ? "default"
+                                    : "secondary"
+                                }
+                              >
+                                Your Approval:{" "}
+                                {transfer.buyerApproved ? "✓" : "Pending"}
+                              </Badge>
+                              <Badge
+                                variant={
+                                  transfer.sellerApproved
+                                    ? "default"
+                                    : "secondary"
+                                }
+                              >
+                                Seller:{" "}
+                                {transfer.sellerApproved ? "✓" : "Pending"}
+                              </Badge>
+                              <Badge
+                                variant={
+                                  transfer.registrarApproved
+                                    ? "default"
+                                    : "secondary"
+                                }
+                              >
+                                Registrar:{" "}
+                                {transfer.registrarApproved ? "✓" : "Pending"}
+                              </Badge>
+                            </div>
+                          </div>
+
+                          <div className="flex flex-col items-end space-y-2">
+                            <Badge className={getStatusColor(status)}>
+                              {status}
+                            </Badge>
+
+                            <div className="flex space-x-2">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => showTransferDetails(transfer.id)}
+                              >
+                                <Eye className="w-4 h-4 mr-2" />
+                                Details
+                              </Button>
+
+                              {needsApproval && (
+                                <Button
+                                  size="sm"
+                                  onClick={() =>
+                                    handleApproveAsBuyer(transfer.id)
+                                  }
+                                  disabled={
+                                    actionLoading ===
+                                    `approve-buyer-${transfer.id}`
+                                  }
+                                  className="bg-green-600 hover:bg-green-700"
+                                >
+                                  {actionLoading ===
+                                  `approve-buyer-${transfer.id}` ? (
+                                    <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                                  ) : (
+                                    <CheckCircle className="w-4 h-4 mr-2" />
+                                  )}
+                                  Approve Purchase
+                                </Button>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="as-seller" className="space-y-4">
+            {loading ? (
+              <div className="flex items-center justify-center py-12">
+                <Loader2 className="w-8 h-8 animate-spin" />
+                <span className="ml-2">Loading transfers...</span>
+              </div>
+            ) : userTransfers.asSeller.length === 0 ? (
+              <Card>
+                <CardContent className="p-12 text-center">
+                  <Send className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-xl font-semibold mb-2">
+                    No Sale Requests
+                  </h3>
+                  <p className="text-muted-foreground">
+                    You haven't created any property sale requests yet.
+                  </p>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="space-y-4">
+                {userTransfers.asSeller.map((transfer) => {
+                  const property = getPropertyForTransfer(transfer.propertyId);
+                  const status = getTransferStatus(transfer);
+
+                  return (
+                    <Card key={transfer.id}>
+                      <CardContent className="p-6">
+                        <div className="flex items-center justify-between">
+                          <div className="space-y-2">
+                            <h4 className="font-semibold">
+                              Sale Request #{transfer.id}
+                            </h4>
+
+                            <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                              <div>
+                                <p>
+                                  <strong>Property:</strong>{" "}
+                                  {property?.location ||
+                                    `ID #${transfer.propertyId}`}
+                                </p>
+                                <p>
+                                  <strong>Buyer:</strong>{" "}
+                                  {truncateAddress(transfer.buyer)}
+                                </p>
+                              </div>
+                              <div>
+                                <p>
+                                  <strong>Price:</strong>{" "}
+                                  {formatEther(transfer.agreedPrice)} ETH
+                                </p>
+                                <p>
+                                  <strong>Area:</strong>{" "}
+                                  {property?.area || "N/A"} sq ft
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="flex space-x-2 text-xs">
+                              <Badge
+                                variant={
+                                  transfer.buyerApproved
+                                    ? "default"
+                                    : "secondary"
+                                }
+                              >
+                                Buyer:{" "}
+                                {transfer.buyerApproved ? "✓" : "Pending"}
+                              </Badge>
+                              <Badge
+                                variant={
+                                  transfer.sellerApproved
+                                    ? "default"
+                                    : "secondary"
+                                }
+                              >
+                                Your Approval:{" "}
+                                {transfer.sellerApproved ? "✓" : "Pending"}
+                              </Badge>
+                              <Badge
+                                variant={
+                                  transfer.registrarApproved
+                                    ? "default"
+                                    : "secondary"
+                                }
+                              >
+                                Registrar:{" "}
+                                {transfer.registrarApproved ? "✓" : "Pending"}
+                              </Badge>
+                            </div>
+                          </div>
+
+                          <div className="flex flex-col items-end space-y-2">
+                            <Badge className={getStatusColor(status)}>
+                              {status}
+                            </Badge>
+
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => showTransferDetails(transfer.id)}
+                            >
+                              <Eye className="w-4 h-4 mr-2" />
+                              Details
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            )}
+          </TabsContent>
+        </Tabs>
+
+        {/* Transfer Details Dialog */}
+        <Dialog open={detailsDialogOpen} onOpenChange={setDetailsDialogOpen}>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>Transfer Request Details</DialogTitle>
+            </DialogHeader>
+            {selectedTransfer && (
+              <div className="space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <h4 className="font-semibold mb-2">Transfer Information</h4>
+                    <div className="space-y-1 text-sm">
+                      <p>
+                        <strong>Transfer ID:</strong> {selectedTransfer.id}
+                      </p>
+                      <p>
+                        <strong>Property ID:</strong>{" "}
+                        {selectedTransfer.propertyId}
+                      </p>
+                      <p>
+                        <strong>Price:</strong>{" "}
+                        {formatEther(selectedTransfer.agreedPrice)} ETH
+                      </p>
+                      <p>
+                        <strong>Status:</strong>{" "}
+                        {getTransferStatus(selectedTransfer)}
+                      </p>
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2">Parties</h4>
+                    <div className="space-y-1 text-sm">
+                      <p>
+                        <strong>Seller:</strong> {selectedTransfer.seller}
+                      </p>
+                      <p>
+                        <strong>Buyer:</strong> {selectedTransfer.buyer}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold mb-2">Approval Status</h4>
+                  <div className="grid grid-cols-3 gap-2">
+                    <div
+                      className={`p-3 rounded border text-center ${
+                        selectedTransfer.buyerApproved
+                          ? "bg-green-50 border-green-200"
+                          : "bg-red-50 border-red-200"
+                      }`}
+                    >
+                      <div className="font-medium">Buyer</div>
+                      <div
+                        className={
+                          selectedTransfer.buyerApproved
+                            ? "text-green-600"
+                            : "text-red-600"
+                        }
+                      >
+                        {selectedTransfer.buyerApproved
+                          ? "✓ Approved"
+                          : "⏳ Pending"}
+                      </div>
+                    </div>
+                    <div
+                      className={`p-3 rounded border text-center ${
+                        selectedTransfer.sellerApproved
+                          ? "bg-green-50 border-green-200"
+                          : "bg-red-50 border-red-200"
+                      }`}
+                    >
+                      <div className="font-medium">Seller</div>
+                      <div
+                        className={
+                          selectedTransfer.sellerApproved
+                            ? "text-green-600"
+                            : "text-red-600"
+                        }
+                      >
+                        {selectedTransfer.sellerApproved
+                          ? "✓ Approved"
+                          : "⏳ Pending"}
+                      </div>
+                    </div>
+                    <div
+                      className={`p-3 rounded border text-center ${
+                        selectedTransfer.registrarApproved
+                          ? "bg-green-50 border-green-200"
+                          : "bg-red-50 border-red-200"
+                      }`}
+                    >
+                      <div className="font-medium">Registrar</div>
+                      <div
+                        className={
+                          selectedTransfer.registrarApproved
+                            ? "text-green-600"
+                            : "text-red-600"
+                        }
+                      >
+                        {selectedTransfer.registrarApproved
+                          ? "✓ Approved"
+                          : "⏳ Pending"}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {getPropertyForTransfer(selectedTransfer.propertyId) && (
+                  <div>
+                    <h4 className="font-semibold mb-2">Property Details</h4>
+                    <div className="bg-gray-50 p-4 rounded">
+                      {(() => {
+                        const property = getPropertyForTransfer(
+                          selectedTransfer.propertyId
+                        );
+                        return property ? (
+                          <div className="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                              <p>
+                                <strong>Location:</strong> {property.location}
+                              </p>
+                              <p>
+                                <strong>Area:</strong> {property.area} sq ft
+                              </p>
+                            </div>
+                            <div>
+                              <p>
+                                <strong>Market Value:</strong>{" "}
+                                {formatEther(property.marketValue)} ETH
+                              </p>
+                              <p>
+                                <strong>For Sale:</strong>{" "}
+                                {property.isForSale ? "Yes" : "No"}
+                              </p>
+                            </div>
+                          </div>
+                        ) : null;
+                      })()}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
+      </div>
+    </div>
+  );
+};
+
+export default TransferManagement;

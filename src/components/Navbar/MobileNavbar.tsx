@@ -34,29 +34,46 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({
               Home
             </Link>
 
-            {isRole(user?.userRole || "", UserRole.ADMIN) ? (
+            {isRole(user?.userRole || "", UserRole.ADMIN) ||
+            isRole(user?.userRole || "", UserRole.REGISTRAR) ? (
               <>
-                {/* Admin Mobile Links */}
+                {/* Admin/Registrar Mobile Links */}
                 <Link
                   to="/admin/dashboard"
                   className="text-xl font-medium text-foreground hover:text-primary transition-colors"
                   onClick={() => setIsOpen(false)}
                 >
-                  Admin Dashboard
+                  {isRole(user?.userRole || "", UserRole.ADMIN)
+                    ? "Admin Dashboard"
+                    : "Registrar Dashboard"}
                 </Link>
+
+                {/* Only show these links for ADMIN, not REGISTRAR */}
+                {isRole(user?.userRole || "", UserRole.ADMIN) && (
+                  <>
+                    <Link
+                      to="/admin/verify-user"
+                      className="text-xl font-medium text-foreground hover:text-primary transition-colors"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Verify Users
+                    </Link>
+                    <Link
+                      to="/admin/set-user-role"
+                      className="text-xl font-medium text-foreground hover:text-primary transition-colors"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Manage Roles
+                    </Link>
+                  </>
+                )}
+
                 <Link
-                  to="/admin/verify-user"
+                  to="/admin/property-management"
                   className="text-xl font-medium text-foreground hover:text-primary transition-colors"
                   onClick={() => setIsOpen(false)}
                 >
-                  Verify Users
-                </Link>
-                <Link
-                  to="/admin/set-user-role"
-                  className="text-xl font-medium text-foreground hover:text-primary transition-colors"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Manage Roles
+                  Property Management
                 </Link>
                 <Link
                   to="/admin/users"
@@ -77,7 +94,7 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({
                   className="text-xl font-medium text-foreground hover:text-primary transition-colors"
                   onClick={() => setIsOpen(false)}
                 >
-                  Admin Analytics
+                  Analytics
                 </Link>
                 <Link
                   to="/admin/settings"
@@ -103,6 +120,13 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({
                   onClick={() => setIsOpen(false)}
                 >
                   Browse Properties
+                </Link>
+                <Link
+                  to="/my-properties"
+                  className="text-xl font-medium text-foreground hover:text-primary transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  My Properties
                 </Link>
                 <Link
                   to="/register"

@@ -203,6 +203,37 @@ export const getProperties = async (
   return properties;
 };
 
+export const getPropertiesByOwner = async (
+  contract: ethers.Contract,
+  ownerAddress: string
+): Promise<Property[]> => {
+  try {
+    const nextId = await contract.nextPropertyId();
+    const userProperties: Property[] = [];
+
+    // Check each property to see if user owns it
+    for (let i = 0; i < Number(nextId); i++) {
+      try {
+        const currentOwner = await contract.ownerOf(i);
+        if (currentOwner.toLowerCase() === ownerAddress.toLowerCase()) {
+          const property = await getPropertyData(contract, i);
+          if (property) {
+            userProperties.push(property);
+          }
+        }
+      } catch (error) {
+        // Property might not exist, continue to next
+        console.warn(`Property ${i} not found or error:`, error);
+        continue;
+      }
+    }
+    return userProperties;
+  } catch (error) {
+    console.error("Error fetching user properties:", error);
+    return [];
+  }
+};
+
 export const getAllTransferRequests = async (
   contract: ethers.Contract
 ): Promise<TransferRequest[]> => {
@@ -412,4 +443,26 @@ export const setRole = async (
   // The ABI has grantRole from AccessControl, which is the correct way to assign roles.
   const tx = await contract.grantRole(role, userAddress);
   await tx.wait();
+};
+
+// Check if a user is verified
+// Note: This function attempts to check verification status but may not be available in all contract versions
+export const isUserVerified = async (
+  contract: ethers.Contract,
+  userAddress: string
+): Promise<boolean> => {
+  try {
+    // Try to call the isVerifiedUser function if it exists
+    const isVerified = await contract.isVerifiedUser(userAddress);
+    return isVerified;
+  } catch (error: any) {
+    console.warn(
+      "isVerifiedUser function not available in contract:",
+      error.message
+    );
+    // If the function doesn't exist in the contract, we can't pre-check verification
+    // The verification will be checked when actual transactions are performed
+    // For now, return false to show the verification warning to users
+    return false;
+  }
 };
