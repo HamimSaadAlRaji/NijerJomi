@@ -16,11 +16,10 @@ import Dashboard from "./pages/Dashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminVerifyUser from "./pages/AdminVerifyUser";
 import AdminSetUserRole from "./pages/AdminSetUserRole";
+import AdminPropertyManagement from "./pages/AdminPropertyManagement";
 import MyProperties from "./pages/MyProperties";
-import Verify from "./pages/Verify";
-import Maps from "./pages/Maps";
+import TransferManagement from "./pages/TransferManagement";
 import Analytics from "./pages/Analytics";
-import Support from "./pages/Support";
 import Government from "./pages/Government";
 import Admin from "./pages/Admin";
 import UserVerification from "./pages/UserVerification";
@@ -91,6 +90,14 @@ const App = () => (
                 </AdminProtectedRoute>
               }
             />
+            <Route
+              path="/admin/property-management"
+              element={
+                <ProtectedRoute>
+                  <AdminPropertyManagement />
+                </ProtectedRoute>
+              }
+            />
 
             {/* Citizen Protected Routes - Normal users only, admins redirected to admin dashboard */}
             <Route
@@ -126,18 +133,10 @@ const App = () => (
               }
             />
             <Route
-              path="/verify"
+              path="/transfer-management"
               element={
                 <CitizenProtectedRoute>
-                  <Verify />
-                </CitizenProtectedRoute>
-              }
-            />
-            <Route
-              path="/maps"
-              element={
-                <CitizenProtectedRoute>
-                  <Maps />
+                  <TransferManagement />
                 </CitizenProtectedRoute>
               }
             />
@@ -146,14 +145,6 @@ const App = () => (
               element={
                 <CitizenProtectedRoute>
                   <Analytics />
-                </CitizenProtectedRoute>
-              }
-            />
-            <Route
-              path="/support"
-              element={
-                <CitizenProtectedRoute>
-                  <Support />
                 </CitizenProtectedRoute>
               }
             />

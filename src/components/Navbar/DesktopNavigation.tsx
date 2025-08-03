@@ -32,7 +32,8 @@ const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
       {/* Show role-specific navigation if user is logged in */}
       {isLoggedIn && (
         <>
-          {isRole(user?.userRole || "", UserRole.ADMIN) ? (
+          {isRole(user?.userRole || "", UserRole.ADMIN) ||
+          isRole(user?.userRole || "", UserRole.REGISTRAR) ? (
             <AdminNavbarLinks />
           ) : (
             <CitizenNavbarLinks />

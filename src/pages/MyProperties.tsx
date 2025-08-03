@@ -82,6 +82,9 @@ const MyProperties = () => {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [userVerificationStatus, setUserVerificationStatus] = useState<
+    boolean | null
+  >(null);
 
   // Dialog states
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(
@@ -111,15 +114,16 @@ const MyProperties = () => {
     try {
       setLoading(true);
 
-      // Fetch user properties
-      const userProperties = await getPropertiesByOwner(
-        web3State.contract,
-        web3State.account
-      );
+      // Fetch user properties and set verification status from user data
+      const [userProperties, allTransfers] = await Promise.all([
+        getPropertiesByOwner(web3State.contract, web3State.account),
+        getAllTransferRequests(web3State.contract),
+      ]);
+
       setProperties(userProperties);
+      setUserVerificationStatus(user?.status === "accepted" || false);
 
       // Fetch all transfer requests to find relevant ones
-      const allTransfers = await getAllTransferRequests(web3State.contract);
       const userTransfers = allTransfers.filter(
         (transfer) =>
           transfer.seller.toLowerCase() === web3State.account.toLowerCase() ||
@@ -151,7 +155,17 @@ const MyProperties = () => {
   }, [web3State.contract, web3State.account]);
 
   const handleSetForSale = async (forSale: boolean) => {
-    if (!selectedProperty || !web3State.contract) return;
+    if (!selectedProperty || !web3State.contract || !web3State.account) return;
+
+    // Check verification status from user data
+    if (user?.status !== "accepted") {
+      toast({
+        title: "Account Not Verified",
+        description: "You must be verified before listing properties for sale.",
+        variant: "destructive",
+      });
+      return;
+    }
 
     try {
       setActionLoading(`sale-${selectedProperty.id}`);
@@ -169,7 +183,7 @@ const MyProperties = () => {
         title: forSale
           ? "Property Listed for Sale"
           : "Property Removed from Sale",
-        description: `Property ${selectedProperty.location} has been ${
+        description: `${selectedProperty.location} has been ${
           forSale ? "listed for sale" : "removed from sale"
         }.`,
       });
@@ -192,6 +206,7 @@ const MyProperties = () => {
     if (
       !selectedProperty ||
       !web3State.contract ||
+      !web3State.account ||
       !buyerAddress ||
       !agreedPrice
     ) {
@@ -205,6 +220,20 @@ const MyProperties = () => {
 
     try {
       setActionLoading(`transfer-${selectedProperty.id}`);
+
+      // Check if seller (current user) is verified
+      if (user?.status !== "accepted") {
+        toast({
+          title: "Seller Not Verified",
+          description:
+            "You must be verified before creating transfer requests. Please complete your verification first.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // For buyer verification, we'll let the contract handle it since we don't have buyer's user data
+      // The contract will throw an error if buyer is not verified
 
       const priceInWei = ethers.parseEther(agreedPrice);
 
@@ -350,6 +379,29 @@ const MyProperties = () => {
             Refresh
           </Button>
         </div>
+
+        {/* Verification Status Alert */}
+        {user?.status !== "accepted" && (
+          <div className="mb-6">
+            <Card className="border-orange-200 bg-orange-50">
+              <CardContent className="p-4">
+                <div className="flex items-center">
+                  <AlertTriangle className="w-5 h-5 text-orange-600 mr-2" />
+                  <div>
+                    <p className="text-orange-800 font-medium">
+                      Account Not Verified
+                    </p>
+                    <p className="text-orange-700 text-sm">
+                      You must be verified to create transfer requests or put
+                      properties for sale. Please complete your verification
+                      first.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">

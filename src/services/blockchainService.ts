@@ -444,3 +444,25 @@ export const setRole = async (
   const tx = await contract.grantRole(role, userAddress);
   await tx.wait();
 };
+
+// Check if a user is verified
+// Note: This function attempts to check verification status but may not be available in all contract versions
+export const isUserVerified = async (
+  contract: ethers.Contract,
+  userAddress: string
+): Promise<boolean> => {
+  try {
+    // Try to call the isVerifiedUser function if it exists
+    const isVerified = await contract.isVerifiedUser(userAddress);
+    return isVerified;
+  } catch (error: any) {
+    console.warn(
+      "isVerifiedUser function not available in contract:",
+      error.message
+    );
+    // If the function doesn't exist in the contract, we can't pre-check verification
+    // The verification will be checked when actual transactions are performed
+    // For now, return false to show the verification warning to users
+    return false;
+  }
+};

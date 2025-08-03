@@ -27,7 +27,7 @@ const CitizenNavbarLinks: React.FC = () => {
             <Link to="/my-properties">My Properties</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link to="/maps">Property Maps</Link>
+            <Link to="/transfer-management">Transfer Management</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link to="/analytics">Market Analytics</Link>
@@ -42,24 +42,6 @@ const CitizenNavbarLinks: React.FC = () => {
         }`}
       >
         Register Property
-      </Link>
-
-      <Link
-        to="/verify"
-        className={`text-xl font-medium transition-colors hover:text-primary ${
-          isActive("/verify") ? "text-primary" : "text-foreground"
-        }`}
-      >
-        Verify
-      </Link>
-
-      <Link
-        to="/support"
-        className={`text-xl font-medium transition-colors hover:text-primary ${
-          isActive("/support") ? "text-primary" : "text-foreground"
-        }`}
-      >
-        Support
       </Link>
     </>
   );
