@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Shield } from "lucide-react";
+// Import the image
+import heroImage from "@/assets/Hero_Image.jpg";
 
 const Hero = () => {
   return (
@@ -7,7 +9,7 @@ const Hero = () => {
       {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="/src/assets/pexels-akos-szabo-145938-440731 (1).jpg"
+          src={heroImage}
           alt="Blockchain Land Registry"
           className="w-full h-full object-cover"
         />
