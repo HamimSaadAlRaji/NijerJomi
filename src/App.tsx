@@ -3,34 +3,57 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Suspense, lazy } from "react";
 import { WalletProvider } from "@/contexts/WalletContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import AdminProtectedRoute from "@/components/AdminProtectedRoute";
 import CitizenProtectedRoute from "@/components/CitizenProtectedRoute";
 import PublicOnlyRoute from "@/components/PublicOnlyRoute";
 import VerificationOnlyRoute from "@/components/VerificationOnlyRoute";
+
+// Core pages loaded immediately
 import Index from "./pages/Index";
-import Properties from "./pages/Properties";
-import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
-import AdminDashboard from "./pages/AdminDashboard";
-import AdminVerifyUser from "./pages/AdminVerifyUser";
-import AdminSetUserRole from "./pages/AdminSetUserRole";
-import AdminPropertyManagement from "./pages/AdminPropertyManagement";
-import MyProperties from "./pages/MyProperties";
-import TransferManagement from "./pages/TransferManagement";
-import Analytics from "./pages/Analytics";
-import Government from "./pages/Government";
-import Admin from "./pages/Admin";
-import UserVerification from "./pages/UserVerification";
 import ConnectWallet from "./pages/ConnectWallet";
-import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
-import WhyBlockchain from "./pages/WhyBlockchain";
-import AntiCorruption from "./pages/AntiCorruption";
-import UserBenefits from "./pages/UserBenefits";
+
+// Lazy load static information pages
+const WhyBlockchain = lazy(() => import("./pages/WhyBlockchain"));
+const AntiCorruption = lazy(() => import("./pages/AntiCorruption"));
+const UserBenefits = lazy(() => import("./pages/UserBenefits"));
+
+// Lazy load user pages
+const Properties = lazy(() => import("./pages/Properties"));
+const Register = lazy(() => import("./pages/Register"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const MyProperties = lazy(() => import("./pages/MyProperties"));
+const TransferManagement = lazy(() => import("./pages/TransferManagement"));
+const Analytics = lazy(() => import("./pages/Analytics"));
+const Government = lazy(() => import("./pages/Government"));
+const Admin = lazy(() => import("./pages/Admin"));
+const UserVerification = lazy(() => import("./pages/UserVerification"));
+const Profile = lazy(() => import("./pages/Profile"));
+
+// Lazy load admin pages
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const AdminVerifyUser = lazy(() => import("./pages/AdminVerifyUser"));
+const AdminSetUserRole = lazy(() => import("./pages/AdminSetUserRole"));
+const AdminPropertyManagement = lazy(
+  () => import("./pages/AdminPropertyManagement")
+);
 
 const queryClient = new QueryClient();
+
+// Loading component for code-split routes
+const PageLoader = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+  </div>
+);
+
+// Wrapper component for lazy-loaded routes
+const LazyRoute = ({ children }: { children: React.ReactNode }) => (
+  <Suspense fallback={<PageLoader />}>{children}</Suspense>
+);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -59,16 +82,39 @@ const App = () => (
             />
 
             {/* Public Information Pages - Accessible to everyone */}
-            <Route path="/why-blockchain" element={<WhyBlockchain />} />
-            <Route path="/anti-corruption" element={<AntiCorruption />} />
-            <Route path="/user-benefits" element={<UserBenefits />} />
+            <Route
+              path="/why-blockchain"
+              element={
+                <LazyRoute>
+                  <WhyBlockchain />
+                </LazyRoute>
+              }
+            />
+            <Route
+              path="/anti-corruption"
+              element={
+                <LazyRoute>
+                  <AntiCorruption />
+                </LazyRoute>
+              }
+            />
+            <Route
+              path="/user-benefits"
+              element={
+                <LazyRoute>
+                  <UserBenefits />
+                </LazyRoute>
+              }
+            />
 
             {/* User Verification - Special case: only for connected wallets without user data */}
             <Route
               path="/user-verification"
               element={
                 <VerificationOnlyRoute>
-                  <UserVerification />
+                  <LazyRoute>
+                    <UserVerification />
+                  </LazyRoute>
                 </VerificationOnlyRoute>
               }
             />
@@ -78,7 +124,9 @@ const App = () => (
               path="/admin/dashboard"
               element={
                 <AdminProtectedRoute>
-                  <AdminDashboard />
+                  <LazyRoute>
+                    <AdminDashboard />
+                  </LazyRoute>
                 </AdminProtectedRoute>
               }
             />
@@ -86,7 +134,9 @@ const App = () => (
               path="/admin/verify-user"
               element={
                 <AdminProtectedRoute>
-                  <AdminVerifyUser />
+                  <LazyRoute>
+                    <AdminVerifyUser />
+                  </LazyRoute>
                 </AdminProtectedRoute>
               }
             />
@@ -94,7 +144,9 @@ const App = () => (
               path="/admin/set-user-role"
               element={
                 <AdminProtectedRoute>
-                  <AdminSetUserRole />
+                  <LazyRoute>
+                    <AdminSetUserRole />
+                  </LazyRoute>
                 </AdminProtectedRoute>
               }
             />
@@ -102,7 +154,9 @@ const App = () => (
               path="/admin/property-management"
               element={
                 <ProtectedRoute>
-                  <AdminPropertyManagement />
+                  <LazyRoute>
+                    <AdminPropertyManagement />
+                  </LazyRoute>
                 </ProtectedRoute>
               }
             />
@@ -112,7 +166,9 @@ const App = () => (
               path="/properties"
               element={
                 <CitizenProtectedRoute>
-                  <Properties />
+                  <LazyRoute>
+                    <Properties />
+                  </LazyRoute>
                 </CitizenProtectedRoute>
               }
             />
@@ -120,7 +176,9 @@ const App = () => (
               path="/register"
               element={
                 <CitizenProtectedRoute>
-                  <Register />
+                  <LazyRoute>
+                    <Register />
+                  </LazyRoute>
                 </CitizenProtectedRoute>
               }
             />
@@ -128,7 +186,9 @@ const App = () => (
               path="/dashboard"
               element={
                 <CitizenProtectedRoute>
-                  <Dashboard />
+                  <LazyRoute>
+                    <Dashboard />
+                  </LazyRoute>
                 </CitizenProtectedRoute>
               }
             />
@@ -136,7 +196,9 @@ const App = () => (
               path="/my-properties"
               element={
                 <CitizenProtectedRoute>
-                  <MyProperties />
+                  <LazyRoute>
+                    <MyProperties />
+                  </LazyRoute>
                 </CitizenProtectedRoute>
               }
             />
@@ -144,7 +206,9 @@ const App = () => (
               path="/transfer-management"
               element={
                 <CitizenProtectedRoute>
-                  <TransferManagement />
+                  <LazyRoute>
+                    <TransferManagement />
+                  </LazyRoute>
                 </CitizenProtectedRoute>
               }
             />
@@ -152,7 +216,9 @@ const App = () => (
               path="/analytics"
               element={
                 <CitizenProtectedRoute>
-                  <Analytics />
+                  <LazyRoute>
+                    <Analytics />
+                  </LazyRoute>
                 </CitizenProtectedRoute>
               }
             />
@@ -160,7 +226,9 @@ const App = () => (
               path="/government"
               element={
                 <CitizenProtectedRoute>
-                  <Government />
+                  <LazyRoute>
+                    <Government />
+                  </LazyRoute>
                 </CitizenProtectedRoute>
               }
             />
@@ -168,7 +236,9 @@ const App = () => (
               path="/admin"
               element={
                 <CitizenProtectedRoute>
-                  <Admin />
+                  <LazyRoute>
+                    <Admin />
+                  </LazyRoute>
                 </CitizenProtectedRoute>
               }
             />
@@ -178,7 +248,9 @@ const App = () => (
               path="/profile/:walletAddress"
               element={
                 <ProtectedRoute>
-                  <Profile />
+                  <LazyRoute>
+                    <Profile />
+                  </LazyRoute>
                 </ProtectedRoute>
               }
             />
