@@ -20,10 +20,10 @@ const Hero = () => {
           <div className="space-y-8">
             <div className="space-y-4">
               <h1 className="text-6xl lg:text-7xl xl:text-8xl font-bold text-white leading-tight tracking-tight">
-                SECURE THE
+                SECURE YOUR
                 <br />
-                WAY YOU <br />
-                <span className="text-white">OWN LAND</span>
+                LAND ON THE <br />
+                <span className="text-white">BLOCKCHAIN</span>
               </h1>
             </div>
 

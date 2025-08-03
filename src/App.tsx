@@ -26,6 +26,9 @@ import UserVerification from "./pages/UserVerification";
 import ConnectWallet from "./pages/ConnectWallet";
 import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
+import WhyBlockchain from "./pages/WhyBlockchain";
+import AntiCorruption from "./pages/AntiCorruption";
+import UserBenefits from "./pages/UserBenefits";
 
 const queryClient = new QueryClient();
 
@@ -54,6 +57,11 @@ const App = () => (
                 </PublicOnlyRoute>
               }
             />
+
+            {/* Public Information Pages - Accessible to everyone */}
+            <Route path="/why-blockchain" element={<WhyBlockchain />} />
+            <Route path="/anti-corruption" element={<AntiCorruption />} />
+            <Route path="/user-benefits" element={<UserBenefits />} />
 
             {/* User Verification - Special case: only for connected wallets without user data */}
             <Route

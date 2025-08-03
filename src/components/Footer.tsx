@@ -24,7 +24,7 @@ const Footer = () => {
                 <Shield className="w-6 h-6 text-primary-foreground" />
               </div>
               <div>
-                <h3 className="text-xl font-bold">LandChain</h3>
+                <h3 className="text-xl font-bold">terraTrust</h3>
                 <p className="text-muted-foreground text-sm">
                   Bangladesh Registry
                 </p>
@@ -148,7 +148,7 @@ const Footer = () => {
             <div className="space-y-4">
               <div className="flex items-center space-x-3 text-muted-foreground">
                 <Mail className="w-4 h-4" />
-                <span>support@landchain.gov.bd</span>
+                <span>support@terratrust.gov.bd</span>
               </div>
               <div className="flex items-center space-x-3 text-muted-foreground">
                 <Phone className="w-4 h-4" />
@@ -181,7 +181,7 @@ const Footer = () => {
         <div className="border-t border-border mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-muted-foreground text-sm">
-              © 2024 LandChain Bangladesh. All rights reserved. | Powered by
+              © 2025 terraTrust Bangladesh. All rights reserved. | Powered by
               Blockchain Technology
             </div>
             <div className="flex space-x-6 text-sm">

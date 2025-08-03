@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { X } from "lucide-react";
 import { UserRole } from "../../../types";
 import { isRole } from "@/lib/roleUtils";
@@ -20,7 +20,25 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({
   setIsOpen,
   isDarkTheme = false,
 }) => {
+  const location = useLocation();
+  const isLandingPage = location.pathname === "/";
+  const isPublicInfoPage = [
+    "/why-blockchain",
+    "/anti-corruption",
+    "/user-benefits",
+  ].includes(location.pathname);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   if (!isOpen) return null;
+
+  const linkClasses = `text-xl font-medium transition-colors ${
+    isDarkTheme
+      ? "text-black hover:text-gray-600"
+      : "text-foreground hover:text-primary"
+  }`;
 
   return (
     <div
@@ -39,7 +57,10 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({
                   ? "text-black hover:text-gray-600"
                   : "text-foreground hover:text-primary"
               }`}
-              onClick={() => setIsOpen(false)}
+              onClick={() => {
+                scrollToTop();
+                setIsOpen(false);
+              }}
             >
               Home
             </Link>
@@ -183,6 +204,55 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({
           </>
         ) : (
           <>
+            {/* Public navigation links for non-logged-in users on public pages */}
+            {(isLandingPage || isPublicInfoPage) && (
+              <>
+                {isPublicInfoPage && (
+                  <Link
+                    to="/"
+                    className={linkClasses}
+                    onClick={() => {
+                      scrollToTop();
+                      setIsOpen(false);
+                    }}
+                  >
+                    Home
+                  </Link>
+                )}
+                <Link
+                  to="/why-blockchain"
+                  className={linkClasses}
+                  onClick={() => {
+                    scrollToTop();
+                    setIsOpen(false);
+                  }}
+                >
+                  Why Blockchain
+                </Link>
+                <Link
+                  to="/anti-corruption"
+                  className={linkClasses}
+                  onClick={() => {
+                    scrollToTop();
+                    setIsOpen(false);
+                  }}
+                >
+                  Fighting Corruption
+                </Link>
+                <Link
+                  to="/user-benefits"
+                  className={linkClasses}
+                  onClick={() => {
+                    scrollToTop();
+                    setIsOpen(false);
+                  }}
+                >
+                  User Benefits
+                </Link>
+                <div className="pt-4 border-t border-border"></div>
+              </>
+            )}
+
             {/* Mobile Connect Wallet Button when not logged in */}
             <div className="text-center">
               <WalletConnectButton
@@ -192,7 +262,7 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({
             </div>
             <Link
               to="/connect-wallet"
-              className="text-xl font-medium text-foreground hover:text-primary transition-colors text-center"
+              className={`text-center ${linkClasses}`}
               onClick={() => setIsOpen(false)}
             >
               Connect Wallet
