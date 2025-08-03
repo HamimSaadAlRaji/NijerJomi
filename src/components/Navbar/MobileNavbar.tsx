@@ -10,6 +10,7 @@ interface MobileNavbarProps {
   isLoggedIn: boolean;
   user: any;
   setIsOpen: (isOpen: boolean) => void;
+  isDarkTheme?: boolean;
 }
 
 const MobileNavbar: React.FC<MobileNavbarProps> = ({
@@ -17,18 +18,27 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({
   isLoggedIn,
   user,
   setIsOpen,
+  isDarkTheme = false,
 }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="md:hidden py-4 border-t border-border animate-slide-up">
+    <div
+      className={`md:hidden py-4 border-t animate-slide-up ${
+        isDarkTheme ? "border-gray-200" : "border-border"
+      }`}
+    >
       <div className="flex flex-col space-y-4">
         {isLoggedIn ? (
           <>
             {/* Mobile Navigation Links */}
             <Link
               to="/"
-              className="text-xl font-medium text-foreground hover:text-primary transition-colors"
+              className={`text-xl font-medium transition-colors ${
+                isDarkTheme
+                  ? "text-black hover:text-gray-600"
+                  : "text-foreground hover:text-primary"
+              }`}
               onClick={() => setIsOpen(false)}
             >
               Home
@@ -40,7 +50,11 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({
                 {/* Admin/Registrar Mobile Links */}
                 <Link
                   to="/admin/dashboard"
-                  className="text-xl font-medium text-foreground hover:text-primary transition-colors"
+                  className={`text-xl font-medium transition-colors ${
+                    isDarkTheme
+                      ? "text-black hover:text-gray-600"
+                      : "text-foreground hover:text-primary"
+                  }`}
                   onClick={() => setIsOpen(false)}
                 >
                   {isRole(user?.userRole || "", UserRole.ADMIN)

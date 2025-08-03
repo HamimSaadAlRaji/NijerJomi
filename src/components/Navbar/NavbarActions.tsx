@@ -8,9 +8,14 @@ import { isRole } from "@/lib/roleUtils";
 interface NavbarActionsProps {
   isLoggedIn: boolean;
   user: any;
+  isDarkTheme?: boolean;
 }
 
-const NavbarActions: React.FC<NavbarActionsProps> = ({ isLoggedIn, user }) => {
+const NavbarActions: React.FC<NavbarActionsProps> = ({
+  isLoggedIn,
+  user,
+  isDarkTheme = false,
+}) => {
   const getDashboardPath = () => {
     return isRole(user?.userRole || "", UserRole.ADMIN)
       ? "/admin/dashboard"
@@ -28,7 +33,14 @@ const NavbarActions: React.FC<NavbarActionsProps> = ({ isLoggedIn, user }) => {
       {isLoggedIn ? (
         <>
           <Link to={getDashboardPath()}>
-            <Button variant="ghost" className="text-white hover:text-gray-300">
+            <Button
+              variant="ghost"
+              className={`${
+                isDarkTheme
+                  ? "text-black hover:text-gray-600"
+                  : "text-white hover:text-gray-300"
+              }`}
+            >
               {getDashboardText()}
             </Button>
           </Link>
@@ -36,7 +48,11 @@ const NavbarActions: React.FC<NavbarActionsProps> = ({ isLoggedIn, user }) => {
           <WalletConnectButton
             size="lg"
             showDropdown={true}
-            className="bg-white hover:bg-gray-200 text-black rounded-full text-xl px-8 py-3 border border-gray-300"
+            className={`rounded-full text-xl px-8 py-3 border ${
+              isDarkTheme
+                ? "bg-black hover:bg-gray-800 text-white border-gray-800"
+                : "bg-white hover:bg-gray-200 text-black border-gray-300"
+            }`}
           />
         </>
       ) : (
@@ -44,7 +60,11 @@ const NavbarActions: React.FC<NavbarActionsProps> = ({ isLoggedIn, user }) => {
           <Link to="/connect-wallet">
             <Button
               size="lg"
-              className="rounded-full text-xl px-8 py-3 bg-white hover:bg-gray-200 text-black border border-gray-300"
+              className={`rounded-full text-xl px-8 py-3 border ${
+                isDarkTheme
+                  ? "bg-black hover:bg-gray-800 text-white border-gray-800"
+                  : "bg-white hover:bg-gray-200 text-black border-gray-300"
+              }`}
             >
               Connect Wallet
             </Button>

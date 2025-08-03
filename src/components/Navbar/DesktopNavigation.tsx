@@ -8,11 +8,13 @@ import { isRole } from "@/lib/roleUtils";
 interface DesktopNavigationProps {
   isLoggedIn: boolean;
   user: any;
+  isDarkTheme?: boolean;
 }
 
 const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
   isLoggedIn,
   user,
+  isDarkTheme = false,
 }) => {
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
@@ -24,9 +26,9 @@ const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
         <>
           {isRole(user?.userRole || "", UserRole.ADMIN) ||
           isRole(user?.userRole || "", UserRole.REGISTRAR) ? (
-            <AdminNavbarLinks />
+            <AdminNavbarLinks isDarkTheme={isDarkTheme} />
           ) : (
-            <CitizenNavbarLinks />
+            <CitizenNavbarLinks isDarkTheme={isDarkTheme} />
           )}
         </>
       )}

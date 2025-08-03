@@ -1,7 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Search, Shield, Zap, Globe, TrendingUp } from "lucide-react";
+import { Shield } from "lucide-react";
 
 const Hero = () => {
   return (
@@ -13,10 +11,10 @@ const Hero = () => {
           alt="Blockchain Land Registry"
           className="w-full h-full object-cover"
         />
-        {/* Dark overlay for better text readability */}
       </div>
 
       <div className="container mx-auto px-4 relative z-20 h-full">
+        {/* Hero Content */}
         <div className="grid lg:grid-cols-2 gap-12 items-center h-full">
           {/* Left Content - Text Section */}
           <div className="space-y-8">
@@ -30,11 +28,14 @@ const Hero = () => {
             </div>
 
             {/* Descriptive Text */}
-            <p className="text-xl lg:text-2xl text-white/90 leading-relaxed max-w-lg">
-              Home or away, local or global — register your land freely between
-              blockchain and smart contracts. Sign up for secure, transparent
-              ownership.
-            </p>
+            <div className="relative">
+              <div className="absolute inset-0 backdrop-blur-sm rounded-lg -m-4"></div>
+              <p className="text-xl lg:text-2xl text-gray-300 leading-relaxed max-w-lg relative z-10 p-4">
+                Home or away, local or global — register your land freely
+                between blockchain and smart contracts. Sign up for secure,
+                transparent ownership.
+              </p>
+            </div>
 
             {/* Call to Action Button */}
             <div className="pt-4">
@@ -42,7 +43,7 @@ const Hero = () => {
                 size="lg"
                 className="bg-primary hover:bg-primary/90 text-primary-foreground text-lg px-8 py-4 rounded-full font-medium"
               >
-                Start Registration
+                Connect Wallet
               </Button>
             </div>
           </div>
@@ -94,7 +95,7 @@ const Hero = () => {
                 </div>
               </div>
 
-              {/* Floating Elements - Optional decorative elements */}
+              {/* Floating Elements */}
               <div className="absolute -top-6 -right-8 w-10 h-10 bg-white/20 rounded-lg animate-float"></div>
               <div
                 className="absolute top-20 -left-6 w-8 h-8 bg-white/15 rounded-lg animate-float"
