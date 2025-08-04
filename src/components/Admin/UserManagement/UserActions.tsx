@@ -1,52 +1,76 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Settings, Building, Users, Shield, Activity } from "lucide-react";
+import {
+  Settings,
+  UserPlus,
+  UserCheck,
+  Download,
+  Filter,
+  RefreshCw,
+} from "lucide-react";
 
-const QuickActions: React.FC = () => {
-  const navigate = useNavigate();
+interface UserActionsProps {
+  onAddUser: () => void;
+  onBulkVerify: () => void;
+  onExportUsers: () => void;
+  onRefreshData: () => void;
+  isLoading?: boolean;
+}
 
+const UserActions: React.FC<UserActionsProps> = ({
+  onAddUser,
+  onBulkVerify,
+  onExportUsers,
+  onRefreshData,
+  isLoading = false,
+}) => {
   return (
     <Card className="bg-white border border-gray-200 shadow-sm">
       <CardHeader className="bg-black text-white">
         <CardTitle className="flex items-center">
           <Settings className="w-5 h-5 mr-2" />
-          System Management
+          User Management Actions
         </CardTitle>
       </CardHeader>
       <CardContent className="p-6">
         <div className="space-y-3">
           <Button
             className="w-full justify-start bg-blue-600 hover:bg-blue-700 text-white"
-            onClick={() => navigate("/admin/property-management")}
+            onClick={onAddUser}
+            disabled={isLoading}
           >
-            <Building className="w-4 h-4 mr-2" />
-            Property Management
+            <UserPlus className="w-4 h-4 mr-2" />
+            Add New User
           </Button>
 
           <Button
             className="w-full justify-start bg-white border border-gray-200 text-black hover:bg-gray-50"
-            onClick={() => navigate("/admin/user-management")}
+            onClick={onBulkVerify}
+            disabled={isLoading}
           >
-            <Users className="w-4 h-4 mr-2" />
-            User Management
+            <UserCheck className="w-4 h-4 mr-2" />
+            Bulk User Actions
           </Button>
 
           <Button
             className="w-full justify-start bg-white border border-gray-200 text-black hover:bg-gray-50"
-            onClick={() => navigate("/admin/set-role")}
+            onClick={onExportUsers}
+            disabled={isLoading}
           >
-            <Shield className="w-4 h-4 mr-2" />
-            Role Management
+            <Download className="w-4 h-4 mr-2" />
+            Export User Data
           </Button>
 
           <Button
             className="w-full justify-start bg-white border border-gray-200 text-black hover:bg-gray-50"
-            onClick={() => navigate("/analytics")}
+            onClick={onRefreshData}
+            disabled={isLoading}
           >
-            <Activity className="w-4 h-4 mr-2" />
-            Analytics Dashboard
+            <RefreshCw
+              className={`w-4 h-4 mr-2 ${isLoading ? "animate-spin" : ""}`}
+            />
+            Refresh Data
           </Button>
         </div>
       </CardContent>
@@ -54,4 +78,4 @@ const QuickActions: React.FC = () => {
   );
 };
 
-export default QuickActions;
+export default UserActions;
