@@ -40,6 +40,7 @@ const AdminSetUserRole = lazy(() => import("./pages/AdminSetUserRole"));
 const AdminPropertyManagement = lazy(
   () => import("./pages/AdminPropertyManagement")
 );
+const AdminUserManagement = lazy(() => import("./pages/AdminUserManagement"));
 
 const queryClient = new QueryClient();
 
@@ -146,6 +147,16 @@ const App = () => (
                 <AdminProtectedRoute>
                   <LazyRoute>
                     <AdminSetUserRole />
+                  </LazyRoute>
+                </AdminProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/user-management"
+              element={
+                <AdminProtectedRoute>
+                  <LazyRoute>
+                    <AdminUserManagement />
                   </LazyRoute>
                 </AdminProtectedRoute>
               }
