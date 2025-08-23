@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useWalletContext } from "@/contexts/WalletContext";
-import { Property, Bid } from "../../types";
+import { Property, Bid, TransferRequest } from "../../types";
 import {
   getPropertyData,
   setForSale,
   requestTransfer,
+  getAllTransferRequests,
+  approveTransferAsBuyer,
 } from "@/services/blockchainService";
 import { getBidsByPropertyId, createBid } from "@/services/biddingServices";
 import Navbar from "@/components/Navbar";
@@ -40,6 +42,8 @@ import {
   TrendingUp,
   CheckCircle,
   XCircle,
+  Clock,
+  Handshake,
 } from "lucide-react";
 
 const PropertyDetails: React.FC = () => {
@@ -60,10 +64,17 @@ const PropertyDetails: React.FC = () => {
   const [isAcceptingBid, setIsAcceptingBid] = useState(false);
   const [showBidDialog, setShowBidDialog] = useState(false);
 
+  // Transfer request state
+  const [transferRequests, setTransferRequests] = useState<TransferRequest[]>(
+    []
+  );
+  const [isApprovingTransfer, setIsApprovingTransfer] = useState(false);
+
   useEffect(() => {
     if (propertyId && web3State.contract) {
       fetchPropertyDetails();
       fetchBids();
+      fetchTransferRequests();
     }
   }, [propertyId, web3State.contract]);
 
@@ -102,20 +113,60 @@ const PropertyDetails: React.FC = () => {
     }
   };
 
+  const fetchTransferRequests = async () => {
+    if (!web3State.contract) return;
+
+    try {
+      const requests = await getAllTransferRequests(web3State.contract);
+      setTransferRequests(requests);
+    } catch (err) {
+      console.error("Error fetching transfer requests:", err);
+    }
+  };
+
   const isOwner =
     property && web3State.account
       ? property.ownerAddress.toLowerCase() === web3State.account.toLowerCase()
       : false;
 
+  // Get active transfer request for this property
+  const activeTransferRequest = transferRequests.find(
+    (request) => request.propertyId === property?.id && !request.completed
+  );
+
+  const isInTransfer = !!activeTransferRequest;
+
+  // Check if current user is the buyer in the transfer
+  const isBuyerInTransfer =
+    activeTransferRequest &&
+    web3State.account &&
+    activeTransferRequest.buyer.toLowerCase() ===
+      web3State.account.toLowerCase();
+
+  // Get highest bid amount for validation
+  const highestBid = bids.length > 0 ? bids[0] : null;
+  const minimumBidAmount = highestBid ? highestBid.bidAmount * 1.05 : 0; // 5% more than highest bid
+
+  // Check if current bid amount meets minimum requirement
+  const currentBidAmount = parseFloat(bidAmount) || 0;
+  const isBidAmountValid = !highestBid || currentBidAmount >= minimumBidAmount;
+
   const handlePlaceBid = async () => {
     if (!propertyId || !web3State.account || !bidAmount || !property) return;
+
+    const bidValue = parseFloat(bidAmount);
+
+    // Double-check validation (safety measure)
+    if (highestBid && bidValue < minimumBidAmount) {
+      return;
+    }
 
     try {
       setIsPlacingBid(true);
       const response = await createBid({
         propertyId: parseInt(propertyId),
         bidder: web3State.account,
-        bidAmount: parseFloat(bidAmount),
+        bidAmount: bidValue,
       });
 
       if (response.success) {
@@ -169,10 +220,33 @@ const PropertyDetails: React.FC = () => {
       console.log(
         "Transfer request created successfully. Property will be hidden from marketplace until transaction completes."
       );
+
+      // Refresh transfer requests to get the new one
+      await fetchTransferRequests();
     } catch (err) {
       console.error("Error accepting bid:", err);
     } finally {
       setIsAcceptingBid(false);
+    }
+  };
+
+  const handleApproveBuyerTransfer = async () => {
+    if (!activeTransferRequest || !web3State.contract) return;
+
+    try {
+      setIsApprovingTransfer(true);
+      await approveTransferAsBuyer(
+        web3State.contract,
+        activeTransferRequest.id
+      );
+
+      // Refresh transfer requests to get updated status
+      await fetchTransferRequests();
+      console.log("Transfer approved successfully as buyer");
+    } catch (err) {
+      console.error("Error approving transfer as buyer:", err);
+    } finally {
+      setIsApprovingTransfer(false);
     }
   };
 
@@ -496,60 +570,137 @@ const PropertyDetails: React.FC = () => {
                   )}
 
                   {/* Non-owner controls */}
-                  {!isOwner && property.isForSale && web3State.account && (
-                    <Dialog
-                      open={showBidDialog}
-                      onOpenChange={setShowBidDialog}
-                    >
-                      <DialogTrigger asChild>
-                        <Button className="w-full mt-4 bg-black hover:bg-black/90 text-white">
-                          <Gavel className="w-4 h-4 mr-2" />
-                          Place Bid
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>
-                            Place Bid for Property #{property.id}
-                          </DialogTitle>
-                        </DialogHeader>
-                        <div className="space-y-4">
-                          <div>
-                            <label className="text-sm font-medium">
-                              Bid Amount (ETH)
-                            </label>
-                            <Input
-                              type="number"
-                              step="0.0001"
-                              placeholder="0.0000"
-                              value={bidAmount}
-                              onChange={(e) => setBidAmount(e.target.value)}
-                            />
+                  {!isOwner && web3State.account && (
+                    <div className="mt-4">
+                      {/* If property is in transfer and user is the buyer */}
+                      {isInTransfer && isBuyerInTransfer && (
+                        <div className="space-y-3">
+                          <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+                            <div className="flex items-center text-green-700 dark:text-green-400 mb-2">
+                              <CheckCircle className="w-4 h-4 mr-2" />
+                              <span className="font-medium">
+                                Offer Accepted!
+                              </span>
+                            </div>
+                            <p className="text-sm text-green-600 dark:text-green-300">
+                              The property owner has accepted your bid. Please
+                              verify the transaction to complete the purchase.
+                            </p>
                           </div>
-                          <div className="flex gap-2">
-                            <Button
-                              onClick={handlePlaceBid}
-                              disabled={isPlacingBid || !bidAmount}
-                              className="flex-1"
-                            >
-                              {isPlacingBid ? "Placing Bid..." : "Place Bid"}
-                            </Button>
-                            <Button
-                              variant="outline"
-                              onClick={() => setShowBidDialog(false)}
-                              className="flex-1"
-                            >
-                              Cancel
-                            </Button>
-                          </div>
+                          <Button
+                            onClick={handleApproveBuyerTransfer}
+                            disabled={isApprovingTransfer}
+                            className="w-full bg-green-600 hover:bg-green-700 text-white"
+                          >
+                            <Handshake className="w-4 h-4 mr-2" />
+                            {isApprovingTransfer
+                              ? "Approving..."
+                              : "Approve Transfer"}
+                          </Button>
                         </div>
-                      </DialogContent>
-                    </Dialog>
-                  )}
+                      )}
 
-                  {!property.isForSale && (
-                    <div className="mt-4 text-sm text-gray-500">
-                      Property is not for sale
+                      {/* If property is in transfer but user is not the buyer */}
+                      {isInTransfer && !isBuyerInTransfer && (
+                        <div className="p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200 dark:border-orange-800">
+                          <div className="flex items-center text-orange-700 dark:text-orange-400 mb-2">
+                            <Clock className="w-4 h-4 mr-2" />
+                            <span className="font-medium">
+                              Transaction in Progress
+                            </span>
+                          </div>
+                          <p className="text-sm text-orange-600 dark:text-orange-300">
+                            This property is currently in a transfer process.
+                            New bids cannot be placed at this time.
+                          </p>
+                        </div>
+                      )}
+
+                      {/* If property is for sale and not in transfer */}
+                      {property.isForSale && !isInTransfer && (
+                        <Dialog
+                          open={showBidDialog}
+                          onOpenChange={setShowBidDialog}
+                        >
+                          <DialogTrigger asChild>
+                            <Button className="w-full bg-black hover:bg-black/90 text-white">
+                              <Gavel className="w-4 h-4 mr-2" />
+                              Place Bid
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent>
+                            <DialogHeader>
+                              <DialogTitle>
+                                Place Bid for Property #{property.id}
+                              </DialogTitle>
+                            </DialogHeader>
+                            <div className="space-y-4">
+                              <div>
+                                <label className="text-sm font-medium">
+                                  Bid Amount (ETH)
+                                </label>
+                                {highestBid && (
+                                  <p className="text-xs text-red-600 dark:text-red-400 mb-1 font-medium">
+                                    Minimum bid: {minimumBidAmount.toFixed(4)}{" "}
+                                    ETH (5% more than current highest)
+                                  </p>
+                                )}
+                                <Input
+                                  type="number"
+                                  step="0.0001"
+                                  placeholder={
+                                    highestBid
+                                      ? minimumBidAmount.toFixed(4)
+                                      : "0.0000"
+                                  }
+                                  value={bidAmount}
+                                  onChange={(e) => setBidAmount(e.target.value)}
+                                  className={
+                                    bidAmount && !isBidAmountValid
+                                      ? "border-red-300 focus:border-red-500 focus:ring-red-500"
+                                      : ""
+                                  }
+                                />
+                                {bidAmount && !isBidAmountValid && (
+                                  <p className="text-xs text-red-600 dark:text-red-400 mt-1">
+                                    Bid amount must be at least{" "}
+                                    {minimumBidAmount.toFixed(4)} ETH
+                                  </p>
+                                )}
+                              </div>
+                              <div className="flex gap-2">
+                                <Button
+                                  onClick={handlePlaceBid}
+                                  disabled={
+                                    isPlacingBid ||
+                                    !bidAmount ||
+                                    !isBidAmountValid
+                                  }
+                                  className="flex-1"
+                                >
+                                  {isPlacingBid
+                                    ? "Placing Bid..."
+                                    : "Place Bid"}
+                                </Button>
+                                <Button
+                                  variant="outline"
+                                  onClick={() => setShowBidDialog(false)}
+                                  className="flex-1"
+                                >
+                                  Cancel
+                                </Button>
+                              </div>
+                            </div>
+                          </DialogContent>
+                        </Dialog>
+                      )}
+
+                      {/* If property is not for sale */}
+                      {!property.isForSale && !isInTransfer && (
+                        <div className="text-sm text-gray-500">
+                          Property is not for sale
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
@@ -570,43 +721,84 @@ const PropertyDetails: React.FC = () => {
                     <div className="text-sm text-gray-500">Loading bids...</div>
                   ) : bids.length > 0 ? (
                     <div className="space-y-3">
-                      {bids.slice(0, 3).map((bid, index) => (
-                        <div
-                          key={bid._id}
-                          className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
-                        >
-                          <div>
-                            <div className="font-semibold text-sm">
-                              {formatBidAmount(bid.bidAmount)}
+                      {/* For owners, show only highest bid when not in transfer */}
+                      {isOwner && !isInTransfer && highestBid && (
+                        <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                          <div className="flex justify-between items-center">
+                            <div>
+                              <div className="font-semibold text-sm">
+                                {formatBidAmount(highestBid.bidAmount)}
+                              </div>
+                              <div className="text-xs text-gray-500">
+                                {formatAddress(highestBid.bidder)}
+                              </div>
+                              <div className="text-xs text-gray-400">
+                                {formatDate(highestBid.createdAt)}
+                              </div>
                             </div>
-                            <div className="text-xs text-gray-500">
-                              {formatAddress(bid.bidder)}
-                            </div>
-                            <div className="text-xs text-gray-400">
-                              {formatDate(bid.createdAt)}
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            {index === 0 && (
+                            <div className="flex items-center gap-2">
                               <Badge variant="secondary" className="text-xs">
-                                Highest
+                                Highest Bid
                               </Badge>
-                            )}
-                            {isOwner && (
                               <Button
                                 size="sm"
-                                onClick={() => handleAcceptBid(bid)}
+                                onClick={() => handleAcceptBid(highestBid)}
                                 disabled={isAcceptingBid}
                                 className="bg-green-600 hover:bg-green-700 text-white"
                               >
                                 <CheckCircle className="w-3 h-3 mr-1" />
                                 Accept
                               </Button>
-                            )}
+                            </div>
                           </div>
                         </div>
-                      ))}
-                      {bids.length > 3 && (
+                      )}
+
+                      {/* For non-owners, show top 3 bids */}
+                      {!isOwner &&
+                        bids.slice(0, 3).map((bid, index) => (
+                          <div
+                            key={bid._id}
+                            className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
+                          >
+                            <div>
+                              <div className="font-semibold text-sm">
+                                {formatBidAmount(bid.bidAmount)}
+                              </div>
+                              <div className="text-xs text-gray-500">
+                                {formatAddress(bid.bidder)}
+                              </div>
+                              <div className="text-xs text-gray-400">
+                                {formatDate(bid.createdAt)}
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              {index === 0 && (
+                                <Badge variant="secondary" className="text-xs">
+                                  Highest
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+
+                      {/* Show transfer status if property is in transfer */}
+                      {isInTransfer && (
+                        <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                          <div className="flex items-center text-blue-700 dark:text-blue-400 mb-1">
+                            <Clock className="w-4 h-4 mr-2" />
+                            <span className="font-medium">
+                              Transfer in Progress
+                            </span>
+                          </div>
+                          <p className="text-xs text-blue-600 dark:text-blue-300">
+                            A bid has been accepted and the transfer is being
+                            processed.
+                          </p>
+                        </div>
+                      )}
+
+                      {!isOwner && bids.length > 3 && (
                         <div className="text-xs text-gray-500 text-center pt-2">
                           +{bids.length - 3} more bids
                         </div>
