@@ -23,6 +23,7 @@ const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
     "/why-blockchain",
     "/anti-corruption",
     "/user-benefits",
+    "/marketplace",
   ].includes(location.pathname);
 
   const scrollToTop = () => {
@@ -50,6 +51,13 @@ const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
               Home
             </Link>
           )}
+          <Link
+            to="/marketplace"
+            className={linkClasses("/marketplace")}
+            onClick={scrollToTop}
+          >
+            MarketPlace
+          </Link>
           <Link
             to="/why-blockchain"
             className={linkClasses("/why-blockchain")}

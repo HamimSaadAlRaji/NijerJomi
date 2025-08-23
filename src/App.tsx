@@ -32,6 +32,8 @@ const Government = lazy(() => import("./pages/Government"));
 const Admin = lazy(() => import("./pages/Admin"));
 const UserVerification = lazy(() => import("./pages/UserVerification"));
 const Profile = lazy(() => import("./pages/Profile"));
+const MarketPlace = lazy(() => import("./pages/MarketPlace"));
+const PropertyDetails = lazy(() => import("./pages/PropertyDetails"));
 
 // Lazy load admin pages
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
@@ -105,6 +107,26 @@ const App = () => (
               element={
                 <LazyRoute>
                   <UserBenefits />
+                </LazyRoute>
+              }
+            />
+
+            {/* MarketPlace - Public access */}
+            <Route
+              path="/marketplace"
+              element={
+                <LazyRoute>
+                  <MarketPlace />
+                </LazyRoute>
+              }
+            />
+
+            {/* Property Details - Public access */}
+            <Route
+              path="/property/:propertyId"
+              element={
+                <LazyRoute>
+                  <PropertyDetails />
                 </LazyRoute>
               }
             />

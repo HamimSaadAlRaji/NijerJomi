@@ -220,6 +220,16 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({
                   </Link>
                 )}
                 <Link
+                  to="/marketplace"
+                  className={linkClasses}
+                  onClick={() => {
+                    scrollToTop();
+                    setIsOpen(false);
+                  }}
+                >
+                  MarketPlace
+                </Link>
+                <Link
                   to="/why-blockchain"
                   className={linkClasses}
                   onClick={() => {
