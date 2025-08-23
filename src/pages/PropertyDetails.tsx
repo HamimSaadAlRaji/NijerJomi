@@ -51,6 +51,7 @@ const PropertyDetails: React.FC = () => {
   const navigate = useNavigate();
   const { web3State } = useWalletContext();
   const [property, setProperty] = useState<Property | null>(null);
+  const [marketValue, setMarketValue] = useState<bigint | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isFavorited, setIsFavorited] = useState(false);
@@ -89,6 +90,7 @@ const PropertyDetails: React.FC = () => {
         parseInt(propertyId)
       );
       setProperty(propertyData);
+      setMarketValue(propertyData.marketValue);
     } catch (err) {
       console.error("Error fetching property details:", err);
       setError("Failed to load property details. Please try again.");
@@ -145,11 +147,13 @@ const PropertyDetails: React.FC = () => {
 
   // Get highest bid amount for validation
   const highestBid = bids.length > 0 ? bids[0] : null;
-  const minimumBidAmount = highestBid ? highestBid.bidAmount * 1.05 : 0; // 5% more than highest bid
+  const minimumBidAmount = highestBid ? Math.ceil(highestBid.bidAmount * 1.05) : Number(marketValue) / 1e18; // 5% more than highest bid
 
+  console.log("Market Value:", marketValue);
+  console.log("Minimum bid amount:", minimumBidAmount);
   // Check if current bid amount meets minimum requirement
   const currentBidAmount = parseFloat(bidAmount) || 0;
-  const isBidAmountValid = !highestBid || currentBidAmount >= minimumBidAmount;
+  const isBidAmountValid = currentBidAmount >= minimumBidAmount;
 
   const handlePlaceBid = async () => {
     if (!propertyId || !web3State.account || !bidAmount || !property) return;
@@ -157,7 +161,7 @@ const PropertyDetails: React.FC = () => {
     const bidValue = parseFloat(bidAmount);
 
     // Double-check validation (safety measure)
-    if (highestBid && bidValue < minimumBidAmount) {
+    if ( bidValue < minimumBidAmount) {
       return;
     }
 
@@ -254,6 +258,11 @@ const PropertyDetails: React.FC = () => {
     return `${amount.toFixed(4)} ETH`;
   };
 
+  const formatMarketValue = (value: bigint) => {
+    const ethValue = Number(value) / 1e18;
+    return `${ethValue.toFixed(4)} ETH`;
+  };
+
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString();
   };
@@ -262,10 +271,7 @@ const PropertyDetails: React.FC = () => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
 
-  const formatMarketValue = (value: bigint) => {
-    const ethValue = Number(value) / 1e18;
-    return `${ethValue.toFixed(4)} ETH`;
-  };
+ 
 
   const handleCopyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -639,10 +645,9 @@ const PropertyDetails: React.FC = () => {
                                 <label className="text-sm font-medium">
                                   Bid Amount (ETH)
                                 </label>
-                                {highestBid && (
+                                {minimumBidAmount && (
                                   <p className="text-xs text-red-600 dark:text-red-400 mb-1 font-medium">
-                                    Minimum bid: {minimumBidAmount.toFixed(4)}{" "}
-                                    ETH (5% more than current highest)
+                                    Minimum bid: {minimumBidAmount.toString()} ETH (5% more than current highest)
                                   </p>
                                 )}
                                 <Input
@@ -650,7 +655,7 @@ const PropertyDetails: React.FC = () => {
                                   step="0.0001"
                                   placeholder={
                                     highestBid
-                                      ? minimumBidAmount.toFixed(4)
+                                      ? minimumBidAmount.toString()
                                       : "0.0000"
                                   }
                                   value={bidAmount}
@@ -664,7 +669,7 @@ const PropertyDetails: React.FC = () => {
                                 {bidAmount && !isBidAmountValid && (
                                   <p className="text-xs text-red-600 dark:text-red-400 mt-1">
                                     Bid amount must be at least{" "}
-                                    {minimumBidAmount.toFixed(4)} ETH
+                                    {minimumBidAmount.toString()} ETH
                                   </p>
                                 )}
                               </div>
@@ -717,70 +722,49 @@ const PropertyDetails: React.FC = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
+
                   {loadingBids ? (
                     <div className="text-sm text-gray-500">Loading bids...</div>
                   ) : bids.length > 0 ? (
                     <div className="space-y-3">
-                      {/* For owners, show only highest bid when not in transfer */}
-                      {isOwner && !isInTransfer && highestBid && (
-                        <div className="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                          <div className="flex justify-between items-center">
-                            <div>
-                              <div className="font-semibold text-sm">
-                                {formatBidAmount(highestBid.bidAmount)}
-                              </div>
-                              <div className="text-xs text-gray-500">
-                                {formatAddress(highestBid.bidder)}
-                              </div>
-                              <div className="text-xs text-gray-400">
-                                {formatDate(highestBid.createdAt)}
-                              </div>
+                      {/* Show top 3 bids for both owners and non-owners */}
+                      {bids.slice(0, 3).map((bid, index) => (
+                        <div
+                          key={bid._id}
+                          className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
+                        >
+                          <div>
+                            <div className="font-semibold text-sm">
+                              {formatBidAmount(bid.bidAmount)}
                             </div>
-                            <div className="flex items-center gap-2">
+                            <div className="text-xs text-gray-500">
+                              {formatAddress(bid.bidder)}
+                            </div>
+                            <div className="text-xs text-gray-400">
+                              {formatDate(bid.createdAt)}
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {index === 0 && (
                               <Badge variant="secondary" className="text-xs">
-                                Highest Bid
+                                Highest
                               </Badge>
+                            )}
+                            {/* Only owners see Accept button on highest bid and not in transfer */}
+                            {isOwner && !isInTransfer && index === 0 && (
                               <Button
                                 size="sm"
-                                onClick={() => handleAcceptBid(highestBid)}
+                                onClick={() => handleAcceptBid(bid)}
                                 disabled={isAcceptingBid}
                                 className="bg-green-600 hover:bg-green-700 text-white"
                               >
                                 <CheckCircle className="w-3 h-3 mr-1" />
                                 Accept
                               </Button>
-                            </div>
+                            )}
                           </div>
                         </div>
-                      )}
-
-                      {/* For non-owners, show top 3 bids */}
-                      {!isOwner &&
-                        bids.slice(0, 3).map((bid, index) => (
-                          <div
-                            key={bid._id}
-                            className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
-                          >
-                            <div>
-                              <div className="font-semibold text-sm">
-                                {formatBidAmount(bid.bidAmount)}
-                              </div>
-                              <div className="text-xs text-gray-500">
-                                {formatAddress(bid.bidder)}
-                              </div>
-                              <div className="text-xs text-gray-400">
-                                {formatDate(bid.createdAt)}
-                              </div>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              {index === 0 && (
-                                <Badge variant="secondary" className="text-xs">
-                                  Highest
-                                </Badge>
-                              )}
-                            </div>
-                          </div>
-                        ))}
+                      ))}
 
                       {/* Show transfer status if property is in transfer */}
                       {isInTransfer && (
