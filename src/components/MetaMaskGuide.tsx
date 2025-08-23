@@ -28,9 +28,9 @@ const MetaMaskGuide: React.FC = () => {
           <CardTitle className="text-2xl">MetaMask Required</CardTitle>
           <CardDescription>
             <p className="text-gray-600 mb-6">
-            To connect your wallet and access nijerJomi, you need to install
-            MetaMask first. Follow these simple steps:
-          </p>
+              To connect your wallet and access nijerJomi, you need to install
+              MetaMask first. Follow these simple steps:
+            </p>
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
