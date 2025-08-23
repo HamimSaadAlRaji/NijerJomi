@@ -3,13 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { Property } from "../../../types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   MapPin,
   Maximize,
   DollarSign,
   User,
-  Eye,
   AlertTriangle,
 } from "lucide-react";
 
@@ -31,7 +29,10 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   };
 
   return (
-    <Card className="group cursor-pointer transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 overflow-hidden border-0 shadow-lg bg-white dark:bg-gray-900">
+    <Card
+      className="group cursor-pointer transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 overflow-hidden border-0 shadow-lg bg-white dark:bg-gray-900"
+      onClick={handleViewDetails}
+    >
       <div className="relative">
         {/* Property Image */}
         <div className="aspect-video overflow-hidden bg-gray-100">
@@ -90,21 +91,12 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
         </div>
 
         {/* Owner Info */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between">
           <div className="flex items-center text-gray-500 text-xs">
             <User className="w-3 h-3 mr-1" />
             <span>Owner: {formatAddress(property.ownerAddress)}</span>
           </div>
         </div>
-
-        {/* Action Button */}
-        <Button
-          className="w-full bg-black hover:bg-black/90 text-white font-medium py-2 rounded-lg transition-all duration-300 transform group-hover:scale-105"
-          onClick={handleViewDetails}
-        >
-          <Eye className="w-4 h-4 mr-2" />
-          View Details
-        </Button>
       </CardContent>
     </Card>
   );
