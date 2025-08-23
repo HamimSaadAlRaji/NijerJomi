@@ -455,7 +455,7 @@ export const isUserVerified = async (
     // Try to call the isVerifiedUser function if it exists
     const isVerified = await contract.isVerifiedUser(userAddress);
     return isVerified;
-  } catch (error: any) {
+  } catch (error) {
     console.warn(
       "isVerifiedUser function not available in contract:",
       error.message
