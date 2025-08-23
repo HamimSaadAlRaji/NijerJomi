@@ -34,7 +34,7 @@ const Login: React.FC = () => {
             </div>
           </div>
           <CardTitle className="text-2xl font-bold">
-            Welcome to terraTrust
+            Welcome to nijerJomi
           </CardTitle>
           <CardDescription className="text-base">
             Connect your wallet to access secure property management on the

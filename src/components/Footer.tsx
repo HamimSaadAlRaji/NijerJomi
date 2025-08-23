@@ -18,52 +18,18 @@ const Footer = () => {
       <div className="container mx-auto px-4 py-16">
         <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-8">
           {/* Brand */}
-          <div className="space-y-6">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                <Shield className="w-6 h-6 text-primary-foreground" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold">terraTrust</h3>
-                <p className="text-muted-foreground text-sm">
-                  Bangladesh Registry
-                </p>
-              </div>
-            </div>
-            <p className="text-muted-foreground leading-relaxed">
-              Revolutionizing Bangladesh's land registry system through
-              blockchain technology, ensuring transparent, secure, and
-              corruption-free property ownership.
+          <div className="space-y-4">
+            <h3 className="text-xl font-bold">nijerJomi</h3>
+            <p className="text-gray-600 leading-relaxed">
+              Revolutionizing property ownership through secure blockchain
+              technology. Transparent, immutable, and accessible land registry
+              for everyone.
             </p>
             <div className="flex space-x-4">
-              <Button
-                size="sm"
-                variant="ghost"
-                className="text-foreground hover:bg-muted"
-              >
-                <Facebook className="w-4 h-4" />
-              </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                className="text-foreground hover:bg-muted"
-              >
-                <Twitter className="w-4 h-4" />
-              </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                className="text-foreground hover:bg-muted"
-              >
-                <Linkedin className="w-4 h-4" />
-              </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                className="text-foreground hover:bg-muted"
-              >
-                <Github className="w-4 h-4" />
-              </Button>
+              <Facebook className="w-5 h-5 text-muted-foreground hover:text-foreground cursor-pointer transition-colors" />
+              <Twitter className="w-5 h-5 text-muted-foreground hover:text-foreground cursor-pointer transition-colors" />
+              <Linkedin className="w-5 h-5 text-muted-foreground hover:text-foreground cursor-pointer transition-colors" />
+              <Github className="w-5 h-5 text-muted-foreground hover:text-foreground cursor-pointer transition-colors" />
             </div>
           </div>
 
@@ -148,7 +114,7 @@ const Footer = () => {
             <div className="space-y-4">
               <div className="flex items-center space-x-3 text-muted-foreground">
                 <Mail className="w-4 h-4" />
-                <span>support@terratrust.gov.bd</span>
+                <span>support@nijerjomi.gov.bd</span>
               </div>
               <div className="flex items-center space-x-3 text-muted-foreground">
                 <Phone className="w-4 h-4" />
@@ -181,7 +147,7 @@ const Footer = () => {
         <div className="border-t border-border mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-muted-foreground text-sm">
-              © 2025 terraTrust Bangladesh. All rights reserved. | Powered by
+              © 2025 nijerJomi Bangladesh. All rights reserved. | Powered by
               Blockchain Technology
             </div>
             <div className="flex space-x-6 text-sm">

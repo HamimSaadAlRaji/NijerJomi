@@ -27,8 +27,10 @@ const MetaMaskGuide: React.FC = () => {
           </div>
           <CardTitle className="text-2xl">MetaMask Required</CardTitle>
           <CardDescription>
-            To connect your wallet and access terraTrust, you need to install
-            MetaMask browser extension.
+            <p className="text-gray-600 mb-6">
+            To connect your wallet and access nijerJomi, you need to install
+            MetaMask first. Follow these simple steps:
+          </p>
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -47,7 +49,7 @@ const MetaMaskGuide: React.FC = () => {
               <li>1. Click "Install MetaMask" below</li>
               <li>2. Add the extension to your browser</li>
               <li>3. Create or import your wallet</li>
-              <li>4. Return to terraTrust and refresh the page</li>
+              <li>4. Return to nijerJomi and refresh the page</li>
             </ol>
           </div>
 

@@ -17,7 +17,7 @@ const NavbarLogo: React.FC<NavbarLogoProps> = ({ isDarkTheme = false }) => {
             isDarkTheme ? "text-black" : "text-white"
           }`}
         >
-          terraTrust
+          nijerJomi
         </h1>
       </div>
     </Link>
