@@ -1,13 +1,16 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useWalletContext } from "@/contexts/WalletContext";
-import { Property } from "../../types";
+import { Property, TransferRequest } from "../../types";
 import {
   PropertyFilters,
   PropertyGrid,
   FilterOptions,
 } from "@/components/MarketPlace";
-import { getAllProperties } from "@/services/blockchainService";
+import {
+  getAllProperties,
+  getAllTransferRequests,
+} from "@/services/blockchainService";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -17,6 +20,9 @@ const MarketPlace: React.FC = () => {
   const { web3State } = useWalletContext();
   const [searchParams, setSearchParams] = useSearchParams();
   const [properties, setProperties] = useState<Property[]>([]);
+  const [transferRequests, setTransferRequests] = useState<TransferRequest[]>(
+    []
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -74,8 +80,15 @@ const MarketPlace: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      const fetchedProperties = await getAllProperties(web3State.contract);
+
+      // Fetch both properties and transfer requests in parallel
+      const [fetchedProperties, fetchedTransferRequests] = await Promise.all([
+        getAllProperties(web3State.contract),
+        getAllTransferRequests(web3State.contract),
+      ]);
+
       setProperties(fetchedProperties);
+      setTransferRequests(fetchedTransferRequests);
     } catch (err) {
       console.error("Error fetching properties:", err);
       setError("Failed to load properties. Please try again.");
@@ -90,6 +103,15 @@ const MarketPlace: React.FC = () => {
 
     // Only show properties that are for sale
     filtered = filtered.filter((property) => property.isForSale);
+
+    // Filter out properties that have active (non-completed) transfer requests
+    const activeTransferPropertyIds = transferRequests
+      .filter((request) => !request.completed)
+      .map((request) => request.propertyId);
+
+    filtered = filtered.filter(
+      (property) => !activeTransferPropertyIds.includes(property.id)
+    );
 
     // Apply search filter
     if (filters.searchTerm) {
@@ -170,7 +192,7 @@ const MarketPlace: React.FC = () => {
     });
 
     return filtered;
-  }, [properties, filters]);
+  }, [properties, transferRequests, filters]);
 
   // Utility functions
   const formatAddress = (address: string) => {

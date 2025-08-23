@@ -1,12 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useWalletContext } from "@/contexts/WalletContext";
-import { Property } from "../../types";
-import { getPropertyData } from "@/services/blockchainService";
+import { Property, Bid } from "../../types";
+import {
+  getPropertyData,
+  setForSale,
+  requestTransfer,
+} from "@/services/blockchainService";
+import { getBidsByPropertyId, createBid } from "@/services/biddingServices";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   MapPin,
   Maximize,
@@ -23,6 +36,10 @@ import {
   ExternalLink,
   FileText,
   Shield,
+  Gavel,
+  TrendingUp,
+  CheckCircle,
+  XCircle,
 } from "lucide-react";
 
 const PropertyDetails: React.FC = () => {
@@ -34,9 +51,19 @@ const PropertyDetails: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isFavorited, setIsFavorited] = useState(false);
 
+  // Bidding state
+  const [bids, setBids] = useState<Bid[]>([]);
+  const [loadingBids, setLoadingBids] = useState(false);
+  const [bidAmount, setBidAmount] = useState("");
+  const [isPlacingBid, setIsPlacingBid] = useState(false);
+  const [isTogglingForSale, setIsTogglingForSale] = useState(false);
+  const [isAcceptingBid, setIsAcceptingBid] = useState(false);
+  const [showBidDialog, setShowBidDialog] = useState(false);
+
   useEffect(() => {
     if (propertyId && web3State.contract) {
       fetchPropertyDetails();
+      fetchBids();
     }
   }, [propertyId, web3State.contract]);
 
@@ -57,6 +84,104 @@ const PropertyDetails: React.FC = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchBids = async () => {
+    if (!propertyId) return;
+
+    try {
+      setLoadingBids(true);
+      const response = await getBidsByPropertyId(parseInt(propertyId));
+      if (response.success) {
+        setBids(response.data);
+      }
+    } catch (err) {
+      console.error("Error fetching bids:", err);
+    } finally {
+      setLoadingBids(false);
+    }
+  };
+
+  const isOwner =
+    property && web3State.account
+      ? property.ownerAddress.toLowerCase() === web3State.account.toLowerCase()
+      : false;
+
+  const handlePlaceBid = async () => {
+    if (!propertyId || !web3State.account || !bidAmount || !property) return;
+
+    try {
+      setIsPlacingBid(true);
+      const response = await createBid({
+        propertyId: parseInt(propertyId),
+        bidder: web3State.account,
+        bidAmount: parseFloat(bidAmount),
+      });
+
+      if (response.success) {
+        await fetchBids(); // Refresh bids
+        setBidAmount("");
+        setShowBidDialog(false);
+      } else {
+        console.error("Error placing bid:", response.message);
+      }
+    } catch (err) {
+      console.error("Error placing bid:", err);
+    } finally {
+      setIsPlacingBid(false);
+    }
+  };
+
+  const handleToggleForSale = async () => {
+    if (!property || !web3State.contract) return;
+
+    try {
+      setIsTogglingForSale(true);
+      await setForSale(web3State.contract, property.id, !property.isForSale);
+
+      // Refresh property data
+      await fetchPropertyDetails();
+    } catch (err) {
+      console.error("Error toggling for sale status:", err);
+    } finally {
+      setIsTogglingForSale(false);
+    }
+  };
+
+  const handleAcceptBid = async (bid: Bid) => {
+    if (!property || !web3State.contract) return;
+
+    try {
+      setIsAcceptingBid(true);
+
+      // Convert bid amount from ETH to Wei (assuming bid amount is in ETH)
+      const bidAmountInWei = BigInt(Math.floor(bid.bidAmount * 1e18));
+
+      // Create transfer request to the bidder
+      await requestTransfer(
+        web3State.contract,
+        property.id,
+        bid.bidder,
+        bidAmountInWei
+      );
+
+      // Note: Property will now be hidden from marketplace due to active transfer request
+      console.log(
+        "Transfer request created successfully. Property will be hidden from marketplace until transaction completes."
+      );
+    } catch (err) {
+      console.error("Error accepting bid:", err);
+    } finally {
+      setIsAcceptingBid(false);
+    }
+  };
+
+  const formatBidAmount = (amount: number) => {
+    return `${amount.toFixed(4)} ETH`;
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString();
   };
 
   const formatAddress = (address: string) => {
@@ -351,15 +476,150 @@ const PropertyDetails: React.FC = () => {
                   <div className="text-sm text-gray-600 dark:text-gray-400">
                     Market Value
                   </div>
-                  {property.isForSale && (
-                    <Button className="w-full mt-4 bg-black hover:bg-black/90 text-white">
-                      <ShoppingCart className="w-4 h-4 mr-2" />
-                      Make Offer
-                    </Button>
+
+                  {/* Owner controls */}
+                  {isOwner && (
+                    <div className="mt-4 space-y-2">
+                      <Button
+                        className="w-full"
+                        variant="outline"
+                        onClick={handleToggleForSale}
+                        disabled={isTogglingForSale}
+                      >
+                        {isTogglingForSale
+                          ? "Updating..."
+                          : property.isForSale
+                          ? "Remove from Sale"
+                          : "Put on Sale"}
+                      </Button>
+                    </div>
+                  )}
+
+                  {/* Non-owner controls */}
+                  {!isOwner && property.isForSale && web3State.account && (
+                    <Dialog
+                      open={showBidDialog}
+                      onOpenChange={setShowBidDialog}
+                    >
+                      <DialogTrigger asChild>
+                        <Button className="w-full mt-4 bg-black hover:bg-black/90 text-white">
+                          <Gavel className="w-4 h-4 mr-2" />
+                          Place Bid
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>
+                            Place Bid for Property #{property.id}
+                          </DialogTitle>
+                        </DialogHeader>
+                        <div className="space-y-4">
+                          <div>
+                            <label className="text-sm font-medium">
+                              Bid Amount (ETH)
+                            </label>
+                            <Input
+                              type="number"
+                              step="0.0001"
+                              placeholder="0.0000"
+                              value={bidAmount}
+                              onChange={(e) => setBidAmount(e.target.value)}
+                            />
+                          </div>
+                          <div className="flex gap-2">
+                            <Button
+                              onClick={handlePlaceBid}
+                              disabled={isPlacingBid || !bidAmount}
+                              className="flex-1"
+                            >
+                              {isPlacingBid ? "Placing Bid..." : "Place Bid"}
+                            </Button>
+                            <Button
+                              variant="outline"
+                              onClick={() => setShowBidDialog(false)}
+                              className="flex-1"
+                            >
+                              Cancel
+                            </Button>
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  )}
+
+                  {!property.isForSale && (
+                    <div className="mt-4 text-sm text-gray-500">
+                      Property is not for sale
+                    </div>
                   )}
                 </div>
               </CardContent>
             </Card>
+
+            {/* Bidding Section */}
+            {property.isForSale && (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <TrendingUp className="w-5 h-5 mr-2 text-black/80" />
+                    Current Bids {bids.length > 0 && `(${bids.length})`}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {loadingBids ? (
+                    <div className="text-sm text-gray-500">Loading bids...</div>
+                  ) : bids.length > 0 ? (
+                    <div className="space-y-3">
+                      {bids.slice(0, 3).map((bid, index) => (
+                        <div
+                          key={bid._id}
+                          className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
+                        >
+                          <div>
+                            <div className="font-semibold text-sm">
+                              {formatBidAmount(bid.bidAmount)}
+                            </div>
+                            <div className="text-xs text-gray-500">
+                              {formatAddress(bid.bidder)}
+                            </div>
+                            <div className="text-xs text-gray-400">
+                              {formatDate(bid.createdAt)}
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            {index === 0 && (
+                              <Badge variant="secondary" className="text-xs">
+                                Highest
+                              </Badge>
+                            )}
+                            {isOwner && (
+                              <Button
+                                size="sm"
+                                onClick={() => handleAcceptBid(bid)}
+                                disabled={isAcceptingBid}
+                                className="bg-green-600 hover:bg-green-700 text-white"
+                              >
+                                <CheckCircle className="w-3 h-3 mr-1" />
+                                Accept
+                              </Button>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                      {bids.length > 3 && (
+                        <div className="text-xs text-gray-500 text-center pt-2">
+                          +{bids.length - 3} more bids
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="text-sm text-gray-500">
+                      No bids placed yet
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
 
             {/* Status Card */}
             <Card>

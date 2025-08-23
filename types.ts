@@ -61,3 +61,11 @@ export interface ContractEvent {
   transactionHash: string;
   args: Record<string, any>;
 }
+
+export interface Bid {
+  _id: string;
+  propertyId: number;
+  bidder: string;
+  bidAmount: number;
+  createdAt: string;
+}
