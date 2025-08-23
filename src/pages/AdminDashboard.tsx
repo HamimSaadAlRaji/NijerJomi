@@ -124,21 +124,63 @@ const AdminDashboard: React.FC = () => {
           return total + Number(property.marketValue);
         }, 0);
 
-        // Mock user data for now - in real app this would come from API
-        const mockStats: DashboardStats = {
-          totalUsers: 150,
-          pendingVerifications: 12,
-          verifiedUsers: 135,
-          rejectedUsers: 3,
-          totalAdmins: 2,
-          totalRegistrars: 5,
+        // Fetch actual user data from API
+        let userStats = {
+          totalUsers: 0,
+          pendingVerifications: 0,
+          verifiedUsers: 0,
+          rejectedUsers: 0,
+          totalAdmins: 0,
+          totalRegistrars: 0,
+        };
+
+        try {
+          const response = await fetch("http://localhost:3000/api/users", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+
+          const data = await response.json();
+          
+          if (response.ok && data.success) {
+            const allUsers = data.data || [];
+            
+            // Calculate user statistics from actual data
+            userStats.totalUsers = allUsers.length;
+            userStats.pendingVerifications = allUsers.filter(
+              (u: any) => u.status === "pending"
+            ).length;
+            userStats.verifiedUsers = allUsers.filter(
+              (u: any) => u.status === "accepted"
+            ).length;
+            userStats.rejectedUsers = allUsers.filter(
+              (u: any) => u.status === "rejected"
+            ).length;
+            userStats.totalAdmins = allUsers.filter(
+              (u: any) => u.userRole === "ADMIN" || u.userRole === "admin"
+            ).length;
+            userStats.totalRegistrars = allUsers.filter(
+              (u: any) => u.userRole === "REGISTRAR" || u.userRole === "registrar"
+            ).length;
+          } else {
+            console.warn("Failed to fetch users for stats:", data.message);
+          }
+        } catch (error) {
+          console.error("Error fetching user stats:", error);
+          // Continue with empty stats if API fails
+        }
+
+        const dashboardStats: DashboardStats = {
+          ...userStats,
           totalProperties,
           propertiesForSale,
           propertiesWithDisputes,
           totalMarketValue: (totalMarketValue / 1e18).toFixed(2) + " ETH",
         };
 
-        setStats(mockStats);
+        setStats(dashboardStats);
       } catch (error) {
         console.error("Error fetching dashboard stats:", error);
       } finally {
