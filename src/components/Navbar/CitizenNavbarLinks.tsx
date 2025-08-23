@@ -33,6 +33,9 @@ const CitizenNavbarLinks: React.FC<CitizenNavbarLinksProps> = ({
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem asChild>
+            <Link to="/marketplace">MarketPlace</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <Link to="/properties">Browse Properties</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
