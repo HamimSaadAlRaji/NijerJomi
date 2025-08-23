@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Property } from "../../../types";
 import { Database, Search, MapPin, Maximize, Eye } from "lucide-react";
+import PropertyDetailsModal from "./PropertyDetailsModal";
 
 interface PropertyFilter {
   search: string;
@@ -25,6 +26,20 @@ const PropertiesOverview: React.FC<PropertiesOverviewProps> = ({
   formatAddress,
   formatMarketValue,
 }) => {
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(
+    null
+  );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleViewProperty = (property: Property) => {
+    setSelectedProperty(property);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedProperty(null);
+  };
   return (
     <Card className="bg-white border border-gray-200 shadow-sm mb-8">
       <CardHeader className="border-b border-gray-100">
@@ -169,6 +184,7 @@ const PropertiesOverview: React.FC<PropertiesOverviewProps> = ({
                       size="sm"
                       variant="outline"
                       className="text-blue-600 border-blue-600 hover:bg-blue-50"
+                      onClick={() => handleViewProperty(property)}
                     >
                       <Eye className="w-4 h-4 mr-1" />
                       View
@@ -191,6 +207,14 @@ const PropertiesOverview: React.FC<PropertiesOverviewProps> = ({
           </table>
         </div>
       </CardContent>
+
+      <PropertyDetailsModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        property={selectedProperty}
+        formatAddress={formatAddress}
+        formatMarketValue={formatMarketValue}
+      />
     </Card>
   );
 };

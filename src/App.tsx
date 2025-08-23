@@ -41,6 +41,7 @@ const AdminPropertyManagement = lazy(
   () => import("./pages/AdminPropertyManagement")
 );
 const AdminUserManagement = lazy(() => import("./pages/AdminUserManagement"));
+const AdminUserDetails = lazy(() => import("./pages/AdminUserDetails"));
 
 const queryClient = new QueryClient();
 
@@ -157,6 +158,16 @@ const App = () => (
                 <AdminProtectedRoute>
                   <LazyRoute>
                     <AdminUserManagement />
+                  </LazyRoute>
+                </AdminProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/user/:walletAddress"
+              element={
+                <AdminProtectedRoute>
+                  <LazyRoute>
+                    <AdminUserDetails />
                   </LazyRoute>
                 </AdminProtectedRoute>
               }

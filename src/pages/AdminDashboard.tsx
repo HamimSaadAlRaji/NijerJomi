@@ -143,10 +143,10 @@ const AdminDashboard: React.FC = () => {
           });
 
           const data = await response.json();
-          
+
           if (response.ok && data.success) {
             const allUsers = data.data || [];
-            
+
             // Calculate user statistics from actual data
             userStats.totalUsers = allUsers.length;
             userStats.pendingVerifications = allUsers.filter(
@@ -162,7 +162,8 @@ const AdminDashboard: React.FC = () => {
               (u: any) => u.userRole === "ADMIN" || u.userRole === "admin"
             ).length;
             userStats.totalRegistrars = allUsers.filter(
-              (u: any) => u.userRole === "REGISTRAR" || u.userRole === "registrar"
+              (u: any) =>
+                u.userRole === "REGISTRAR" || u.userRole === "registrar"
             ).length;
           } else {
             console.warn("Failed to fetch users for stats:", data.message);

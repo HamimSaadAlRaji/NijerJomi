@@ -4,6 +4,7 @@ export { default as UserManagementStats } from "./UserManagementStats";
 export { default as PropertiesOverview } from "./PropertiesOverview";
 export { default as QuickActions } from "./QuickActions";
 export { default as SystemStatus } from "./SystemStatus";
+export { default as PropertyDetailsModal } from "./PropertyDetailsModal";
 
 // User Management Components
 export * from "./UserManagement";
