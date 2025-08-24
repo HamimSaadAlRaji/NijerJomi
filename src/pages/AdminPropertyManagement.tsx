@@ -220,6 +220,21 @@ const AdminPropertyManagement = () => {
     try {
       setActionLoading("register-property");
 
+      const res = await fetch(`http://localhost:3000/api/user/wallet-by-nid/${ownerAddress}`);
+      const data = await res.json();
+
+      if (!data.success) {
+        toast({
+          title: "Invalid NID",
+          description: "No wallet linked to this NID. Please check again.",
+          variant: "destructive",
+        });
+        setActionLoading(null);
+        return;
+      }
+
+      const owneraddress = data.walletAddress;
+
       // Create metadata object
       const metadata = {
         name: `Property at ${location}`,
@@ -242,7 +257,7 @@ const AdminPropertyManagement = () => {
 
       await registerProperty(
         web3State.contract,
-        ownerAddress,
+        owneraddress,
         tokenURI,
         marketValue
       );
@@ -480,10 +495,10 @@ const AdminPropertyManagement = () => {
                 </DialogHeader>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="owner-address">Owner Address *</Label>
+                    <Label htmlFor="owner-address">Owner NID Number *</Label>
                     <Input
                       id="owner-address"
-                      placeholder="0x..."
+                      placeholder="Enter your NID Number"
                       value={ownerAddress}
                       onChange={(e) => setOwnerAddress(e.target.value)}
                     />
@@ -866,7 +881,7 @@ const AdminPropertyManagement = () => {
                                     }
                                   >
                                     {actionLoading ===
-                                    `approve-${transfer.id}` ? (
+                                      `approve-${transfer.id}` ? (
                                       <Loader2 className="w-4 h-4 animate-spin mr-2" />
                                     ) : (
                                       <CheckCircle className="w-4 h-4 mr-2" />
