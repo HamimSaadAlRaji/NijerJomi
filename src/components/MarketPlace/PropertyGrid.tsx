@@ -9,7 +9,6 @@ interface PropertyGridProps {
   loading: boolean;
   formatAddress: (address: string) => string;
   formatMarketValue: (value: bigint) => string;
-  getHighestBid?: (propertyId: number) => Bid | null;
 }
 
 const PropertyGrid: React.FC<PropertyGridProps> = ({
@@ -17,7 +16,6 @@ const PropertyGrid: React.FC<PropertyGridProps> = ({
   loading,
   formatAddress,
   formatMarketValue,
-  getHighestBid,
 }) => {
   if (loading) {
     return (
@@ -76,7 +74,6 @@ const PropertyGrid: React.FC<PropertyGridProps> = ({
             property={property}
             formatAddress={formatAddress}
             formatMarketValue={formatMarketValue}
-            highestBid={getHighestBid ? getHighestBid(property.id) : null}
             viewMode="list"
           />
         ))}

@@ -1,24 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Property, Bid } from "../../../types";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useWalletContext } from "@/contexts/WalletContext";
+import { getBidsByPropertyId } from "@/services/biddingServices";
 import {
   MapPin,
   Maximize,
-  DollarSign,
   User,
   AlertTriangle,
   Gavel,
+  Landmark,
 } from "lucide-react";
 
 interface PropertyCardProps {
   property: Property;
   formatAddress: (address: string) => string;
   formatMarketValue: (value: bigint) => string;
-  highestBid?: Bid | null;
   viewMode?: "grid" | "list";
 }
 
@@ -26,11 +26,36 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   property,
   formatAddress,
   formatMarketValue,
-  highestBid,
   viewMode = "list",
 }) => {
   const navigate = useNavigate();
   const { web3State } = useWalletContext();
+  const [highestBid, setHighestBid] = useState<Bid | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  // Fetch highest bid for this property
+  useEffect(() => {
+    const fetchHighestBid = async () => {
+      if (!property.id) return;
+
+      try {
+        setLoading(true);
+        const response = await getBidsByPropertyId(property.id);
+        const bid = response.data[0].bidAmount;
+
+        if (response.success && response.data && response.data.length > 0) {
+          // The bids are already sorted by backend with highest first
+          setHighestBid(bid);
+        }
+      } catch (error) {
+        console.error("Error fetching bids for property:", property.id, error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHighestBid();
+  }, [property.id]);
 
   const handleViewDetails = () => {
     navigate(`/property/${property.id}`);
@@ -45,6 +70,18 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   const formatBidAmount = (amount: number) => {
     return `${(amount / 1e18).toFixed(4)} ETH`;
   };
+
+  // Get property type based on area (for land properties)
+  const getPropertyType = () => {
+    const area = property.area || 0;
+    if (area > 10000) return "Large Commercial Land";
+    if (area > 5000) return "Commercial Land";
+    if (area > 2000) return "Residential Plot";
+    if (area > 1000) return "Building Plot";
+    return "Land Plot";
+  };
+
+  const propertyType = getPropertyType();
 
   // List view layout (horizontal)
   return (
@@ -114,7 +151,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
                   {formatMarketValue(property.marketValue)}
                 </div>
                 <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-1">
-                  Property #{property.id.toString()}
+                  {propertyType} #{property.id.toString()}
                 </h3>
                 <div className="flex items-center text-gray-600 dark:text-gray-300 mb-2">
                   <MapPin className="w-5 h-5 mr-1" />
@@ -139,11 +176,16 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
                 </div>
               )}
 
-              {/* Property Features - Inline */}
+              {/* Property Features - Land specific */}
               <div className="flex items-center gap-3 mb-2 text-xs text-gray-600">
-                <span>2 bed</span>
-                <span>2 bath</span>
-                <span>{property.area.toLocaleString()} sq ft</span>
+                <span className="flex items-center gap-1">
+                  <Maximize className="w-3 h-3" />
+                  {property.area.toLocaleString()} sq ft
+                </span>
+                <span className="flex items-center gap-1">
+                  <Landmark className="w-3 h-3" />
+                  Land Plot
+                </span>
               </div>
             </div>
 

@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { MyPropertyCard } from "@/components/Properties";
 import { useWalletContext } from "@/contexts/WalletContext";
 import { UserRole } from "../../types";
 import { isRole } from "@/lib/roleUtils";
@@ -311,14 +312,22 @@ const MyProperties = () => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
 
-  const getPropertyStatusBadge = (property: Property) => {
-    if (property.hasDispute) {
-      return <Badge variant="destructive">Dispute</Badge>;
-    }
-    if (property.isForSale) {
-      return <Badge className="bg-green-100 text-green-800">For Sale</Badge>;
-    }
-    return <Badge variant="secondary">Not For Sale</Badge>;
+  const formatAddress = (address: string) => {
+    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  };
+
+  const formatMarketValue = (value: bigint) => {
+    return `${parseFloat(ethers.formatEther(value)).toFixed(4)} ETH`;
+  };
+
+  const handleEditProperty = (property: Property) => {
+    setSelectedProperty(property);
+    setSaleDialogOpen(true);
+  };
+
+  const handleTransferProperty = (property: Property) => {
+    setSelectedProperty(property);
+    setTransferDialogOpen(true);
   };
 
   const getTransferStatus = (transfer: TransferRequest) => {
@@ -470,90 +479,79 @@ const MyProperties = () => {
           </Card>
         </div>
 
-        {/* Properties List */}
-        {loading ? (
-          <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-8 h-8 animate-spin" />
-            <span className="ml-2">Loading your properties...</span>
+        {/* My Properties Section */}
+        <div className="mb-12">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-foreground">
+              My Properties
+            </h2>
+            <Button
+              onClick={() => navigate("/register")}
+              className="flex items-center"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Register New Property
+            </Button>
           </div>
-        ) : properties.length === 0 ? (
-          <Card>
-            <CardContent className="p-12 text-center">
-              <Home className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">
-                No Properties Found
-              </h3>
-              <p className="text-muted-foreground mb-4">
-                You don't own any properties yet.
-              </p>
-              <Button onClick={() => navigate("/register")}>
-                <Plus className="w-4 h-4 mr-2" />
-                Register Your First Property
-              </Button>
-            </CardContent>
-          </Card>
-        ) : (
-          <div className="space-y-6">
-            {properties.map((property) => (
-              <Card
-                key={property.id}
-                className="overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
-                onClick={() => navigate(`/property/${property.id}`)}
-              >
-                <div className="md:flex">
-                  {/* Property Image */}
-                  <div className="md:w-1/3">
-                    <img
-                      src={property.imageUrl}
-                      alt={property.location}
-                      className="w-full h-64 md:h-full object-cover"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src =
-                          "https://gateway.pinata.cloud/ipfs/bafkreierbmgzqa4h7hpcdsyxjvcjromsamqbffj4z2zwv2dyjk3ttaubcu";
-                      }}
-                    />
-                  </div>
 
-                  {/* Property Details */}
-                  <div className="md:w-2/3 p-6">
-                    <div className="flex items-start justify-between mb-4">
-                      <div>
-                        <h3 className="text-xl font-semibold mb-2">
-                          {property.location}
-                        </h3>
-                        <div className="flex items-center text-gray-600 mb-2">
-                          <MapPin className="w-4 h-4 mr-1" />
-                          <span className="text-sm">
-                            Property ID: {property.id}
-                          </span>
-                        </div>
-                        <div className="text-sm text-gray-600">
-                          Area: {property.area} sq ft
-                        </div>
-                      </div>
-                      {getPropertyStatusBadge(property)}
-                    </div>
+          {loading ? (
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="w-8 h-8 animate-spin" />
+              <span className="ml-2">Loading your properties...</span>
+            </div>
+          ) : properties.length === 0 ? (
+            <Card>
+              <CardContent className="p-12 text-center">
+                <Home className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold mb-2">
+                  No Properties Found
+                </h3>
+                <p className="text-muted-foreground mb-4">
+                  You don't own any properties yet.
+                </p>
+                <Button onClick={() => navigate("/register")}>
+                  <Plus className="w-4 h-4 mr-2" />
+                  Register Your First Property
+                </Button>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="space-y-6">
+              {properties.map((property) => (
+                <MyPropertyCard
+                  key={property.id}
+                  property={property}
+                  formatAddress={formatAddress}
+                  formatMarketValue={formatMarketValue}
+                  onEditClick={handleEditProperty}
+                  onTransferClick={handleTransferProperty}
+                  userVerified={user?.status === "accepted"}
+                />
+              ))}
+            </div>
+          )}
+        </div>
 
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center">
-                        <DollarSign className="w-4 h-4 text-green-600 mr-1" />
-                        <span className="font-semibold text-lg">
-                          {formatEther(property.marketValue)} ETH
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            ))}
+        {/* All Transfers Section */}
+        <div className="mt-12">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-foreground">
+              All Transfers
+            </h2>
           </div>
-        )}
-
-        {/* Transfer Requests Section */}
-        {transferRequests.length > 0 && (
-          <div className="mt-12">
-            <h2 className="text-2xl font-bold mb-6">Transfer Requests</h2>
+          {transferRequests.length === 0 ? (
+            <Card>
+              <CardContent className="p-12 text-center">
+                <Send className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold mb-2">
+                  No Transfer Requests
+                </h3>
+                <p className="text-muted-foreground">
+                  No transfer requests found for your properties.
+                </p>
+              </CardContent>
+            </Card>
+          ) : (
             <div className="space-y-4">
               {transferRequests.map((transfer) => {
                 const property = properties.find(
@@ -595,8 +593,144 @@ const MyProperties = () => {
                 );
               })}
             </div>
-          </div>
-        )}
+          )}
+        </div>
+
+        {/* Dialogs */}
+        {/* Set For Sale Dialog */}
+        <Dialog open={saleDialogOpen} onOpenChange={setSaleDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Manage Property Sale Status</DialogTitle>
+            </DialogHeader>
+            {selectedProperty && (
+              <div className="space-y-4">
+                <div>
+                  <p className="text-sm text-gray-600">
+                    Property: {selectedProperty.location}
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    Current Status:{" "}
+                    {selectedProperty.isForSale ? "For Sale" : "Not For Sale"}
+                  </p>
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() =>
+                      handleSetForSale(!selectedProperty.isForSale)
+                    }
+                    disabled={actionLoading === `sale-${selectedProperty.id}`}
+                    className={
+                      selectedProperty.isForSale
+                        ? "bg-red-600 hover:bg-red-700"
+                        : "bg-green-600 hover:bg-green-700"
+                    }
+                  >
+                    {actionLoading === `sale-${selectedProperty.id}` && (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    )}
+                    {selectedProperty.isForSale
+                      ? "Remove from Sale"
+                      : "Put for Sale"}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setSelectedProperty(null);
+                      setDisputeDialogOpen(true);
+                    }}
+                    disabled={selectedProperty.hasDispute}
+                  >
+                    Report Dispute
+                  </Button>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
+
+        {/* Transfer Request Dialog */}
+        <Dialog open={transferDialogOpen} onOpenChange={setTransferDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Create Transfer Request</DialogTitle>
+            </DialogHeader>
+            {selectedProperty && (
+              <div className="space-y-4">
+                <div>
+                  <p className="text-sm text-gray-600">
+                    Property: {selectedProperty.location}
+                  </p>
+                </div>
+                <div>
+                  <Label htmlFor="buyerAddress">Buyer Address</Label>
+                  <Input
+                    id="buyerAddress"
+                    value={buyerAddress}
+                    onChange={(e) => setBuyerAddress(e.target.value)}
+                    placeholder="0x..."
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="agreedPrice">Agreed Price (ETH)</Label>
+                  <Input
+                    id="agreedPrice"
+                    value={agreedPrice}
+                    onChange={(e) => setAgreedPrice(e.target.value)}
+                    placeholder="1.5"
+                    type="number"
+                    step="0.01"
+                  />
+                </div>
+                <Button
+                  onClick={handleRequestTransfer}
+                  disabled={
+                    actionLoading === `transfer-${selectedProperty.id}` ||
+                    !buyerAddress ||
+                    !agreedPrice
+                  }
+                >
+                  {actionLoading === `transfer-${selectedProperty.id}` && (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  )}
+                  Create Transfer Request
+                </Button>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
+
+        {/* Report Dispute Dialog */}
+        <Dialog open={disputeDialogOpen} onOpenChange={setDisputeDialogOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Report Property Dispute</DialogTitle>
+            </DialogHeader>
+            {selectedProperty && (
+              <div className="space-y-4">
+                <div>
+                  <p className="text-sm text-gray-600">
+                    Property: {selectedProperty.location}
+                  </p>
+                  <p className="text-sm text-red-600 mt-2">
+                    Warning: Reporting a dispute will mark this property as
+                    disputed and may affect its sale status.
+                  </p>
+                </div>
+                <Button
+                  onClick={handleReportDispute}
+                  disabled={actionLoading === `dispute-${selectedProperty.id}`}
+                  variant="destructive"
+                >
+                  {actionLoading === `dispute-${selectedProperty.id}` && (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  )}
+                  Report Dispute
+                </Button>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
