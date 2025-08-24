@@ -703,11 +703,59 @@ const TransferManagement = () => {
 
                 <div>
                   <h4 className="font-semibold mb-2">Approval Status</h4>
+                  <div className="relative flex items-center justify-between w-full mb-6">
+
+                    {/* Step 1 - Seller */}
+                    <div className="flex flex-col items-center z-10">
+                      <div
+                        className={`w-8 h-8 rounded-full flex items-center justify-center 
+          ${selectedTransfer.sellerApproved ? "bg-green-500 text-white" : "bg-gray-300 text-gray-600"}`}
+                      >
+                        1
+                      </div>
+                      <span className="mt-2 text-sm">Seller</span>
+                    </div>
+
+                    {/* Line between Seller -> Buyer */}
+                    <div
+                      className={`flex-1 h-1 mx-2
+        ${selectedTransfer.sellerApproved && selectedTransfer.buyerApproved ? "bg-green-500" : "bg-gray-300"}`}
+                    />
+
+                    {/* Step 2 - Buyer */}
+                    <div className="flex flex-col items-center z-10">
+                      <div
+                        className={`w-8 h-8 rounded-full flex items-center justify-center 
+          ${selectedTransfer.buyerApproved ? "bg-green-500 text-white" : "bg-gray-300 text-gray-600"}`}
+                      >
+                        2
+                      </div>
+                      <span className="mt-2 text-sm">Buyer</span>
+                    </div>
+
+                    {/* Line between Buyer -> Registrar */}
+                    <div
+                      className={`flex-1 h-1 mx-2
+        ${selectedTransfer.buyerApproved && selectedTransfer.registrarApproved ? "bg-green-500" : "bg-gray-300"}`}
+                    />
+
+                    {/* Step 3 - Registrar */}
+                    <div className="flex flex-col items-center z-10">
+                      <div
+                        className={`w-8 h-8 rounded-full flex items-center justify-center 
+          ${selectedTransfer.registrarApproved ? "bg-green-500 text-white" : "bg-gray-300 text-gray-600"}`}
+                      >
+                        3
+                      </div>
+                      <span className="mt-2 text-sm">Registrar</span>
+                    </div>
+                  </div>
+
                   <div className="grid grid-cols-3 gap-2">
                     <div
                       className={`p-3 rounded border text-center ${selectedTransfer.sellerApproved
-                          ? "bg-green-50 border-green-200"
-                          : "bg-red-50 border-red-200"
+                        ? "bg-green-50 border-green-200"
+                        : "bg-red-50 border-red-200"
                         }`}
                     >
                       <div className="font-medium">Seller</div>
@@ -725,8 +773,8 @@ const TransferManagement = () => {
                     </div>
                     <div
                       className={`p-3 rounded border text-center ${selectedTransfer.buyerApproved
-                          ? "bg-green-50 border-green-200"
-                          : "bg-red-50 border-red-200"
+                        ? "bg-green-50 border-green-200"
+                        : "bg-red-50 border-red-200"
                         }`}
                     >
                       <div className="font-medium">Buyer</div>
@@ -744,8 +792,8 @@ const TransferManagement = () => {
                     </div>
                     <div
                       className={`p-3 rounded border text-center ${selectedTransfer.registrarApproved
-                          ? "bg-green-50 border-green-200"
-                          : "bg-red-50 border-red-200"
+                        ? "bg-green-50 border-green-200"
+                        : "bg-red-50 border-red-200"
                         }`}
                     >
                       <div className="font-medium">Registrar</div>
