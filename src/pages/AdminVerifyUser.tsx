@@ -399,14 +399,6 @@ const AdminVerifyUser = () => {
                       </h4>
 
                       <div className="flex items-center">
-                        <Wallet className="w-4 h-4 text-gray-500 mr-2" />
-                        <span className="text-sm text-gray-600">Wallet:</span>
-                        <code className="ml-2 text-xs bg-gray-100 px-2 py-1 rounded">
-                          {truncateAddress(pendingUser.walletAddress)}
-                        </code>
-                      </div>
-
-                      <div className="flex items-center">
                         <User className="w-4 h-4 text-gray-500 mr-2" />
                         <span className="text-sm text-gray-600">Role:</span>
                         <span className="ml-2 font-medium">
