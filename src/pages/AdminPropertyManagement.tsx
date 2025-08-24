@@ -877,7 +877,7 @@ const AdminPropertyManagement = () => {
                                       handleApproveTransfer(transfer.id)
                                     }
                                     disabled={
-                                      actionLoading === `approve-${transfer.id}`
+                                      actionLoading === `approve-${transfer.id}` || !transfer.buyerApproved
                                     }
                                   >
                                     {actionLoading ===

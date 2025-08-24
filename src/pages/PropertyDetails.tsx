@@ -9,6 +9,7 @@ import {
   getAllTransferRequests,
   approveTransferAsBuyer,
 } from "@/services/blockchainService";
+import * as userServices from "@/services/userServices";
 import { getBidsByPropertyId, createBid } from "@/services/biddingServices";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
@@ -271,7 +272,6 @@ const PropertyDetails: React.FC = () => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
 
- 
 
   const handleCopyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -498,15 +498,6 @@ const PropertyDetails: React.FC = () => {
                         <span className="font-mono text-sm bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
                           {formatAddress(property.ownerAddress)}
                         </span>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() =>
-                            handleCopyToClipboard(property.ownerAddress)
-                          }
-                        >
-                          <Copy className="w-4 h-4" />
-                        </Button>
                       </div>
                     </div>
 
@@ -626,7 +617,12 @@ const PropertyDetails: React.FC = () => {
                       {property.isForSale && !isInTransfer && (
                         <Dialog
                           open={showBidDialog}
-                          onOpenChange={setShowBidDialog}
+                          onOpenChange={(open) => {
+                            setShowBidDialog(open);
+                            if (open) {
+                              setBidAmount(minimumBidAmount ? minimumBidAmount.toString() : "");
+                            }
+                          }}
                         >
                           <DialogTrigger asChild>
                             <Button className="w-full bg-black hover:bg-black/90 text-white">
@@ -645,11 +641,11 @@ const PropertyDetails: React.FC = () => {
                                 <label className="text-sm font-medium">
                                   Bid Amount (ETH)
                                 </label>
-                                {minimumBidAmount && (
+                                {/* {minimumBidAmount && (
                                   <p className="text-xs text-red-600 dark:text-red-400 mb-1 font-medium">
                                     Minimum bid: {minimumBidAmount.toString()} ETH (5% more than current highest)
                                   </p>
-                                )}
+                                )} */}
                                 <Input
                                   type="number"
                                   step="0.0001"
@@ -859,7 +855,7 @@ const PropertyDetails: React.FC = () => {
                     Owner Address
                   </label>
                   <div className="font-mono text-sm mt-1 break-all">
-                    {property.ownerAddress}
+                    {formatAddress(property.ownerAddress)}
                   </div>
                 </div>
               </CardContent>
