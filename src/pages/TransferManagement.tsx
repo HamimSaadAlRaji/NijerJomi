@@ -525,7 +525,7 @@ const TransferManagement = () => {
                                   className="bg-green-600 hover:bg-green-700"
                                 >
                                   {actionLoading ===
-                                  `approve-buyer-${transfer.id}` ? (
+                                    `approve-buyer-${transfer.id}` ? (
                                     <Loader2 className="w-4 h-4 animate-spin mr-2" />
                                   ) : (
                                     <CheckCircle className="w-4 h-4 mr-2" />
@@ -679,7 +679,7 @@ const TransferManagement = () => {
                         {selectedTransfer.propertyId}
                       </p>
                       <p>
-                        <strong>Price:</strong>{" "}
+                        <strong>Agreed Price:</strong>{" "}
                         {formatEther(selectedTransfer.agreedPrice)} ETH
                       </p>
                       <p>
@@ -705,31 +705,10 @@ const TransferManagement = () => {
                   <h4 className="font-semibold mb-2">Approval Status</h4>
                   <div className="grid grid-cols-3 gap-2">
                     <div
-                      className={`p-3 rounded border text-center ${
-                        selectedTransfer.buyerApproved
+                      className={`p-3 rounded border text-center ${selectedTransfer.sellerApproved
                           ? "bg-green-50 border-green-200"
                           : "bg-red-50 border-red-200"
-                      }`}
-                    >
-                      <div className="font-medium">Buyer</div>
-                      <div
-                        className={
-                          selectedTransfer.buyerApproved
-                            ? "text-green-600"
-                            : "text-red-600"
-                        }
-                      >
-                        {selectedTransfer.buyerApproved
-                          ? "✓ Approved"
-                          : "⏳ Pending"}
-                      </div>
-                    </div>
-                    <div
-                      className={`p-3 rounded border text-center ${
-                        selectedTransfer.sellerApproved
-                          ? "bg-green-50 border-green-200"
-                          : "bg-red-50 border-red-200"
-                      }`}
+                        }`}
                     >
                       <div className="font-medium">Seller</div>
                       <div
@@ -745,11 +724,29 @@ const TransferManagement = () => {
                       </div>
                     </div>
                     <div
-                      className={`p-3 rounded border text-center ${
-                        selectedTransfer.registrarApproved
+                      className={`p-3 rounded border text-center ${selectedTransfer.buyerApproved
                           ? "bg-green-50 border-green-200"
                           : "bg-red-50 border-red-200"
-                      }`}
+                        }`}
+                    >
+                      <div className="font-medium">Buyer</div>
+                      <div
+                        className={
+                          selectedTransfer.buyerApproved
+                            ? "text-green-600"
+                            : "text-red-600"
+                        }
+                      >
+                        {selectedTransfer.buyerApproved
+                          ? "✓ Approved"
+                          : "⏳ Pending"}
+                      </div>
+                    </div>
+                    <div
+                      className={`p-3 rounded border text-center ${selectedTransfer.registrarApproved
+                          ? "bg-green-50 border-green-200"
+                          : "bg-red-50 border-red-200"
+                        }`}
                     >
                       <div className="font-medium">Registrar</div>
                       <div
