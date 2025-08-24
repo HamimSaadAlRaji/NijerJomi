@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useWalletContext } from "@/contexts/WalletContext";
-import { Property, TransferRequest } from "../../types";
+import { Property, TransferRequest, Bid } from "../../types";
 import {
   PropertyFilters,
   PropertyGrid,
@@ -11,6 +11,7 @@ import {
   getAllProperties,
   getAllTransferRequests,
 } from "@/services/blockchainService";
+import { getAllBids } from "@/services/biddingServices";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -23,9 +24,9 @@ const MarketPlace: React.FC = () => {
   const [transferRequests, setTransferRequests] = useState<TransferRequest[]>(
     []
   );
+  const [bids, setBids] = useState<Bid[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
   // Initialize filters from URL params or defaults
   const [filters, setFilters] = useState<FilterOptions>({
@@ -81,14 +82,23 @@ const MarketPlace: React.FC = () => {
       setLoading(true);
       setError(null);
 
-      // Fetch both properties and transfer requests in parallel
-      const [fetchedProperties, fetchedTransferRequests] = await Promise.all([
-        getAllProperties(web3State.contract),
-        getAllTransferRequests(web3State.contract),
-      ]);
+      // Fetch properties, transfer requests, and bids in parallel
+      const [fetchedProperties, fetchedTransferRequests, bidsResponse] =
+        await Promise.all([
+          getAllProperties(web3State.contract),
+          getAllTransferRequests(web3State.contract),
+          getAllBids(),
+        ]);
 
       setProperties(fetchedProperties);
       setTransferRequests(fetchedTransferRequests);
+
+      // Handle bids response
+      if (bidsResponse.success && bidsResponse.data) {
+        setBids(bidsResponse.data);
+      } else {
+        setBids([]);
+      }
     } catch (err) {
       console.error("Error fetching properties:", err);
       setError("Failed to load properties. Please try again.");
@@ -204,6 +214,14 @@ const MarketPlace: React.FC = () => {
     return `${ethValue.toFixed(4)} ETH`;
   };
 
+  const getHighestBid = (propertyId: number): Bid | null => {
+    const propertyBids = bids.filter((bid) => bid.propertyId === propertyId);
+    if (propertyBids.length === 0) return null;
+
+    // Sort by bid amount descending and return the highest
+    return propertyBids.sort((a, b) => b.bidAmount - a.bidAmount)[0];
+  };
+
   const handleFiltersChange = (newFilters: FilterOptions) => {
     setFilters(newFilters);
   };
@@ -249,7 +267,7 @@ const MarketPlace: React.FC = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="bg-black text-white py-16">
+      {/* <section className="bg-black text-white py-16">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl lg:text-6xl font-bold mb-6">
@@ -261,10 +279,10 @@ const MarketPlace: React.FC = () => {
             </p>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-24">
         <div className="space-y-8">
           {/* Filters Section */}
           <PropertyFilters
@@ -281,8 +299,7 @@ const MarketPlace: React.FC = () => {
             loading={loading}
             formatAddress={formatAddress}
             formatMarketValue={formatMarketValue}
-            viewMode={viewMode}
-            onViewModeChange={setViewMode}
+            getHighestBid={getHighestBid}
           />
         </div>
       </div>
