@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -85,6 +86,8 @@ const TransferManagement = () => {
   const [selectedTransfer, setSelectedTransfer] =
     useState<TransferRequest | null>(null);
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
+  const [nidData, setNidData] = useState({ seller: null, buyer: null });
+
 
   // Check user access
   useEffect(() => {
@@ -92,7 +95,46 @@ const TransferManagement = () => {
       navigate("/connect-wallet");
       return;
     }
-  }, [isConnected, user, web3State.account, navigate]);
+   const fetchNid = async () => {
+    try {
+      // Seller NID
+      if (selectedTransfer?.seller) {
+        const sellerRes = await fetch(
+          `http://localhost:3000/api/user/nid-by-wallet/${selectedTransfer.seller.toLowerCase()}`
+        );
+        console.log("Seller NID Response:", selectedTransfer.seller);
+        const sellerData = await sellerRes.json();
+        console.log("Seller NID Response:", sellerData);
+
+        if (sellerRes.ok && sellerData.success) {
+          setNidData((prev) => ({
+            ...prev,
+            seller: sellerData.nidNumber,
+          }));
+        }
+      }
+
+      // Buyer NID
+      if (selectedTransfer?.buyer) {
+        const buyerRes = await fetch(
+          `http://localhost:3000/api/user/nid-by-wallet/${selectedTransfer.buyer.toLowerCase()}`
+        );
+        console.log("Buyer NID Response:", selectedTransfer.buyer);
+        const buyerData = await buyerRes.json();
+
+        if (buyerRes.ok && buyerData.success) {
+          setNidData((prev) => ({
+            ...prev,
+            buyer: buyerData.nidNumber,
+          }));
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching NID:", error);
+    }
+  };
+    fetchNid();
+  }, [isConnected, user, web3State.account, navigate, selectedTransfer]);
 
   // Fetch data
   const fetchData = async () => {
@@ -525,7 +567,7 @@ const TransferManagement = () => {
                                   className="bg-green-600 hover:bg-green-700"
                                 >
                                   {actionLoading ===
-                                  `approve-buyer-${transfer.id}` ? (
+                                    `approve-buyer-${transfer.id}` ? (
                                     <Loader2 className="w-4 h-4 animate-spin mr-2" />
                                   ) : (
                                     <CheckCircle className="w-4 h-4 mr-2" />
@@ -679,7 +721,7 @@ const TransferManagement = () => {
                         {selectedTransfer.propertyId}
                       </p>
                       <p>
-                        <strong>Price:</strong>{" "}
+                        <strong>Agreed Price:</strong>{" "}
                         {formatEther(selectedTransfer.agreedPrice)} ETH
                       </p>
                       <p>
@@ -692,10 +734,10 @@ const TransferManagement = () => {
                     <h4 className="font-semibold mb-2">Parties</h4>
                     <div className="space-y-1 text-sm">
                       <p>
-                        <strong>Seller:</strong> {selectedTransfer.seller}
+                        <strong>Seller NID:</strong> {nidData.seller || "Loading..."}
                       </p>
                       <p>
-                        <strong>Buyer:</strong> {selectedTransfer.buyer}
+                        <strong>Buyer NID:</strong> {nidData.buyer || "Loading..."}
                       </p>
                     </div>
                   </div>
@@ -703,33 +745,60 @@ const TransferManagement = () => {
 
                 <div>
                   <h4 className="font-semibold mb-2">Approval Status</h4>
+                  <div className="relative flex items-center justify-between w-full mb-6">
+
+                    {/* Step 1 - Seller */}
+                    <div className="flex flex-col items-center z-10">
+                      <div
+                        className={`w-8 h-8 rounded-full flex items-center justify-center 
+          ${selectedTransfer.sellerApproved ? "bg-green-500 text-white" : "bg-gray-300 text-gray-600"}`}
+                      >
+                        1
+                      </div>
+                      <span className="mt-2 text-sm">Seller</span>
+                    </div>
+
+                    {/* Line between Seller -> Buyer */}
+                    <div
+                      className={`flex-1 h-1 mx-2
+        ${selectedTransfer.sellerApproved && selectedTransfer.buyerApproved ? "bg-green-500" : "bg-gray-300"}`}
+                    />
+
+                    {/* Step 2 - Buyer */}
+                    <div className="flex flex-col items-center z-10">
+                      <div
+                        className={`w-8 h-8 rounded-full flex items-center justify-center 
+          ${selectedTransfer.buyerApproved ? "bg-green-500 text-white" : "bg-gray-300 text-gray-600"}`}
+                      >
+                        2
+                      </div>
+                      <span className="mt-2 text-sm">Buyer</span>
+                    </div>
+
+                    {/* Line between Buyer -> Registrar */}
+                    <div
+                      className={`flex-1 h-1 mx-2
+        ${selectedTransfer.buyerApproved && selectedTransfer.registrarApproved ? "bg-green-500" : "bg-gray-300"}`}
+                    />
+
+                    {/* Step 3 - Registrar */}
+                    <div className="flex flex-col items-center z-10">
+                      <div
+                        className={`w-8 h-8 rounded-full flex items-center justify-center 
+          ${selectedTransfer.registrarApproved ? "bg-green-500 text-white" : "bg-gray-300 text-gray-600"}`}
+                      >
+                        3
+                      </div>
+                      <span className="mt-2 text-sm">Registrar</span>
+                    </div>
+                  </div>
+
                   <div className="grid grid-cols-3 gap-2">
                     <div
-                      className={`p-3 rounded border text-center ${
-                        selectedTransfer.buyerApproved
-                          ? "bg-green-50 border-green-200"
-                          : "bg-red-50 border-red-200"
-                      }`}
-                    >
-                      <div className="font-medium">Buyer</div>
-                      <div
-                        className={
-                          selectedTransfer.buyerApproved
-                            ? "text-green-600"
-                            : "text-red-600"
-                        }
-                      >
-                        {selectedTransfer.buyerApproved
-                          ? "✓ Approved"
-                          : "⏳ Pending"}
-                      </div>
-                    </div>
-                    <div
-                      className={`p-3 rounded border text-center ${
-                        selectedTransfer.sellerApproved
-                          ? "bg-green-50 border-green-200"
-                          : "bg-red-50 border-red-200"
-                      }`}
+                      className={`p-3 rounded border text-center ${selectedTransfer.sellerApproved
+                        ? "bg-green-50 border-green-200"
+                        : "bg-red-50 border-red-200"
+                        }`}
                     >
                       <div className="font-medium">Seller</div>
                       <div
@@ -745,11 +814,29 @@ const TransferManagement = () => {
                       </div>
                     </div>
                     <div
-                      className={`p-3 rounded border text-center ${
-                        selectedTransfer.registrarApproved
-                          ? "bg-green-50 border-green-200"
-                          : "bg-red-50 border-red-200"
-                      }`}
+                      className={`p-3 rounded border text-center ${selectedTransfer.buyerApproved
+                        ? "bg-green-50 border-green-200"
+                        : "bg-red-50 border-red-200"
+                        }`}
+                    >
+                      <div className="font-medium">Buyer</div>
+                      <div
+                        className={
+                          selectedTransfer.buyerApproved
+                            ? "text-green-600"
+                            : "text-red-600"
+                        }
+                      >
+                        {selectedTransfer.buyerApproved
+                          ? "✓ Approved"
+                          : "⏳ Pending"}
+                      </div>
+                    </div>
+                    <div
+                      className={`p-3 rounded border text-center ${selectedTransfer.registrarApproved
+                        ? "bg-green-50 border-green-200"
+                        : "bg-red-50 border-red-200"
+                        }`}
                     >
                       <div className="font-medium">Registrar</div>
                       <div
