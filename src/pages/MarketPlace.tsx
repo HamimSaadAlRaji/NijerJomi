@@ -25,7 +25,6 @@ const MarketPlace: React.FC = () => {
   );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
   // Initialize filters from URL params or defaults
   const [filters, setFilters] = useState<FilterOptions>({
@@ -81,7 +80,7 @@ const MarketPlace: React.FC = () => {
       setLoading(true);
       setError(null);
 
-      // Fetch both properties and transfer requests in parallel
+      // Fetch properties and transfer requests in parallel
       const [fetchedProperties, fetchedTransferRequests] = await Promise.all([
         getAllProperties(web3State.contract),
         getAllTransferRequests(web3State.contract),
@@ -249,7 +248,7 @@ const MarketPlace: React.FC = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="bg-black text-white py-16">
+      {/* <section className="bg-black text-white py-16">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-4xl lg:text-6xl font-bold mb-6">
@@ -261,10 +260,10 @@ const MarketPlace: React.FC = () => {
             </p>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-24">
         <div className="space-y-8">
           {/* Filters Section */}
           <PropertyFilters
@@ -281,8 +280,6 @@ const MarketPlace: React.FC = () => {
             loading={loading}
             formatAddress={formatAddress}
             formatMarketValue={formatMarketValue}
-            viewMode={viewMode}
-            onViewModeChange={setViewMode}
           />
         </div>
       </div>

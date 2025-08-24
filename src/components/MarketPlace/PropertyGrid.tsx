@@ -1,16 +1,14 @@
 import React from "react";
-import { Property } from "../../../types";
+import { Property, Bid } from "../../../types";
 import PropertyCard from "./PropertyCard";
 import { Button } from "@/components/ui/button";
-import { Grid3X3, List, ArrowUpDown } from "lucide-react";
+import { Grid3X3, ArrowUpDown } from "lucide-react";
 
 interface PropertyGridProps {
   properties: Property[];
   loading: boolean;
   formatAddress: (address: string) => string;
   formatMarketValue: (value: bigint) => string;
-  viewMode?: "grid" | "list";
-  onViewModeChange?: (mode: "grid" | "list") => void;
 }
 
 const PropertyGrid: React.FC<PropertyGridProps> = ({
@@ -18,23 +16,22 @@ const PropertyGrid: React.FC<PropertyGridProps> = ({
   loading,
   formatAddress,
   formatMarketValue,
-  viewMode = "grid",
-  onViewModeChange,
 }) => {
   if (loading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="space-y-4">
         {Array.from({ length: 6 }).map((_, index) => (
           <div
             key={index}
-            className="bg-white dark:bg-gray-900 rounded-xl shadow-lg overflow-hidden animate-pulse"
+            className="bg-white dark:bg-gray-900 rounded-xl shadow-lg overflow-hidden animate-pulse flex"
           >
-            <div className="aspect-video bg-gray-200 dark:bg-gray-700"></div>
-            <div className="p-6 space-y-3">
-              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
-              <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+            <div className="w-[450px] h-32 bg-gray-200 dark:bg-gray-700"></div>
+            <div className="flex-1 p-3 space-y-2">
+              <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
               <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-2/3"></div>
-              <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded mt-4"></div>
+              <div className="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/3"></div>
+              <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+              <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-20"></div>
             </div>
           </div>
         ))}
@@ -61,51 +58,23 @@ const PropertyGrid: React.FC<PropertyGridProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* View Mode Toggle */}
-      {onViewModeChange && (
-        <div className="flex items-center justify-between">
-          <div className="text-sm text-gray-600 dark:text-gray-400">
-            {properties.length}{" "}
-            {properties.length === 1 ? "property" : "properties"} found
-          </div>
-
-          <div className="flex items-center gap-2">
-            <Button
-              variant={viewMode === "grid" ? "default" : "outline"}
-              size="sm"
-              onClick={() => onViewModeChange("grid")}
-              className="flex items-center gap-2"
-            >
-              <Grid3X3 className="w-4 h-4" />
-              Grid
-            </Button>
-            <Button
-              variant={viewMode === "list" ? "default" : "outline"}
-              size="sm"
-              onClick={() => onViewModeChange("list")}
-              className="flex items-center gap-2"
-            >
-              <List className="w-4 h-4" />
-              List
-            </Button>
-          </div>
+      {/* Results Count */}
+      <div className="flex items-center justify-between">
+        <div className="text-sm text-gray-600 dark:text-gray-400">
+          {properties.length}{" "}
+          {properties.length === 1 ? "property" : "properties"} found
         </div>
-      )}
+      </div>
 
-      {/* Properties Grid */}
-      <div
-        className={
-          viewMode === "grid"
-            ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-            : "space-y-4"
-        }
-      >
+      {/* Properties List */}
+      <div className="space-y-4">
         {properties.map((property) => (
           <PropertyCard
             key={property.id.toString()}
             property={property}
             formatAddress={formatAddress}
             formatMarketValue={formatMarketValue}
+            viewMode="list"
           />
         ))}
       </div>
