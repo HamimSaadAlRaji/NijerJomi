@@ -498,15 +498,6 @@ const PropertyDetails: React.FC = () => {
                         <span className="font-mono text-sm bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">
                           {formatAddress(property.ownerAddress)}
                         </span>
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          onClick={() =>
-                            handleCopyToClipboard(property.ownerAddress)
-                          }
-                        >
-                          <Copy className="w-4 h-4" />
-                        </Button>
                       </div>
                     </div>
 
@@ -864,7 +855,7 @@ const PropertyDetails: React.FC = () => {
                     Owner Address
                   </label>
                   <div className="font-mono text-sm mt-1 break-all">
-                    {property.ownerAddress}
+                    {formatAddress(property.ownerAddress)}
                   </div>
                 </div>
               </CardContent>
