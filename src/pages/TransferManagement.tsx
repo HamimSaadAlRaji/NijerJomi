@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -85,6 +86,8 @@ const TransferManagement = () => {
   const [selectedTransfer, setSelectedTransfer] =
     useState<TransferRequest | null>(null);
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
+  const [nidData, setNidData] = useState({ seller: null, buyer: null });
+
 
   // Check user access
   useEffect(() => {
@@ -92,7 +95,46 @@ const TransferManagement = () => {
       navigate("/connect-wallet");
       return;
     }
-  }, [isConnected, user, web3State.account, navigate]);
+   const fetchNid = async () => {
+    try {
+      // Seller NID
+      if (selectedTransfer?.seller) {
+        const sellerRes = await fetch(
+          `http://localhost:3000/api/user/nid-by-wallet/${selectedTransfer.seller.toLowerCase()}`
+        );
+        console.log("Seller NID Response:", selectedTransfer.seller);
+        const sellerData = await sellerRes.json();
+        console.log("Seller NID Response:", sellerData);
+
+        if (sellerRes.ok && sellerData.success) {
+          setNidData((prev) => ({
+            ...prev,
+            seller: sellerData.nidNumber,
+          }));
+        }
+      }
+
+      // Buyer NID
+      if (selectedTransfer?.buyer) {
+        const buyerRes = await fetch(
+          `http://localhost:3000/api/user/nid-by-wallet/${selectedTransfer.buyer.toLowerCase()}`
+        );
+        console.log("Buyer NID Response:", selectedTransfer.buyer);
+        const buyerData = await buyerRes.json();
+
+        if (buyerRes.ok && buyerData.success) {
+          setNidData((prev) => ({
+            ...prev,
+            buyer: buyerData.nidNumber,
+          }));
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching NID:", error);
+    }
+  };
+    fetchNid();
+  }, [isConnected, user, web3State.account, navigate, selectedTransfer]);
 
   // Fetch data
   const fetchData = async () => {
@@ -692,10 +734,10 @@ const TransferManagement = () => {
                     <h4 className="font-semibold mb-2">Parties</h4>
                     <div className="space-y-1 text-sm">
                       <p>
-                        <strong>Seller:</strong> {selectedTransfer.seller}
+                        <strong>Seller NID:</strong> {nidData.seller || "Loading..."}
                       </p>
                       <p>
-                        <strong>Buyer:</strong> {selectedTransfer.buyer}
+                        <strong>Buyer NID:</strong> {nidData.buyer || "Loading..."}
                       </p>
                     </div>
                   </div>
