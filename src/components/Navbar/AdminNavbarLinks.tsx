@@ -41,16 +41,16 @@ const AdminNavbarLinks: React.FC<AdminNavbarLinksProps> = ({
             <Link to="/admin/dashboard">Dashboard</Link>
           </DropdownMenuItem>
 
-          {/* Only show these for ADMIN users */}
+          {/* Verify Users - accessible to both ADMIN and REGISTRAR */}
+          <DropdownMenuItem asChild>
+            <Link to="/admin/verify-user">Verify Users</Link>
+          </DropdownMenuItem>
+
+          {/* Only show role management for ADMIN users */}
           {isAdmin && (
-            <>
-              <DropdownMenuItem asChild>
-                <Link to="/admin/verify-user">Verify Users</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/admin/set-user-role">Manage Roles</Link>
-              </DropdownMenuItem>
-            </>
+            <DropdownMenuItem asChild>
+              <Link to="/admin/set-user-role">Manage Roles</Link>
+            </DropdownMenuItem>
           )}
 
           <DropdownMenuItem asChild>

@@ -83,24 +83,24 @@ const MobileNavbar: React.FC<MobileNavbarProps> = ({
                     : "Registrar Dashboard"}
                 </Link>
 
-                {/* Only show these links for ADMIN, not REGISTRAR */}
+                {/* Verify Users - accessible to both ADMIN and REGISTRAR */}
+                <Link
+                  to="/admin/verify-user"
+                  className="text-xl font-medium text-foreground hover:text-primary transition-colors"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Verify Users
+                </Link>
+
+                {/* Only show role management for ADMIN, not REGISTRAR */}
                 {isRole(user?.userRole || "", UserRole.ADMIN) && (
-                  <>
-                    <Link
-                      to="/admin/verify-user"
-                      className="text-xl font-medium text-foreground hover:text-primary transition-colors"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      Verify Users
-                    </Link>
-                    <Link
-                      to="/admin/set-user-role"
-                      className="text-xl font-medium text-foreground hover:text-primary transition-colors"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      Manage Roles
-                    </Link>
-                  </>
+                  <Link
+                    to="/admin/set-user-role"
+                    className="text-xl font-medium text-foreground hover:text-primary transition-colors"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Manage Roles
+                  </Link>
                 )}
 
                 <Link
