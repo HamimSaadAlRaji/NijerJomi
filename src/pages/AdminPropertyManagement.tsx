@@ -78,18 +78,66 @@ const AdminPropertyManagement = () => {
 
   // State
   const [properties, setProperties] = useState<Property[]>([]);
-  const [transferRequests, setTransferRequests] = useState<TransferRequest[]>(
-    []
-  );
+  const [transferRequests, setTransferRequests] = useState<TransferRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
 
   // Dialog states
   const [registerDialogOpen, setRegisterDialogOpen] = useState(false);
-  const [transferDialogOpen, setTransferDialogOpen] = useState(false);
-  const [selectedTransfer, setSelectedTransfer] =
-    useState<TransferRequest | null>(null);
+  // Transfer details dialog states
+  const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
+  const [selectedTransfer, setSelectedTransfer] = useState<TransferRequest | null>(null);
+  const [nidData, setNidData] = useState<{ seller: string | null; buyer: string | null }>({ seller: null, buyer: null });
+  // Fetch NID for selected transfer
+  useEffect(() => {
+    const fetchNid = async () => {
+      try {
+        // Seller NID
+        if (selectedTransfer?.seller) {
+          const sellerRes = await fetch(
+            `http://localhost:3000/api/user/nid-by-wallet/${selectedTransfer.seller.toLowerCase()}`
+          );
+          const sellerData = await sellerRes.json();
+          if (sellerRes.ok && sellerData.success) {
+            setNidData((prev) => ({ ...prev, seller: sellerData.nidNumber }));
+          }
+        }
+        // Buyer NID
+        if (selectedTransfer?.buyer) {
+          const buyerRes = await fetch(
+            `http://localhost:3000/api/user/nid-by-wallet/${selectedTransfer.buyer.toLowerCase()}`
+          );
+          const buyerData = await buyerRes.json();
+          if (buyerRes.ok && buyerData.success) {
+            setNidData((prev) => ({ ...prev, buyer: buyerData.nidNumber }));
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching NID:", error);
+      }
+    };
+    if (selectedTransfer) fetchNid();
+  }, [selectedTransfer]);
+
+  // Show transfer details dialog
+  const showTransferDetails = async (transferId: number) => {
+    if (!web3State.contract) return;
+    try {
+      const transfer = await getTransferRequest(web3State.contract, transferId);
+      if (transfer) {
+        setSelectedTransfer(transfer);
+        setDetailsDialogOpen(true);
+      }
+    } catch (error) {
+      console.error("Error fetching transfer details:", error);
+      toast({
+        title: "Error",
+        description: "Failed to load transfer details.",
+        variant: "destructive",
+      });
+    }
+  };
 
   // Form states for property registration
   const [ownerAddress, setOwnerAddress] = useState("");
@@ -771,137 +819,198 @@ const AdminPropertyManagement = () => {
           </TabsContent>
 
           <TabsContent value="transfers" className="space-y-4">
-            {loading ? (
-              <div className="flex items-center justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin" />
-                <span className="ml-2">Loading transfer requests...</span>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {transferRequests.length === 0 ? (
-                  <div className="text-center py-12">
-                    <p className="text-gray-500">No transfer requests found.</p>
-                    <p className="text-xs text-gray-400 mt-2">
-                      Contract:{" "}
-                      {web3State.contract ? "Connected" : "Not connected"} |
-                      Role: {user?.blockchainRole || user?.userRole || "None"}
-                    </p>
+  {loading ? (
+    <div className="flex items-center justify-center py-12">
+      <Loader2 className="w-8 h-8 animate-spin" />
+      <span className="ml-2">Loading transfer requests...</span>
+    </div>
+  ) : (
+    <div className="space-y-4">
+      {transferRequests.length === 0 ? (
+        <div className="text-center py-12">
+          <p className="text-gray-500">No transfer requests found.</p>
+          <p className="text-xs text-gray-400 mt-2">
+            Contract: {web3State.contract ? "Connected" : "Not connected"} | Role: {user?.blockchainRole || user?.userRole || "None"}
+          </p>
+        </div>
+      ) : (
+        [...transferRequests]
+          .sort((a, b) => {
+            if (a.completed === b.completed) return 0;
+            return a.completed ? 1 : -1;
+          })
+          .map((transfer) => {
+            const property = properties.find((p) => p.id === transfer.propertyId);
+            const status = getTransferStatus(transfer);
+            return (
+              <Card key={transfer.id}>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-2">
+                      <h4 className="font-semibold">
+                        Transfer #{transfer.id} - {property?.location || `Property #${transfer.propertyId}`}
+                      </h4>
+                      <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                        <div>
+                          <p><strong>Seller:</strong> {truncateAddress(transfer.seller)}</p>
+                          <p><strong>Buyer:</strong> {truncateAddress(transfer.buyer)}</p>
+                        </div>
+                        <div>
+                          <p><strong>Price:</strong> {formatEther(transfer.agreedPrice)} ETH</p>
+                          <p><strong>Property ID:</strong> {transfer.propertyId}</p>
+                        </div>
+                      </div>
+                      <div className="flex space-x-2 text-xs">
+                        <Badge variant={transfer.buyerApproved ? "default" : "secondary"}>
+                          Buyer: {transfer.buyerApproved ? "Approved" : "Pending"}
+                        </Badge>
+                        <Badge variant={transfer.sellerApproved ? "default" : "secondary"}>
+                          Seller: {transfer.sellerApproved ? "Approved" : "Pending"}
+                        </Badge>
+                        <Badge variant={transfer.registrarApproved ? "default" : "secondary"}>
+                          Registrar: {transfer.registrarApproved ? "Approved" : "Pending"}
+                        </Badge>
+                      </div>
+                    </div>
+                    <div className="flex flex-col items-end space-y-2">
+                      <Badge className={getStatusColor(status)}>{status}</Badge>
+                      <div className="flex space-x-2">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={() => showTransferDetails(transfer.id)}
+                        >
+                          <Eye className="w-4 h-4 mr-2" />
+                          Details
+                        </Button>
+                        {!transfer.registrarApproved && !transfer.completed && (
+                          <Button
+                            size="sm"
+                            onClick={() => handleApproveTransfer(transfer)}
+                            disabled={actionLoading === `approve-${transfer.id}` || !transfer.buyerApproved}
+                          >
+                            {actionLoading === `approve-${transfer.id}` ? (
+                              <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                            ) : (
+                              <CheckCircle className="w-4 h-4 mr-2" />
+                            )}
+                            Approve as Registrar
+                          </Button>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                ) : (
-                  transferRequests.map((transfer) => {
-                    const property = properties.find(
-                      (p) => p.id === transfer.propertyId
-                    );
-                    const status = getTransferStatus(transfer);
-
-                    return (
-                      <Card key={transfer.id}>
-                        <CardContent className="p-6">
-                          <div className="flex items-center justify-between">
-                            <div className="space-y-2">
-                              <h4 className="font-semibold">
-                                Transfer #{transfer.id} -{" "}
-                                {property?.location ||
-                                  `Property #${transfer.propertyId}`}
-                              </h4>
-                              <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
-                                <div>
-                                  <p>
-                                    <strong>Seller:</strong>{" "}
-                                    {truncateAddress(transfer.seller)}
-                                  </p>
-                                  <p>
-                                    <strong>Buyer:</strong>{" "}
-                                    {truncateAddress(transfer.buyer)}
-                                  </p>
-                                </div>
-                                <div>
-                                  <p>
-                                    <strong>Price:</strong>{" "}
-                                    {formatEther(transfer.agreedPrice)} ETH
-                                  </p>
-                                  <p>
-                                    <strong>Property ID:</strong>{" "}
-                                    {transfer.propertyId}
-                                  </p>
-                                </div>
-                              </div>
-                              <div className="flex space-x-2 text-xs">
-                                <Badge
-                                  variant={
-                                    transfer.buyerApproved
-                                      ? "default"
-                                      : "secondary"
-                                  }
-                                >
-                                  Buyer:{" "}
-                                  {transfer.buyerApproved
-                                    ? "Approved"
-                                    : "Pending"}
-                                </Badge>
-                                <Badge
-                                  variant={
-                                    transfer.sellerApproved
-                                      ? "default"
-                                      : "secondary"
-                                  }
-                                >
-                                  Seller:{" "}
-                                  {transfer.sellerApproved
-                                    ? "Approved"
-                                    : "Pending"}
-                                </Badge>
-                                <Badge
-                                  variant={
-                                    transfer.registrarApproved
-                                      ? "default"
-                                      : "secondary"
-                                  }
-                                >
-                                  Registrar:{" "}
-                                  {transfer.registrarApproved
-                                    ? "Approved"
-                                    : "Pending"}
-                                </Badge>
-                              </div>
+                </CardContent>
+              </Card>
+            );
+          })
+      )}
+    </div>
+  )}
+</TabsContent>
+        </Tabs>
+        {/* Transfer Details Dialog */}
+        <Dialog open={detailsDialogOpen} onOpenChange={setDetailsDialogOpen}>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>Transfer Request Details</DialogTitle>
+            </DialogHeader>
+            {selectedTransfer && (
+              <div className="space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <h4 className="font-semibold mb-2">Transfer Information</h4>
+                    <div className="space-y-1 text-sm">
+                      <p><strong>Transfer ID:</strong> {selectedTransfer.id}</p>
+                      <p><strong>Property ID:</strong> {selectedTransfer.propertyId}</p>
+                      <p><strong>Agreed Price:</strong> {formatEther(selectedTransfer.agreedPrice)} ETH</p>
+                      <p><strong>Status:</strong> {getTransferStatus(selectedTransfer)}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold mb-2">Parties</h4>
+                    <div className="space-y-1 text-sm">
+                      <p><strong>Seller NID:</strong> {nidData.seller || "Loading..."}</p>
+                      <p><strong>Buyer NID:</strong> {nidData.buyer || "Loading..."}</p>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-2">Approval Status</h4>
+                  <div className="relative flex items-center justify-between w-full mb-6">
+                    {/* Step 1 - Seller */}
+                    <div className="flex flex-col items-center z-10">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${selectedTransfer.sellerApproved ? "bg-green-500 text-white" : "bg-gray-300 text-gray-600"}`}>
+                        1
+                      </div>
+                      <span className="mt-2 text-sm">Seller</span>
+                    </div>
+                    {/* Line between Seller -> Buyer */}
+                    <div className={`flex-1 h-1 mx-2 ${selectedTransfer.sellerApproved && selectedTransfer.buyerApproved ? "bg-green-500" : "bg-gray-300"}`} />
+                    {/* Step 2 - Buyer */}
+                    <div className="flex flex-col items-center z-10">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${selectedTransfer.buyerApproved ? "bg-green-500 text-white" : "bg-gray-300 text-gray-600"}`}>
+                        2
+                      </div>
+                      <span className="mt-2 text-sm">Buyer</span>
+                    </div>
+                    {/* Line between Buyer -> Registrar */}
+                    <div className={`flex-1 h-1 mx-2 ${selectedTransfer.buyerApproved && selectedTransfer.registrarApproved ? "bg-green-500" : "bg-gray-300"}`} />
+                    {/* Step 3 - Registrar */}
+                    <div className="flex flex-col items-center z-10">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center ${selectedTransfer.registrarApproved ? "bg-green-500 text-white" : "bg-gray-300 text-gray-600"}`}>
+                        3
+                      </div>
+                      <span className="mt-2 text-sm">Registrar</span>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2">
+                    <div className={`p-3 rounded border text-center ${selectedTransfer.sellerApproved ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"}`}>
+                      <div className="font-medium">Seller</div>
+                      <div className={selectedTransfer.sellerApproved ? "text-green-600" : "text-red-600"}>
+                        {selectedTransfer.sellerApproved ? "✓ Approved" : "⏳ Pending"}
+                      </div>
+                    </div>
+                    <div className={`p-3 rounded border text-center ${selectedTransfer.buyerApproved ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"}`}>
+                      <div className="font-medium">Buyer</div>
+                      <div className={selectedTransfer.buyerApproved ? "text-green-600" : "text-red-600"}>
+                        {selectedTransfer.buyerApproved ? "✓ Approved" : "⏳ Pending"}
+                      </div>
+                    </div>
+                    <div className={`p-3 rounded border text-center ${selectedTransfer.registrarApproved ? "bg-green-50 border-green-200" : "bg-red-50 border-red-200"}`}>
+                      <div className="font-medium">Registrar</div>
+                      <div className={selectedTransfer.registrarApproved ? "text-green-600" : "text-red-600"}>
+                        {selectedTransfer.registrarApproved ? "✓ Approved" : "⏳ Pending"}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {properties.find((p) => p.id === selectedTransfer.propertyId) && (
+                  <div>
+                    <h4 className="font-semibold mb-2">Property Details</h4>
+                    <div className="bg-gray-50 p-4 rounded">
+                      {(() => {
+                        const property = properties.find((p) => p.id === selectedTransfer.propertyId);
+                        return property ? (
+                          <div className="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                              <p><strong>Location:</strong> {property.location}</p>
+                              <p><strong>Area:</strong> {property.area} sq ft</p>
                             </div>
-
-                            <div className="flex flex-col items-end space-y-2">
-                              <Badge className={getStatusColor(status)}>
-                                {status}
-                              </Badge>
-
-                              {!transfer.registrarApproved &&
-                                !transfer.completed && (
-                                  <Button
-                                    size="sm"
-                                    onClick={() =>
-                                      handleApproveTransfer(transfer)
-                                    }
-                                    disabled={
-                                      actionLoading === `approve-${transfer.id}` || !transfer.buyerApproved
-                                    }
-                                  >
-                                    {actionLoading ===
-                                      `approve-${transfer.id}` ? (
-                                      <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                                    ) : (
-                                      <CheckCircle className="w-4 h-4 mr-2" />
-                                    )}
-                                    Approve as Registrar
-                                  </Button>
-                                )}
+                            <div>
+                              <p><strong>Market Value:</strong> {formatEther(property.marketValue)} ETH</p>
+                              <p><strong>For Sale:</strong> {property.isForSale ? "Yes" : "No"}</p>
                             </div>
                           </div>
-                        </CardContent>
-                      </Card>
-                    );
-                  })
+                        ) : null;
+                      })()}
+                    </div>
+                  </div>
                 )}
               </div>
             )}
-          </TabsContent>
-        </Tabs>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
