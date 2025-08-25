@@ -25,6 +25,7 @@ export default {
         roboto: ["Roboto", "system-ui", "sans-serif"],
       },
       colors: {
+        "custom-blue": "#3b82f6",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

@@ -19,25 +19,33 @@ const CitizenNavbarLinks: React.FC<CitizenNavbarLinksProps> = ({
   const isActive = (path: string) => location.pathname === path;
 
   const linkBase = `text-xl font-medium transition-colors`;
-  const linkColor = isDarkTheme ? "text-black hover:text-gray-600" : "text-white hover:text-gray-300";
+  const linkColor = "text-white hover:text-blue-200";
 
   return (
     <nav className="flex gap-6 items-center">
       <Link
         to="/marketplace"
-        className={`${linkBase} ${linkColor} ${["/marketplace", "/dashboard"].includes(location.pathname) ? "underline" : ""}`}
+        className={`${linkBase} ${linkColor} ${
+          ["/marketplace", "/dashboard"].includes(location.pathname)
+            ? "underline"
+            : ""
+        }`}
       >
         MarketPlace
       </Link>
       <Link
         to="/my-properties"
-        className={`${linkBase} ${linkColor} ${isActive("/my-properties") ? "underline" : ""}`}
+        className={`${linkBase} ${linkColor} ${
+          isActive("/my-properties") ? "underline" : ""
+        }`}
       >
         My Properties
       </Link>
       <Link
         to="/transfer-management"
-        className={`${linkBase} ${linkColor} ${isActive("/transfer-management") ? "underline" : ""}`}
+        className={`${linkBase} ${linkColor} ${
+          isActive("/transfer-management") ? "underline" : ""
+        }`}
       >
         Transfer Management
       </Link>

@@ -50,8 +50,8 @@ const Navbar = () => {
   // Determine navbar styles based on scroll position and page
   const getNavbarStyles = () => {
     if (!isLandingPage) {
-      // Non-landing pages: always black navbar
-      return "fixed top-0 w-full z-50 bg-black/60 backdrop-blur-md border-b border-gray-700/50 transition-all duration-300";
+      // Non-landing pages: aligned with MarketPlace theme - slate to indigo gradient
+      return "fixed top-0 w-full z-50 bg-gradient-to-r from-slate-700/90 via-blue-500/90 to-blue-900/90 dark:from-slate-900/90 dark:via-slate-800/90 dark:to-slate-900/90 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-700/50 transition-all duration-300";
     }
 
     if (scrollY < 10) {
@@ -61,8 +61,8 @@ const Navbar = () => {
       }`;
     }
 
-    // Landing page scrolled: white navbar when scrolling up, hidden when scrolling down
-    return `fixed top-0 w-full z-50 bg-white/70 backdrop-blur-lg border-b border-gray-200/30 shadow-lg transition-all duration-300 ${
+    // Landing page scrolled: MarketPlace theme gradient
+    return `fixed top-0 w-full z-50 bg-gradient-to-r from-slate-50/70 via-blue-50/70 to-indigo-50/70 dark:from-slate-900/70 dark:via-slate-800/70 dark:to-slate-900/70 backdrop-blur-lg border-b border-slate-200/30 dark:border-slate-700/30 shadow-lg transition-all duration-300 ${
       showNavbar ? "translate-y-0" : "-translate-y-full"
     }`;
   };
