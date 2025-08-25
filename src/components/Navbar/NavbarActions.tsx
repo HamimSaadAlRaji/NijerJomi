@@ -32,19 +32,6 @@ const NavbarActions: React.FC<NavbarActionsProps> = ({
     <div className="hidden md:flex items-center space-x-4">
       {isLoggedIn ? (
         <>
-          <Link to={getDashboardPath()}>
-            <Button
-              variant="ghost"
-              className={`${
-                isDarkTheme
-                  ? "text-black hover:text-gray-600"
-                  : "text-white hover:text-gray-300"
-              }`}
-            >
-              {getDashboardText()}
-            </Button>
-          </Link>
-
           <WalletConnectButton
             size="lg"
             showDropdown={true}
