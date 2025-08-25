@@ -27,6 +27,7 @@ import {
   resolveDispute,
   markTaxPaid,
 } from "@/services/blockchainService";
+import * as biddingServices from "@/services/biddingServices";
 import {
   Building,
   CheckCircle,
@@ -292,13 +293,14 @@ const AdminPropertyManagement = () => {
   };
 
   // Approve transfer as registrar
-  const handleApproveTransfer = async (transferId: number) => {
+  const handleApproveTransfer = async (transfer: TransferRequest) => {
     if (!web3State.contract) return;
 
     try {
-      setActionLoading(`approve-${transferId}`);
+      setActionLoading(`approve-${transfer.id}`);
 
-      await approveTransferAsRegistrar(web3State.contract, transferId);
+      await approveTransferAsRegistrar(web3State.contract, transfer.id);
+      await biddingServices.deleteBiddingsByPropertyId(transfer.propertyId);
 
       toast({
         title: "Transfer Approved",
@@ -874,7 +876,7 @@ const AdminPropertyManagement = () => {
                                   <Button
                                     size="sm"
                                     onClick={() =>
-                                      handleApproveTransfer(transfer.id)
+                                      handleApproveTransfer(transfer)
                                     }
                                     disabled={
                                       actionLoading === `approve-${transfer.id}` || !transfer.buyerApproved

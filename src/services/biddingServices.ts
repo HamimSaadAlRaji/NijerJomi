@@ -107,3 +107,24 @@ export async function deleteBid(id: string, token?: string) {
     return { success: false, message: "Failed to delete bid" };
   }
 }
+
+
+// Delete all biddings of a property
+export async function deleteBiddingsByPropertyId(propertyId: number, token?: string) {
+  try {
+    const res = await fetch(`${API_BASE}/property/${propertyId}`, {
+      method: "DELETE",
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+    return await res.json();
+  } catch (error) {
+    console.error("Error deleting biddings by property ID:", error);
+    return { success: false, message: "Failed to delete biddings" };
+  }
+}
