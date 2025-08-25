@@ -10,6 +10,7 @@ import AdminProtectedRoute from "@/components/AdminProtectedRoute";
 import CitizenProtectedRoute from "@/components/CitizenProtectedRoute";
 import PublicOnlyRoute from "@/components/PublicOnlyRoute";
 import VerificationOnlyRoute from "@/components/VerificationOnlyRoute";
+import AdminRegistrarProtectedRoute from "@/components/AdminRegistrarProtectedRoute";
 
 // Core pages loaded immediately
 import Index from "./pages/Index";
@@ -157,11 +158,11 @@ const App = () => (
             <Route
               path="/admin/verify-user"
               element={
-                <AdminProtectedRoute>
+                <AdminRegistrarProtectedRoute>
                   <LazyRoute>
                     <AdminVerifyUser />
                   </LazyRoute>
-                </AdminProtectedRoute>
+                </AdminRegistrarProtectedRoute>
               }
             />
             <Route

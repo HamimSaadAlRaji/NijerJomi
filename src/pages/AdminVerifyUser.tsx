@@ -45,9 +45,14 @@ const AdminVerifyUser = () => {
   const [loading, setLoading] = useState(true);
   const [processingUser, setProcessingUser] = useState<string | null>(null);
 
-  // Check admin access
+  // Check admin or registrar access
   useEffect(() => {
-    if (!isConnected || !user || !isRole(user.userRole || "", UserRole.ADMIN)) {
+    if (
+      !isConnected ||
+      !user ||
+      (!isRole(user.userRole || "", UserRole.ADMIN) &&
+        !isRole(user.userRole || "", UserRole.REGISTRAR))
+    ) {
       navigate("/dashboard");
       return;
     }
@@ -97,7 +102,11 @@ const AdminVerifyUser = () => {
       }
     };
 
-    if (user && isRole(user.userRole || "", UserRole.ADMIN)) {
+    if (
+      user &&
+      (isRole(user.userRole || "", UserRole.ADMIN) ||
+        isRole(user.userRole || "", UserRole.REGISTRAR))
+    ) {
       fetchPendingUsers();
     }
   }, [user, toast]);
@@ -245,7 +254,11 @@ const AdminVerifyUser = () => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
   };
 
-  if (!user || !isRole(user.userRole || "", UserRole.ADMIN)) {
+  if (
+    !user ||
+    (!isRole(user.userRole || "", UserRole.ADMIN) &&
+      !isRole(user.userRole || "", UserRole.REGISTRAR))
+  ) {
     return null;
   }
 
