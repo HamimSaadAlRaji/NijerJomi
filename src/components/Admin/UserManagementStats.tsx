@@ -29,81 +29,115 @@ interface UserManagementStatsProps {
 const UserManagementStats: React.FC<UserManagementStatsProps> = ({ stats }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
-      <Card className="bg-blue-600 text-white shadow-sm">
+      <Card
+        className="bg-white border shadow-sm"
+        style={{ borderColor: "#aad6ec" }}
+      >
         <CardContent className="p-4">
           <div className="flex items-center">
-            <Users className="w-5 h-5 mr-2" />
+            <Users className="w-5 h-5 mr-2" style={{ color: "#151269" }} />
             <div>
-              <div className="text-xl font-bold">{stats?.totalUsers || 0}</div>
-              <div className="text-xs opacity-90">Total Users</div>
+              <div className="text-xl font-bold" style={{ color: "#151269" }}>
+                {stats?.totalUsers || 0}
+              </div>
+              <div className="text-xs" style={{ color: "#81b1ce" }}>
+                Total Users
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      <Card className="bg-white border border-gray-200 shadow-sm">
+      <Card
+        className="bg-white border shadow-sm"
+        style={{ borderColor: "#81b1ce" }}
+      >
         <CardContent className="p-4">
           <div className="flex items-center">
-            <Clock className="w-5 h-5 mr-2 text-amber-500" />
+            <Clock className="w-5 h-5 mr-2" style={{ color: "#0f1056" }} />
             <div>
-              <div className="text-xl font-bold text-black">
+              <div className="text-xl font-bold" style={{ color: "#151269" }}>
                 {stats?.pendingVerifications || 0}
               </div>
-              <div className="text-xs text-gray-600">Pending</div>
+              <div className="text-xs" style={{ color: "#81b1ce" }}>
+                Pending
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      <Card className="bg-white border border-gray-200 shadow-sm">
+      <Card
+        className="bg-white border shadow-sm"
+        style={{ borderColor: "#113065" }}
+      >
         <CardContent className="p-4">
           <div className="flex items-center">
             <CheckCircle className="w-5 h-5 mr-2 text-green-500" />
             <div>
-              <div className="text-xl font-bold text-black">
+              <div className="text-xl font-bold" style={{ color: "#151269" }}>
                 {stats?.verifiedUsers || 0}
               </div>
-              <div className="text-xs text-gray-600">Verified</div>
+              <div className="text-xs" style={{ color: "#81b1ce" }}>
+                Verified
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      <Card className="bg-white border border-gray-200 shadow-sm">
+      <Card
+        className="bg-white border shadow-sm"
+        style={{ borderColor: "#aad6ec" }}
+      >
         <CardContent className="p-4">
           <div className="flex items-center">
             <XCircle className="w-5 h-5 mr-2 text-red-500" />
             <div>
-              <div className="text-xl font-bold text-black">
+              <div className="text-xl font-bold" style={{ color: "#151269" }}>
                 {stats?.rejectedUsers || 0}
               </div>
-              <div className="text-xs text-gray-600">Rejected</div>
+              <div className="text-xs" style={{ color: "#81b1ce" }}>
+                Rejected
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      <Card className="bg-[#ff0000] text-white shadow-sm">
+      <Card
+        className="bg-white border shadow-sm"
+        style={{ borderColor: "#151269" }}
+      >
         <CardContent className="p-4">
           <div className="flex items-center">
-            <Shield className="w-5 h-5 mr-2" />
+            <Shield className="w-5 h-5 mr-2" style={{ color: "#113065" }} />
             <div>
-              <div className="text-xl font-bold">{stats?.totalAdmins || 0}</div>
-              <div className="text-xs opacity-90">Admins</div>
+              <div className="text-xl font-bold" style={{ color: "#0f1056" }}>
+                {stats?.totalAdmins || 0}
+              </div>
+              <div className="text-xs" style={{ color: "#81b1ce" }}>
+                Admins
+              </div>
             </div>
           </div>
         </CardContent>
       </Card>
 
-      <Card className="bg-white border border-gray-200 shadow-sm">
+      <Card
+        className="bg-white border shadow-sm"
+        style={{ borderColor: "#0f1056" }}
+      >
         <CardContent className="p-4">
           <div className="flex items-center">
-            <UserCheck className="w-5 h-5 mr-2 text-blue-600" />
+            <UserCheck className="w-5 h-5 mr-2" style={{ color: "#113065" }} />
             <div>
-              <div className="text-xl font-bold text-black">
+              <div className="text-xl font-bold" style={{ color: "#151269" }}>
                 {stats?.totalRegistrars || 0}
               </div>
-              <div className="text-xs text-gray-600">Registrars</div>
+              <div className="text-xs" style={{ color: "#81b1ce" }}>
+                Registrars
+              </div>
             </div>
           </div>
         </CardContent>
