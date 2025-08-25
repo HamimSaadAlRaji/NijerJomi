@@ -452,136 +452,96 @@ const TransferManagement = () => {
               </Card>
             ) : (
               <div className="space-y-4">
-                {userTransfers.asBuyer.map((transfer) => {
-                  const property = getPropertyForTransfer(transfer.propertyId);
-                  const status = getTransferStatus(transfer);
-                  const needsApproval = canApproveAsBuyer(transfer);
-
-                  return (
-                    <Card
-                      key={transfer.id}
-                      className={
-                        needsApproval ? "border-orange-200 bg-orange-50" : ""
-                      }
-                    >
-                      <CardContent className="p-6">
-                        <div className="flex items-center justify-between">
-                          <div className="space-y-2">
-                            <div className="flex items-center space-x-2">
-                              <h4 className="font-semibold">
-                                Purchase Request #{transfer.id}
-                              </h4>
-                              {needsApproval && (
-                                <Badge
-                                  variant="destructive"
-                                  className="text-xs"
-                                >
-                                  Action Required
+                {[...userTransfers.asBuyer]
+                  .sort((a, b) => {
+                    if (a.completed === b.completed) return 0;
+                    return a.completed ? 1 : -1;
+                  })
+                  .map((transfer) => {
+                    const property = getPropertyForTransfer(transfer.propertyId);
+                    const status = getTransferStatus(transfer);
+                    const needsApproval = canApproveAsBuyer(transfer);
+                    return (
+                      <Card
+                        key={transfer.id}
+                        className={needsApproval ? "border-orange-200 bg-orange-50" : ""}
+                      >
+                        <CardContent className="p-6">
+                          <div className="flex items-center justify-between">
+                            <div className="space-y-2">
+                              <div className="flex items-center space-x-2">
+                                <h4 className="font-semibold">
+                                  Purchase Request #{transfer.id}
+                                </h4>
+                                {needsApproval && (
+                                  <Badge variant="destructive" className="text-xs">
+                                    Action Required
+                                  </Badge>
+                                )}
+                              </div>
+                              <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                                <div>
+                                  <p>
+                                    <strong>Property:</strong> {property?.location || `ID #${transfer.propertyId}`}
+                                  </p>
+                                  <p>
+                                    <strong>Seller:</strong> {truncateAddress(transfer.seller)}
+                                  </p>
+                                </div>
+                                <div>
+                                  <p>
+                                    <strong>Price:</strong> {formatEther(transfer.agreedPrice)} ETH
+                                  </p>
+                                  <p>
+                                    <strong>Area:</strong> {property?.area || "N/A"} sq ft
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="flex space-x-2 text-xs">
+                                <Badge variant={transfer.buyerApproved ? "default" : "secondary"}>
+                                  Your Approval: {transfer.buyerApproved ? "✓" : "Pending"}
                                 </Badge>
-                              )}
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
-                              <div>
-                                <p>
-                                  <strong>Property:</strong>{" "}
-                                  {property?.location ||
-                                    `ID #${transfer.propertyId}`}
-                                </p>
-                                <p>
-                                  <strong>Seller:</strong>{" "}
-                                  {truncateAddress(transfer.seller)}
-                                </p>
-                              </div>
-                              <div>
-                                <p>
-                                  <strong>Price:</strong>{" "}
-                                  {formatEther(transfer.agreedPrice)} ETH
-                                </p>
-                                <p>
-                                  <strong>Area:</strong>{" "}
-                                  {property?.area || "N/A"} sq ft
-                                </p>
+                                <Badge variant={transfer.sellerApproved ? "default" : "secondary"}>
+                                  Seller: {transfer.sellerApproved ? "✓" : "Pending"}
+                                </Badge>
+                                <Badge variant={transfer.registrarApproved ? "default" : "secondary"}>
+                                  Registrar: {transfer.registrarApproved ? "✓" : "Pending"}
+                                </Badge>
                               </div>
                             </div>
-
-                            <div className="flex space-x-2 text-xs">
-                              <Badge
-                                variant={
-                                  transfer.buyerApproved
-                                    ? "default"
-                                    : "secondary"
-                                }
-                              >
-                                Your Approval:{" "}
-                                {transfer.buyerApproved ? "✓" : "Pending"}
-                              </Badge>
-                              <Badge
-                                variant={
-                                  transfer.sellerApproved
-                                    ? "default"
-                                    : "secondary"
-                                }
-                              >
-                                Seller:{" "}
-                                {transfer.sellerApproved ? "✓" : "Pending"}
-                              </Badge>
-                              <Badge
-                                variant={
-                                  transfer.registrarApproved
-                                    ? "default"
-                                    : "secondary"
-                                }
-                              >
-                                Registrar:{" "}
-                                {transfer.registrarApproved ? "✓" : "Pending"}
-                              </Badge>
-                            </div>
-                          </div>
-
-                          <div className="flex flex-col items-end space-y-2">
-                            <Badge className={getStatusColor(status)}>
-                              {status}
-                            </Badge>
-
-                            <div className="flex space-x-2">
-                              <Button
-                                size="sm"
-                                variant="outline"
-                                onClick={() => showTransferDetails(transfer.id)}
-                              >
-                                <Eye className="w-4 h-4 mr-2" />
-                                Details
-                              </Button>
-
-                              {needsApproval && (
+                            <div className="flex flex-col items-end space-y-2">
+                              <Badge className={getStatusColor(status)}>{status}</Badge>
+                              <div className="flex space-x-2">
                                 <Button
                                   size="sm"
-                                  onClick={() =>
-                                    handleApproveAsBuyer(transfer.id)
-                                  }
-                                  disabled={
-                                    actionLoading ===
-                                    `approve-buyer-${transfer.id}`
-                                  }
-                                  className="bg-green-600 hover:bg-green-700"
+                                  variant="outline"
+                                  onClick={() => showTransferDetails(transfer.id)}
                                 >
-                                  {actionLoading ===
-                                    `approve-buyer-${transfer.id}` ? (
-                                    <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                                  ) : (
-                                    <CheckCircle className="w-4 h-4 mr-2" />
-                                  )}
-                                  Approve Purchase
+                                  <Eye className="w-4 h-4 mr-2" />
+                                  Details
                                 </Button>
-                              )}
+                                {needsApproval && (
+                                  <Button
+                                    size="sm"
+                                    onClick={() => handleApproveAsBuyer(transfer.id)}
+                                    disabled={actionLoading === `approve-buyer-${transfer.id}`}
+                                    className="bg-green-600 hover:bg-green-700"
+                                  >
+                                    {actionLoading === `approve-buyer-${transfer.id}` ? (
+                                      <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                                    ) : (
+                                      <CheckCircle className="w-4 h-4 mr-2" />
+                                    )}
+                                    Approve Purchase
+                                  </Button>
+                                )}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
               </div>
             )}
           </TabsContent>
@@ -606,96 +566,68 @@ const TransferManagement = () => {
               </Card>
             ) : (
               <div className="space-y-4">
-                {userTransfers.asSeller.map((transfer) => {
-                  const property = getPropertyForTransfer(transfer.propertyId);
-                  const status = getTransferStatus(transfer);
-
-                  return (
-                    <Card key={transfer.id}>
-                      <CardContent className="p-6">
-                        <div className="flex items-center justify-between">
-                          <div className="space-y-2">
-                            <h4 className="font-semibold">
-                              Sale Request #{transfer.id}
-                            </h4>
-
-                            <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
-                              <div>
-                                <p>
-                                  <strong>Property:</strong>{" "}
-                                  {property?.location ||
-                                    `ID #${transfer.propertyId}`}
-                                </p>
-                                <p>
-                                  <strong>Buyer:</strong>{" "}
-                                  {truncateAddress(transfer.buyer)}
-                                </p>
+                {[...userTransfers.asSeller]
+                  .sort((a, b) => {
+                    if (a.completed === b.completed) return 0;
+                    return a.completed ? 1 : -1;
+                  })
+                  .map((transfer) => {
+                    const property = getPropertyForTransfer(transfer.propertyId);
+                    const status = getTransferStatus(transfer);
+                    return (
+                      <Card key={transfer.id}>
+                        <CardContent className="p-6">
+                          <div className="flex items-center justify-between">
+                            <div className="space-y-2">
+                              <h4 className="font-semibold">
+                                Sale Request #{transfer.id}
+                              </h4>
+                              <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
+                                <div>
+                                  <p>
+                                    <strong>Property:</strong> {property?.location || `ID #${transfer.propertyId}`}
+                                  </p>
+                                  <p>
+                                    <strong>Buyer:</strong> {truncateAddress(transfer.buyer)}
+                                  </p>
+                                </div>
+                                <div>
+                                  <p>
+                                    <strong>Price:</strong> {formatEther(transfer.agreedPrice)} ETH
+                                  </p>
+                                  <p>
+                                    <strong>Area:</strong> {property?.area || "N/A"} sq ft
+                                  </p>
+                                </div>
                               </div>
-                              <div>
-                                <p>
-                                  <strong>Price:</strong>{" "}
-                                  {formatEther(transfer.agreedPrice)} ETH
-                                </p>
-                                <p>
-                                  <strong>Area:</strong>{" "}
-                                  {property?.area || "N/A"} sq ft
-                                </p>
+                              <div className="flex space-x-2 text-xs">
+                                <Badge variant={transfer.buyerApproved ? "default" : "secondary"}>
+                                  Buyer: {transfer.buyerApproved ? "✓" : "Pending"}
+                                </Badge>
+                                <Badge variant={transfer.sellerApproved ? "default" : "secondary"}>
+                                  Your Approval: {transfer.sellerApproved ? "✓" : "Pending"}
+                                </Badge>
+                                <Badge variant={transfer.registrarApproved ? "default" : "secondary"}>
+                                  Registrar: {transfer.registrarApproved ? "✓" : "Pending"}
+                                </Badge>
                               </div>
                             </div>
-
-                            <div className="flex space-x-2 text-xs">
-                              <Badge
-                                variant={
-                                  transfer.buyerApproved
-                                    ? "default"
-                                    : "secondary"
-                                }
+                            <div className="flex flex-col items-end space-y-2">
+                              <Badge className={getStatusColor(status)}>{status}</Badge>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => showTransferDetails(transfer.id)}
                               >
-                                Buyer:{" "}
-                                {transfer.buyerApproved ? "✓" : "Pending"}
-                              </Badge>
-                              <Badge
-                                variant={
-                                  transfer.sellerApproved
-                                    ? "default"
-                                    : "secondary"
-                                }
-                              >
-                                Your Approval:{" "}
-                                {transfer.sellerApproved ? "✓" : "Pending"}
-                              </Badge>
-                              <Badge
-                                variant={
-                                  transfer.registrarApproved
-                                    ? "default"
-                                    : "secondary"
-                                }
-                              >
-                                Registrar:{" "}
-                                {transfer.registrarApproved ? "✓" : "Pending"}
-                              </Badge>
+                                <Eye className="w-4 h-4 mr-2" />
+                                Details
+                              </Button>
                             </div>
                           </div>
-
-                          <div className="flex flex-col items-end space-y-2">
-                            <Badge className={getStatusColor(status)}>
-                              {status}
-                            </Badge>
-
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => showTransferDetails(transfer.id)}
-                            >
-                              <Eye className="w-4 h-4 mr-2" />
-                              Details
-                            </Button>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
               </div>
             )}
           </TabsContent>

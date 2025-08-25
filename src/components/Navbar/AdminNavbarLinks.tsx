@@ -23,65 +23,38 @@ const AdminNavbarLinks: React.FC<AdminNavbarLinksProps> = ({
   const isActive = (path: string) => location.pathname === path;
   const isAdmin = isRole(user?.userRole || "", UserRole.ADMIN);
 
+  const linkBase = `text-xl font-medium transition-colors`;
+  const linkColor = isDarkTheme ? "text-black hover:text-gray-600" : "text-white hover:text-gray-300";
+
   return (
-    <>
-      <DropdownMenu>
-        <DropdownMenuTrigger
-          className={`flex items-center space-x-1 text-xl font-medium transition-colors ${
-            isDarkTheme
-              ? "text-black hover:text-gray-600"
-              : "text-white hover:text-gray-300"
-          }`}
-        >
-          <span>{isAdmin ? "Admin Panel" : "Registrar Panel"}</span>
-          <ChevronDown className="w-4 h-4" />
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem asChild>
-            <Link to="/admin/dashboard">Dashboard</Link>
-          </DropdownMenuItem>
-
-          {/* Verify Users - accessible to both ADMIN and REGISTRAR */}
-          <DropdownMenuItem asChild>
-            <Link to="/admin/verify-user">Verify Users</Link>
-          </DropdownMenuItem>
-
-          {/* Only show role management for ADMIN users */}
-          {isAdmin && (
-            <DropdownMenuItem asChild>
-              <Link to="/admin/set-user-role">Manage Roles</Link>
-            </DropdownMenuItem>
-          )}
-
-          <DropdownMenuItem asChild>
-            <Link to="/admin/property-management">Property Management</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link to="/admin/users">Manage Users</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link to="/admin/verifications">Verifications</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link to="/admin/analytics">
-              {isAdmin ? "Admin" : "Registrar"} Analytics
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link to="/admin/settings">System Settings</Link>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-
+    <nav className="flex gap-6 items-center">
       <Link
-        to="/admin/reports"
-        className={`text-xl font-medium transition-colors hover:text-primary ${
-          isActive("/admin/reports") ? "text-primary" : "text-foreground"
-        }`}
+        to="/admin/dashboard"
+        className={`${linkBase} ${linkColor} ${["/admin/dashboard", "/dashboard"].includes(location.pathname) ? "underline" : ""}`}
       >
-        Reports
+        Dashboard
       </Link>
-    </>
+      <Link
+        to="/admin/verify-user"
+        className={`${linkBase} ${linkColor} ${isActive("/admin/verify-user") ? "underline" : ""}`}
+      >
+        Verify Users
+      </Link>
+      {isAdmin && (
+        <Link
+          to="/admin/set-user-role"
+          className={`${linkBase} ${linkColor} ${isActive("/admin/set-user-role") ? "underline" : ""}`}
+        >
+          Manage Roles
+        </Link>
+      )}
+      <Link
+        to="/admin/property-management"
+        className={`${linkBase} ${linkColor} ${isActive("/admin/property-management") ? "underline" : ""}`}
+      >
+        Property Management
+      </Link>
+    </nav>
   );
 };
 
