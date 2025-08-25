@@ -342,7 +342,7 @@ const PropertyDetails: React.FC = () => {
         {/* Content with relative positioning to appear above background */}
         <div className="relative z-10">
           <Navbar />
-          <div className="container mx-auto px-4 py-16">
+          <div className="container mx-auto px-4 py-16 mt-16">
             <div className="text-center">
               <AlertTriangle className="w-16 h-16 text-red-500 mx-auto mb-4" />
               <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
@@ -351,13 +351,6 @@ const PropertyDetails: React.FC = () => {
               <p className="text-slate-600 dark:text-slate-400 mb-6">
                 {error || "The requested property could not be found."}
               </p>
-              <Button
-                onClick={handleBackToMarketplace}
-                className="bg-blue-600 hover:bg-blue-700 text-white shadow-md"
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to Marketplace
-              </Button>
             </div>
           </div>
         </div>
@@ -379,18 +372,9 @@ const PropertyDetails: React.FC = () => {
       <div className="relative z-10">
         <Navbar />
 
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-8 mt-16">
           {/* Navigation */}
           <div className="mb-6">
-            <Button
-              variant="outline"
-              onClick={handleBackToMarketplace}
-              className="mb-4 border-slate-300 text-slate-700 hover:bg-slate-100 hover:border-slate-400 dark:border-slate-600 dark:text-slate-300 dark:hover:bg-slate-800"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Marketplace
-            </Button>
-
             {/* Property Header */}
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
               <div>
