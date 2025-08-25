@@ -365,16 +365,16 @@ const MyProperties = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       <Navbar />
       <div className="container mx-auto px-4 py-8 pt-24">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-foreground mb-2">
+            <h1 className="text-3xl font-bold text-black mb-2">
               My Properties
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-gray-600">
               Manage your property portfolio on the blockchain
             </p>
           </div>
@@ -382,7 +382,8 @@ const MyProperties = () => {
             onClick={refreshData}
             disabled={refreshing}
             variant="outline"
-            className="flex items-center"
+            className="flex items-center hover:bg-blue-50 transition-colors"
+            style={{ borderColor: "#81b1ce", color: "#151269" }}
           >
             <RefreshCw
               className={`w-4 h-4 mr-2 ${refreshing ? "animate-spin" : ""}`}
@@ -397,12 +398,15 @@ const MyProperties = () => {
             <Card className="border-orange-200 bg-orange-50">
               <CardContent className="p-4">
                 <div className="flex items-center">
-                  <AlertTriangle className="w-5 h-5 text-orange-600 mr-2" />
+                  <AlertTriangle
+                    className="w-5 h-5 mr-2"
+                    style={{ color: "#151269" }}
+                  />
                   <div>
-                    <p className="text-orange-800 font-medium">
+                    <p className="text-black font-medium">
                       Account Not Verified
                     </p>
-                    <p className="text-orange-700 text-sm">
+                    <p className="text-gray-700 text-sm">
                       You must be verified to create transfer requests or put
                       properties for sale. Please complete your verification
                       first.
@@ -416,29 +420,29 @@ const MyProperties = () => {
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <Card>
+          <Card className="bg-white border" style={{ borderColor: "#aad6ec" }}>
             <CardContent className="p-6">
               <div className="flex items-center">
-                <Home className="w-8 h-8 text-blue-500" />
+                <Home className="w-8 h-8" style={{ color: "#151269" }} />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-muted-foreground">
+                  <p className="text-sm font-medium text-gray-600">
                     Total Properties
                   </p>
-                  <p className="text-2xl font-bold">{properties.length}</p>
+                  <p className="text-2xl font-bold text-black">
+                    {properties.length}
+                  </p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white border" style={{ borderColor: "#81b1ce" }}>
             <CardContent className="p-6">
               <div className="flex items-center">
-                <TrendingUp className="w-8 h-8 text-green-500" />
+                <TrendingUp className="w-8 h-8" style={{ color: "#0f1056" }} />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-muted-foreground">
-                    For Sale
-                  </p>
-                  <p className="text-2xl font-bold">
+                  <p className="text-sm font-medium text-gray-600">For Sale</p>
+                  <p className="text-2xl font-bold text-black">
                     {properties.filter((p) => p.isForSale).length}
                   </p>
                 </div>
@@ -446,15 +450,15 @@ const MyProperties = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white border" style={{ borderColor: "#113065" }}>
             <CardContent className="p-6">
               <div className="flex items-center">
-                <Send className="w-8 h-8 text-purple-500" />
+                <Send className="w-8 h-8" style={{ color: "#151269" }} />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-muted-foreground">
+                  <p className="text-sm font-medium text-gray-600">
                     Active Transfers
                   </p>
-                  <p className="text-2xl font-bold">
+                  <p className="text-2xl font-bold text-black">
                     {transferRequests.filter((t) => !t.completed).length}
                   </p>
                 </div>
@@ -462,15 +466,13 @@ const MyProperties = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white border" style={{ borderColor: "#aad6ec" }}>
             <CardContent className="p-6">
               <div className="flex items-center">
                 <AlertTriangle className="w-8 h-8 text-red-500" />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-muted-foreground">
-                    Disputes
-                  </p>
-                  <p className="text-2xl font-bold">
+                  <p className="text-sm font-medium text-gray-600">Disputes</p>
+                  <p className="text-2xl font-bold text-black">
                     {properties.filter((p) => p.hasDispute).length}
                   </p>
                 </div>
@@ -482,12 +484,11 @@ const MyProperties = () => {
         {/* My Properties Section */}
         <div className="mb-12">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-foreground">
-              My Properties
-            </h2>
+            <h2 className="text-2xl font-bold text-black">My Properties</h2>
             <Button
               onClick={() => navigate("/register")}
-              className="flex items-center"
+              className="flex items-center text-white hover:opacity-90 transition-opacity"
+              style={{ backgroundColor: "#151269" }}
             >
               <Plus className="w-4 h-4 mr-2" />
               Register New Property
@@ -496,20 +497,29 @@ const MyProperties = () => {
 
           {loading ? (
             <div className="flex items-center justify-center py-12">
-              <Loader2 className="w-8 h-8 animate-spin" />
-              <span className="ml-2">Loading your properties...</span>
+              <Loader2
+                className="w-8 h-8 animate-spin"
+                style={{ color: "#151269" }}
+              />
+              <span className="ml-2 text-black">
+                Loading your properties...
+              </span>
             </div>
           ) : properties.length === 0 ? (
-            <Card>
+            <Card className="bg-white">
               <CardContent className="p-12 text-center">
                 <Home className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold mb-2">
+                <h3 className="text-xl font-semibold mb-2 text-black">
                   No Properties Found
                 </h3>
-                <p className="text-muted-foreground mb-4">
+                <p className="text-gray-600 mb-4">
                   You don't own any properties yet.
                 </p>
-                <Button onClick={() => navigate("/register")}>
+                <Button
+                  onClick={() => navigate("/register")}
+                  className="text-white hover:opacity-90 transition-opacity"
+                  style={{ backgroundColor: "#151269" }}
+                >
                   <Plus className="w-4 h-4 mr-2" />
                   Register Your First Property
                 </Button>
@@ -535,18 +545,16 @@ const MyProperties = () => {
         {/* All Transfers Section */}
         <div className="mt-12">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-foreground">
-              All Transfers
-            </h2>
+            <h2 className="text-2xl font-bold text-black">All Transfers</h2>
           </div>
           {transferRequests.length === 0 ? (
-            <Card>
+            <Card className="bg-white">
               <CardContent className="p-12 text-center">
                 <Send className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold mb-2">
+                <h3 className="text-xl font-semibold mb-2 text-black">
                   No Transfer Requests
                 </h3>
-                <p className="text-muted-foreground">
+                <p className="text-gray-600">
                   No transfer requests found for your properties.
                 </p>
               </CardContent>
@@ -563,11 +571,15 @@ const MyProperties = () => {
                   web3State.account?.toLowerCase();
 
                 return (
-                  <Card key={transfer.id}>
+                  <Card
+                    key={transfer.id}
+                    className="bg-white border"
+                    style={{ borderColor: "#aad6ec" }}
+                  >
                     <CardContent className="p-6">
                       <div className="flex items-center justify-between">
                         <div>
-                          <h4 className="font-semibold">
+                          <h4 className="font-semibold text-black">
                             {property?.location ||
                               `Property #${transfer.propertyId}`}
                           </h4>
@@ -599,9 +611,11 @@ const MyProperties = () => {
         {/* Dialogs */}
         {/* Set For Sale Dialog */}
         <Dialog open={saleDialogOpen} onOpenChange={setSaleDialogOpen}>
-          <DialogContent>
+          <DialogContent className="bg-white">
             <DialogHeader>
-              <DialogTitle>Manage Property Sale Status</DialogTitle>
+              <DialogTitle className="text-black">
+                Manage Property Sale Status
+              </DialogTitle>
             </DialogHeader>
             {selectedProperty && (
               <div className="space-y-4">
@@ -620,11 +634,12 @@ const MyProperties = () => {
                       handleSetForSale(!selectedProperty.isForSale)
                     }
                     disabled={actionLoading === `sale-${selectedProperty.id}`}
-                    className={
-                      selectedProperty.isForSale
-                        ? "bg-red-600 hover:bg-red-700"
-                        : "bg-green-600 hover:bg-green-700"
-                    }
+                    className="text-white hover:opacity-90"
+                    style={{
+                      backgroundColor: selectedProperty.isForSale
+                        ? "#dc2626"
+                        : "#16a34a",
+                    }}
                   >
                     {actionLoading === `sale-${selectedProperty.id}` && (
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -640,6 +655,8 @@ const MyProperties = () => {
                       setDisputeDialogOpen(true);
                     }}
                     disabled={selectedProperty.hasDispute}
+                    className="hover:bg-blue-50 transition-colors"
+                    style={{ borderColor: "#81b1ce", color: "#151269" }}
                   >
                     Report Dispute
                   </Button>
@@ -651,9 +668,11 @@ const MyProperties = () => {
 
         {/* Transfer Request Dialog */}
         <Dialog open={transferDialogOpen} onOpenChange={setTransferDialogOpen}>
-          <DialogContent>
+          <DialogContent className="bg-white">
             <DialogHeader>
-              <DialogTitle>Create Transfer Request</DialogTitle>
+              <DialogTitle className="text-black">
+                Create Transfer Request
+              </DialogTitle>
             </DialogHeader>
             {selectedProperty && (
               <div className="space-y-4">
@@ -663,16 +682,22 @@ const MyProperties = () => {
                   </p>
                 </div>
                 <div>
-                  <Label htmlFor="buyerAddress">Buyer Address</Label>
+                  <Label htmlFor="buyerAddress" className="text-black">
+                    Buyer Address
+                  </Label>
                   <Input
                     id="buyerAddress"
                     value={buyerAddress}
                     onChange={(e) => setBuyerAddress(e.target.value)}
                     placeholder="0x..."
+                    className="border-gray-300 focus:border-blue-500"
+                    style={{ borderColor: "#81b1ce" }}
                   />
                 </div>
                 <div>
-                  <Label htmlFor="agreedPrice">Agreed Price (ETH)</Label>
+                  <Label htmlFor="agreedPrice" className="text-black">
+                    Agreed Price (ETH)
+                  </Label>
                   <Input
                     id="agreedPrice"
                     value={agreedPrice}
@@ -680,6 +705,8 @@ const MyProperties = () => {
                     placeholder="1.5"
                     type="number"
                     step="0.01"
+                    className="border-gray-300 focus:border-blue-500"
+                    style={{ borderColor: "#81b1ce" }}
                   />
                 </div>
                 <Button
@@ -689,6 +716,8 @@ const MyProperties = () => {
                     !buyerAddress ||
                     !agreedPrice
                   }
+                  className="text-white hover:opacity-90 transition-opacity"
+                  style={{ backgroundColor: "#151269" }}
                 >
                   {actionLoading === `transfer-${selectedProperty.id}` && (
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -702,9 +731,11 @@ const MyProperties = () => {
 
         {/* Report Dispute Dialog */}
         <Dialog open={disputeDialogOpen} onOpenChange={setDisputeDialogOpen}>
-          <DialogContent>
+          <DialogContent className="bg-white">
             <DialogHeader>
-              <DialogTitle>Report Property Dispute</DialogTitle>
+              <DialogTitle className="text-black">
+                Report Property Dispute
+              </DialogTitle>
             </DialogHeader>
             {selectedProperty && (
               <div className="space-y-4">
@@ -720,7 +751,8 @@ const MyProperties = () => {
                 <Button
                   onClick={handleReportDispute}
                   disabled={actionLoading === `dispute-${selectedProperty.id}`}
-                  variant="destructive"
+                  className="text-white hover:opacity-90 transition-opacity"
+                  style={{ backgroundColor: "#dc2626" }}
                 >
                   {actionLoading === `dispute-${selectedProperty.id}` && (
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
