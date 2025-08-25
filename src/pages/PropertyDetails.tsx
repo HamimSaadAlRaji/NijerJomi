@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useWalletContext } from "@/contexts/WalletContext";
 import { Property, Bid, TransferRequest } from "../../types";
+import {motion,AnimatePresence} from "framer-motion";
 import {
   getPropertyData,
   setForSale,
@@ -42,6 +43,7 @@ import {
   Gavel,
   TrendingUp,
   CheckCircle,
+  Loader2,
   XCircle,
   Clock,
   Handshake,
@@ -144,7 +146,7 @@ const PropertyDetails: React.FC = () => {
     activeTransferRequest &&
     web3State.account &&
     activeTransferRequest.buyer.toLowerCase() ===
-      web3State.account.toLowerCase();
+    web3State.account.toLowerCase();
 
   // Get highest bid amount for validation
   const highestBid = bids.length > 0 ? bids[0] : null;
@@ -162,7 +164,7 @@ const PropertyDetails: React.FC = () => {
     const bidValue = parseFloat(bidAmount);
 
     // Double-check validation (safety measure)
-    if ( bidValue < minimumBidAmount) {
+    if (bidValue < minimumBidAmount) {
       return;
     }
 
@@ -385,9 +387,8 @@ const PropertyDetails: React.FC = () => {
                 className={isFavorited ? "text-black border-black" : ""}
               >
                 <Heart
-                  className={`w-4 h-4 mr-2 ${
-                    isFavorited ? "fill-current" : ""
-                  }`}
+                  className={`w-4 h-4 mr-2 ${isFavorited ? "fill-current" : ""
+                    }`}
                 />
                 {isFavorited ? "Favorited" : "Favorite"}
               </Button>
@@ -560,8 +561,8 @@ const PropertyDetails: React.FC = () => {
                         {isTogglingForSale
                           ? "Updating..."
                           : property.isForSale
-                          ? "Remove from Sale"
-                          : "Put on Sale"}
+                            ? "Remove from Sale"
+                            : "Put on Sale"}
                       </Button>
                     </div>
                   )}
@@ -748,15 +749,58 @@ const PropertyDetails: React.FC = () => {
                             )}
                             {/* Only owners see Accept button on highest bid and not in transfer */}
                             {isOwner && !isInTransfer && index === 0 && (
-                              <Button
-                                size="sm"
-                                onClick={() => handleAcceptBid(bid)}
-                                disabled={isAcceptingBid}
-                                className="bg-green-600 hover:bg-green-700 text-white"
-                              >
-                                <CheckCircle className="w-3 h-3 mr-1" />
-                                Accept
-                              </Button>
+                              <AnimatePresence mode="wait" initial={false}>
+                                {isAcceptingBid ? (
+                                  // While loading
+                                  <motion.button
+                                    key="loading"
+                                    disabled
+                                    className="flex items-center px-3 py-1 text-sm rounded bg-green-600 text-white cursor-not-allowed"
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.8 }}
+                                    transition={{ duration: 0.3 }}
+                                  >
+                                    <Loader2 className="w-4 h-4 mr-1 animate-spin" />
+                                    Processing...
+                                  </motion.button>
+                                ) : isAcceptingBid ? (
+                                  // Success animation
+                                  <motion.button
+                                    key="success"
+                                    disabled
+                                    className="flex items-center px-3 py-1 text-sm rounded bg-green-600 text-white"
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.8 }}
+                                    transition={{ duration: 0.3 }}
+                                  >
+                                    <motion.div
+                                      initial={{ scale: 0 }}
+                                      animate={{ scale: 1 }}
+                                      transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                                    >
+                                      <CheckCircle className="w-4 h-4 mr-1" />
+                                    </motion.div>
+                                    Accepted
+                                  </motion.button>
+                                ) : (
+                                  // Default button
+                                  <motion.button
+                                    key="default"
+                                    onClick={() => handleAcceptBid(bid)}
+                                    disabled={isAcceptingBid}
+                                    className="flex items-center px-3 py-1 text-sm rounded bg-green-600 hover:bg-green-700 text-white"
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.8 }}
+                                    transition={{ duration: 0.3 }}
+                                  >
+                                    <CheckCircle className="w-3 h-3 mr-1" />
+                                    Accept
+                                  </motion.button>
+                                )}
+                              </AnimatePresence>
                             )}
                           </div>
                         </div>
