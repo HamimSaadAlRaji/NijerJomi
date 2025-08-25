@@ -221,22 +221,28 @@ const MarketPlace: React.FC = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
         <Navbar />
         <div className="container mx-auto px-4 py-16">
-          <div className="text-center">
-            <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-              Error Loading Properties
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">{error}</p>
-            <Button
-              onClick={fetchProperties}
-              className="flex items-center gap-2"
-            >
-              <RefreshCw className="w-4 h-4" />
-              Try Again
-            </Button>
+          <div className="max-w-md mx-auto">
+            <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl shadow-xl border border-red-100 dark:border-red-900/50 p-8 text-center">
+              <div className="w-16 h-16 bg-red-50 dark:bg-red-900/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <AlertCircle className="w-8 h-8 text-red-500 dark:text-red-400" />
+              </div>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">
+                Unable to Load Properties
+              </h2>
+              <p className="text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
+                {error}
+              </p>
+              <Button
+                onClick={fetchProperties}
+                className="bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-slate-200 dark:text-slate-900 text-white px-6 py-3 rounded-xl transition-colors duration-200 flex items-center gap-3 mx-auto"
+              >
+                <RefreshCw className="w-5 h-5" />
+                Try Again
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -244,26 +250,27 @@ const MarketPlace: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
       <Navbar />
 
       {/* Hero Section */}
-      {/* <section className="bg-black text-white py-16">
-        <div className="container mx-auto px-4">
+      <section className="relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 via-indigo-600/5 to-purple-600/5 dark:from-blue-400/5 dark:via-indigo-400/5 dark:to-purple-400/5"></div>
+        <div className="relative container mx-auto px-4 py-16">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-4xl lg:text-6xl font-bold mb-6">
-              Property <span className="text-white/80">MarketPlace</span>
+            <h1 className="text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-slate-900 via-blue-800 to-indigo-900 dark:from-slate-100 dark:via-blue-200 dark:to-indigo-200 bg-clip-text text-transparent">
+              Property Marketplace
             </h1>
-            <p className="text-xl lg:text-2xl mb-8 text-white/80">
-              Discover, explore, and invest in blockchain-verified properties
-              for sale
+            <p className="text-lg lg:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
+              Discover verified properties backed by blockchain technology.
+              Secure, transparent, and trustworthy real estate transactions.
             </p>
           </div>
         </div>
-      </section> */}
+      </section>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-24">
+      <div className="container mx-auto px-4 pb-16">
         <div className="space-y-8">
           {/* Filters Section */}
           <PropertyFilters
