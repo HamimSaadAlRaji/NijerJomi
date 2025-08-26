@@ -359,17 +359,8 @@ const PropertyDetails: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800 relative">
-      {/* Background Image with Opacity */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-100 pointer-events-none"
-        style={{
-          backgroundImage: `url(${backgroundimg})`,
-        }}
-      ></div>
-
-      {/* Content with relative positioning to appear above background */}
-      <div className="relative z-10">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-900 dark:to-slate-800">
+      <div>
         <Navbar />
 
         <div className="container mx-auto px-4 py-8 mt-16">

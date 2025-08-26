@@ -20,50 +20,74 @@ export default defineConfig(({ mode }) => ({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          // Core vendor libraries
-          vendor: ["react", "react-dom", "react-router-dom"],
-          // UI and styling libraries (keep together to avoid hoisting issues)
-          ui: [
-            "class-variance-authority",
-            "clsx",
-            "tailwind-merge",
-            "@/lib/utils",
-            "@/components/ui/badge",
-            "@/components/ui/button",
-            "@/components/ui/input",
-            "@/components/ui/card",
-            "@/components/ui/dialog",
-            "@/components/ui/form",
-          ],
-          // Lucide icons
-          icons: ["lucide-react"],
-          // Static information pages
-          "static-pages": [
-            "./src/pages/WhyBlockchain",
-            "./src/pages/AntiCorruption",
-            "./src/pages/UserBenefits",
-          ],
+        manualChunks: (id) => {
+          // Keep all node_modules in vendor chunk
+          if (id.includes("node_modules")) {
+            // Keep class-variance-authority and related utilities together
+            if (
+              id.includes("class-variance-authority") ||
+              id.includes("clsx") ||
+              id.includes("tailwind-merge")
+            ) {
+              return "ui-vendor";
+            }
+            // Core React libraries
+            if (
+              id.includes("react") ||
+              id.includes("react-dom") ||
+              id.includes("react-router")
+            ) {
+              return "vendor";
+            }
+            // Lucide icons
+            if (id.includes("lucide-react")) {
+              return "icons";
+            }
+            // Other node_modules
+            return "vendor";
+          }
+
+          // Keep all UI components together with their dependencies
+          if (
+            id.includes("/src/components/ui/") ||
+            id.includes("/src/lib/utils")
+          ) {
+            return "ui-components";
+          }
+
           // Admin pages
-          "admin-pages": [
-            "./src/pages/AdminDashboard",
-            "./src/pages/AdminVerifyUser",
-            "./src/pages/AdminSetUserRole",
-            "./src/pages/AdminPropertyManagement",
-          ],
+          if (id.includes("/src/pages/Admin")) {
+            return "admin-pages";
+          }
+
+          // Static pages
+          if (
+            id.includes("/src/pages/WhyBlockchain") ||
+            id.includes("/src/pages/AntiCorruption") ||
+            id.includes("/src/pages/UserBenefits")
+          ) {
+            return "static-pages";
+          }
+
           // User pages
-          "user-pages": [
-            "./src/pages/Properties",
-            "./src/pages/Register",
-            "./src/pages/Dashboard",
-            "./src/pages/MyProperties",
-            "./src/pages/Profile",
-          ],
-          // Utilities
-          utils: [
-            "./src/services/blockchainService",
-            "./src/services/walletAPI",
-          ],
+          if (
+            id.includes("/src/pages/Properties") ||
+            id.includes("/src/pages/Register") ||
+            id.includes("/src/pages/Dashboard") ||
+            id.includes("/src/pages/MyProperties") ||
+            id.includes("/src/pages/Profile")
+          ) {
+            return "user-pages";
+          }
+
+          // Services and utilities
+          if (
+            id.includes("/src/services/") ||
+            id.includes("/src/lib/") ||
+            id.includes("/src/hooks/")
+          ) {
+            return "utils";
+          }
         },
       },
     },
