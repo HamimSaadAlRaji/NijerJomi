@@ -23,8 +23,13 @@ export default defineConfig(({ mode }) => ({
         manualChunks: {
           // Core vendor libraries
           vendor: ["react", "react-dom", "react-router-dom"],
-          // UI components
+          // UI and styling libraries (keep together to avoid hoisting issues)
           ui: [
+            "class-variance-authority",
+            "clsx",
+            "tailwind-merge",
+            "@/lib/utils",
+            "@/components/ui/badge",
             "@/components/ui/button",
             "@/components/ui/input",
             "@/components/ui/card",
@@ -58,7 +63,6 @@ export default defineConfig(({ mode }) => ({
           utils: [
             "./src/services/blockchainService",
             "./src/services/walletAPI",
-            "./src/lib/utils",
           ],
         },
       },
