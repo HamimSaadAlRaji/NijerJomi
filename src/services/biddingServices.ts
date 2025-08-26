@@ -1,5 +1,7 @@
 // Bidding service functions to call backend APIs
-const API_BASE = "http://localhost:3000/api/bidding"; // Adjust if your backend route is different
+import { API_BASE_URL } from "../config/constants";
+
+const API_BASE = `${API_BASE_URL}/bidding`; // Adjust if your backend route is different
 
 export async function getAllBids() {
   try {
@@ -108,9 +110,11 @@ export async function deleteBid(id: string, token?: string) {
   }
 }
 
-
 // Delete all biddings of a property
-export async function deleteBiddingsByPropertyId(propertyId: number, token?: string) {
+export async function deleteBiddingsByPropertyId(
+  propertyId: number,
+  token?: string
+) {
   try {
     const res = await fetch(`${API_BASE}/property/${propertyId}`, {
       method: "DELETE",

@@ -8,6 +8,7 @@ import { useWalletContext } from "@/contexts/WalletContext";
 import { UserRole } from "../../types";
 import { isRole } from "@/lib/roleUtils";
 import { verifyUser } from "@/services/blockchainService";
+import { API_BASE_URL } from "@/config/constants";
 import {
   CheckCircle,
   XCircle,
@@ -63,7 +64,7 @@ const AdminVerifyUser = () => {
     const fetchPendingUsers = async () => {
       try {
         setLoading(true);
-        const response = await fetch("http://localhost:3000/api/users", {
+        const response = await fetch(`${API_BASE_URL}/users`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -130,7 +131,7 @@ const AdminVerifyUser = () => {
 
       // Step 2: Update status in database
       const response = await fetch(
-        `http://localhost:3000/api/users/${userToVerify._id}`,
+        `${API_BASE_URL}/users/${userToVerify._id}`,
         {
           method: "PATCH",
           headers: {
@@ -189,7 +190,7 @@ const AdminVerifyUser = () => {
 
       // Only update database status to rejected (no blockchain action)
       const response = await fetch(
-        `http://localhost:3000/api/users/${userToReject._id}`,
+        `${API_BASE_URL}/users/${userToReject._id}`,
         {
           method: "PATCH",
           headers: {

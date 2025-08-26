@@ -20,6 +20,7 @@ import {
   approveTransferAsBuyer,
   getAllProperties,
 } from "@/services/blockchainService";
+import { API_BASE_URL } from "@/config/constants";
 import {
   FileText,
   CheckCircle,
@@ -99,7 +100,7 @@ const TransferManagement = () => {
         // Seller NID
         if (selectedTransfer?.seller) {
           const sellerRes = await fetch(
-            `http://localhost:3000/api/user/nid-by-wallet/${selectedTransfer.seller.toLowerCase()}`
+            `${API_BASE_URL}/user/nid-by-wallet/${selectedTransfer.seller.toLowerCase()}`
           );
           console.log("Seller NID Response:", selectedTransfer.seller);
           const sellerData = await sellerRes.json();
@@ -116,7 +117,7 @@ const TransferManagement = () => {
         // Buyer NID
         if (selectedTransfer?.buyer) {
           const buyerRes = await fetch(
-            `http://localhost:3000/api/user/nid-by-wallet/${selectedTransfer.buyer.toLowerCase()}`
+            `${API_BASE_URL}/user/nid-by-wallet/${selectedTransfer.buyer.toLowerCase()}`
           );
           console.log("Buyer NID Response:", selectedTransfer.buyer);
           const buyerData = await buyerRes.json();

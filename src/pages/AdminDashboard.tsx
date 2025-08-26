@@ -13,6 +13,7 @@ import {
   QuickActions,
   SystemStatus,
 } from "@/components/Admin";
+import { API_BASE_URL } from "@/config/constants";
 
 interface DashboardStats {
   totalUsers: number;
@@ -135,7 +136,7 @@ const AdminDashboard: React.FC = () => {
         };
 
         try {
-          const response = await fetch("http://localhost:3000/api/users", {
+          const response = await fetch(`${API_BASE_URL}/users`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",

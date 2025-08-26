@@ -17,6 +17,7 @@ import { useWalletContext } from "@/contexts/WalletContext";
 import { UserRole } from "../../types";
 import { isRole, mapEnumToBackendRole } from "@/lib/roleUtils";
 import { setRole } from "@/services/blockchainService";
+import { API_BASE_URL } from "@/config/constants";
 import {
   Users,
   Shield,
@@ -64,7 +65,7 @@ const AdminSetUserRole = () => {
     const fetchUsers = async () => {
       try {
         setLoading(true);
-        const response = await fetch("http://localhost:3000/api/users", {
+        const response = await fetch(`${API_BASE_URL}/users`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -135,7 +136,7 @@ const AdminSetUserRole = () => {
 
       // Step 2: Update role in database
       const response = await fetch(
-        `http://localhost:3000/api/users/${selectedUser._id}`,
+        `${API_BASE_URL}/users/${selectedUser._id}`,
         {
           method: "PATCH",
           headers: {

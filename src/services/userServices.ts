@@ -1,7 +1,8 @@
-const API_BASE = "http://localhost:3000/api/user";
+import { API_BASE_URL } from "../config/constants";
 
+const API_BASE = `${API_BASE_URL}/user`;
 
-export async function getUserNidFromWallet(wallet:string) {
+export async function getUserNidFromWallet(wallet: string) {
   try {
     const nid = await fetch(`${API_BASE}/nid-by-wallet/${wallet}`);
     if (!nid.ok) {

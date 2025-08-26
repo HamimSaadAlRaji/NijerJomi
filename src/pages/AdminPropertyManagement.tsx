@@ -28,6 +28,7 @@ import {
   markTaxPaid,
 } from "@/services/blockchainService";
 import * as biddingServices from "@/services/biddingServices";
+import { API_BASE_URL } from "@/config/constants";
 import {
   Building,
   CheckCircle,
@@ -102,7 +103,7 @@ const AdminPropertyManagement = () => {
         // Seller NID
         if (selectedTransfer?.seller) {
           const sellerRes = await fetch(
-            `http://localhost:3000/api/user/nid-by-wallet/${selectedTransfer.seller.toLowerCase()}`
+            `${API_BASE_URL}/user/nid-by-wallet/${selectedTransfer.seller.toLowerCase()}`
           );
           const sellerData = await sellerRes.json();
           if (sellerRes.ok && sellerData.success) {
@@ -112,7 +113,7 @@ const AdminPropertyManagement = () => {
         // Buyer NID
         if (selectedTransfer?.buyer) {
           const buyerRes = await fetch(
-            `http://localhost:3000/api/user/nid-by-wallet/${selectedTransfer.buyer.toLowerCase()}`
+            `${API_BASE_URL}/user/nid-by-wallet/${selectedTransfer.buyer.toLowerCase()}`
           );
           const buyerData = await buyerRes.json();
           if (buyerRes.ok && buyerData.success) {
@@ -276,7 +277,7 @@ const AdminPropertyManagement = () => {
       setActionLoading("register-property");
 
       const res = await fetch(
-        `http://localhost:3000/api/user/wallet-by-nid/${ownerAddress}`
+        `${API_BASE_URL}/user/wallet-by-nid/${ownerAddress}`
       );
       const data = await res.json();
 
