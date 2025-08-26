@@ -137,7 +137,10 @@ const MyPropertyCard: React.FC<MyPropertyCardProps> = ({
               {/* Price and basic info */}
               <div className="mb-2">
                 <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1 flex items-center">
-                  <DollarSign className="w-6 h-6 text-green-600 mr-1" />
+                  <DollarSign
+                    className="w-6 h-6 mr-1"
+                    style={{ color: "#151269" }}
+                  />
                   {formatMarketValue(property.marketValue)}
                 </div>
                 <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-1">
@@ -164,14 +167,20 @@ const MyPropertyCard: React.FC<MyPropertyCardProps> = ({
               </div>
 
               {/* Owner info */}
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-2 rounded-md mb-2 border border-blue-200 dark:border-blue-800">
+              <div
+                className="p-2 rounded-md mb-2 border"
+                style={{ backgroundColor: "#aad6ec20", borderColor: "#81b1ce" }}
+              >
                 <div className="flex items-center gap-1 mb-0.5">
-                  <User className="w-3 h-3 text-blue-600" />
-                  <span className="text-xs font-medium text-blue-700 dark:text-blue-300">
+                  <User className="w-3 h-3" style={{ color: "#151269" }} />
+                  <span
+                    className="text-xs font-medium"
+                    style={{ color: "#0f1056" }}
+                  >
                     Owner
                   </span>
                 </div>
-                <div className="text-sm font-bold text-blue-800 dark:text-blue-200">
+                <div className="text-sm font-bold" style={{ color: "#113065" }}>
                   {formatAddress(property.ownerAddress)}
                 </div>
               </div>
@@ -182,7 +191,8 @@ const MyPropertyCard: React.FC<MyPropertyCardProps> = ({
               <Button
                 onClick={handleEditClick}
                 variant="outline"
-                className="px-3 py-1 text-sm font-medium transition-colors flex items-center gap-1"
+                className="px-3 py-1 text-sm font-medium transition-colors flex items-center gap-1 hover:bg-blue-50"
+                style={{ borderColor: "#81b1ce", color: "#151269" }}
                 disabled={!userVerified}
               >
                 <Edit className="w-4 h-4" />
@@ -190,7 +200,8 @@ const MyPropertyCard: React.FC<MyPropertyCardProps> = ({
               </Button>
               <Button
                 onClick={handleTransferClick}
-                className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 text-sm font-medium transition-colors flex items-center gap-1"
+                className="text-white px-3 py-1 text-sm font-medium transition-colors flex items-center gap-1 hover:opacity-90"
+                style={{ backgroundColor: "#151269" }}
                 disabled={!userVerified}
               >
                 <Send className="w-4 h-4" />

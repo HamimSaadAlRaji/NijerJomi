@@ -221,23 +221,28 @@ const MarketPlace: React.FC = () => {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+      <div className="min-h-screen bg-white">
         <Navbar />
         <div className="container mx-auto px-4 py-16">
           <div className="max-w-md mx-auto">
-            <div className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl shadow-xl border border-red-100 dark:border-red-900/50 p-8 text-center">
-              <div className="w-16 h-16 bg-red-50 dark:bg-red-900/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                <AlertCircle className="w-8 h-8 text-red-500 dark:text-red-400" />
+            <div
+              className="bg-white rounded-2xl shadow-xl p-8 text-center"
+              style={{ border: "1px solid #aad6ec" }}
+            >
+              <div
+                className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6"
+                style={{ backgroundColor: "#aad6ec20" }}
+              >
+                <AlertCircle className="w-8 h-8" style={{ color: "#151269" }} />
               </div>
-              <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">
+              <h2 className="text-2xl font-bold text-black mb-3">
                 Unable to Load Properties
               </h2>
-              <p className="text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
-                {error}
-              </p>
+              <p className="text-gray-600 mb-8 leading-relaxed">{error}</p>
               <Button
                 onClick={fetchProperties}
-                className="bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-slate-200 dark:text-slate-900 text-white px-6 py-3 rounded-xl transition-colors duration-200 flex items-center gap-3 mx-auto"
+                className="text-white px-6 py-3 rounded-xl transition-colors duration-200 flex items-center gap-3 mx-auto hover:opacity-90"
+                style={{ backgroundColor: "#151269" }}
               >
                 <RefreshCw className="w-5 h-5" />
                 Try Again
@@ -250,18 +255,29 @@ const MarketPlace: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
+    <div className="min-h-screen bg-white">
       <Navbar />
 
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 via-indigo-600/5 to-purple-600/5 dark:from-blue-400/5 dark:via-indigo-400/5 dark:to-purple-400/5"></div>
+        <div
+          className="absolute inset-0"
+          style={{ backgroundColor: "#aad6ec10" }}
+        ></div>
         <div className="relative container mx-auto px-4 py-16">
           <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-slate-900 via-blue-800 to-indigo-900 dark:from-slate-100 dark:via-blue-200 dark:to-indigo-200 bg-clip-text text-transparent">
+            <h1
+              className="text-4xl lg:text-5xl font-bold mb-4"
+              style={{
+                background: `linear-gradient(to right, #151269, #0f1056, #113065)`,
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
               Property Marketplace
             </h1>
-            <p className="text-lg lg:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
               Discover verified properties backed by blockchain technology.
               Secure, transparent, and trustworthy real estate transactions.
             </p>

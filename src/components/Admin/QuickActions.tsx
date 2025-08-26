@@ -8,8 +8,11 @@ const QuickActions: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <Card className="bg-white border border-gray-200 shadow-sm">
-      <CardHeader className="bg-black text-white">
+    <Card
+      className="bg-white border shadow-sm"
+      style={{ borderColor: "#aad6ec" }}
+    >
+      <CardHeader className="text-white" style={{ backgroundColor: "#151269" }}>
         <CardTitle className="flex items-center">
           <Settings className="w-5 h-5 mr-2" />
           System Management
@@ -18,7 +21,8 @@ const QuickActions: React.FC = () => {
       <CardContent className="p-6">
         <div className="space-y-3">
           <Button
-            className="w-full justify-start bg-blue-600 hover:bg-blue-700 text-white"
+            className="w-full justify-start text-white hover:opacity-90"
+            style={{ backgroundColor: "#113065" }}
             onClick={() => navigate("/admin/property-management")}
           >
             <Building className="w-4 h-4 mr-2" />
@@ -26,7 +30,11 @@ const QuickActions: React.FC = () => {
           </Button>
 
           <Button
-            className="w-full justify-start bg-white border border-gray-200 text-black hover:bg-gray-50"
+            className="w-full justify-start bg-white border hover:bg-gray-50"
+            style={{
+              borderColor: "#81b1ce",
+              color: "#151269",
+            }}
             onClick={() => navigate("/admin/user-management")}
           >
             <Users className="w-4 h-4 mr-2" />
@@ -34,7 +42,11 @@ const QuickActions: React.FC = () => {
           </Button>
 
           <Button
-            className="w-full justify-start bg-white border border-gray-200 text-black hover:bg-gray-50"
+            className="w-full justify-start bg-white border hover:bg-gray-50"
+            style={{
+              borderColor: "#aad6ec",
+              color: "#0f1056",
+            }}
             onClick={() => navigate("/admin/set-role")}
           >
             <Shield className="w-4 h-4 mr-2" />
@@ -42,7 +54,11 @@ const QuickActions: React.FC = () => {
           </Button>
 
           <Button
-            className="w-full justify-start bg-white border border-gray-200 text-black hover:bg-gray-50"
+            className="w-full justify-start bg-white border hover:bg-gray-50"
+            style={{
+              borderColor: "#113065",
+              color: "#151269",
+            }}
             onClick={() => navigate("/analytics")}
           >
             <Activity className="w-4 h-4 mr-2" />

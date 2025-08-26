@@ -13,6 +13,7 @@ import {
   QuickActions,
   SystemStatus,
 } from "@/components/Admin";
+import { API_BASE_URL } from "@/config/constants";
 
 interface DashboardStats {
   totalUsers: number;
@@ -135,7 +136,7 @@ const AdminDashboard: React.FC = () => {
         };
 
         try {
-          const response = await fetch("http://localhost:3000/api/users", {
+          const response = await fetch(`${API_BASE_URL}/users`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -208,17 +209,20 @@ const AdminDashboard: React.FC = () => {
 
   if (loading || propertiesLoading) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-white">
         <Navbar />
         <div className="flex items-center justify-center min-h-screen">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <div
+            className="animate-spin rounded-full h-12 w-12 border-b-2"
+            style={{ borderColor: "#151269" }}
+          ></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <Navbar />
 
       <div className="container mx-auto px-6 py-8 mt-20">

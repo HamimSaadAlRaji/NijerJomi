@@ -1,5 +1,5 @@
 // API base URL
-const API_BASE_URL = "http://localhost:3000/api";
+import { API_BASE_URL } from "../config/constants";
 
 export interface ConnectWalletResponse {
   success: boolean;

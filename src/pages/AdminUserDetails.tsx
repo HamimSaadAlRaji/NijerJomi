@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { API_BASE_URL } from "@/config/constants";
 import {
   User,
   Mail,
@@ -50,9 +51,7 @@ const AdminUserDetails: React.FC = () => {
   const fetchUserDetails = async (address: string) => {
     try {
       setLoading(true);
-      const response = await fetch(
-        `http://localhost:3000/api/users/${address}`
-      );
+      const response = await fetch(`${API_BASE_URL}/users/${address}`);
 
       if (!response.ok) {
         throw new Error("User not found");

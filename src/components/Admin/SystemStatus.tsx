@@ -22,8 +22,11 @@ interface SystemStatusProps {
 
 const SystemStatus: React.FC<SystemStatusProps> = ({ stats }) => {
   return (
-    <Card className="bg-white border border-gray-200 shadow-sm">
-      <CardHeader className="bg-gray-900 text-white">
+    <Card
+      className="bg-white border shadow-sm"
+      style={{ borderColor: "#aad6ec" }}
+    >
+      <CardHeader className="text-white" style={{ backgroundColor: "#113065" }}>
         <CardTitle className="flex items-center">
           <Activity className="w-5 h-5 mr-2" />
           System Status
@@ -31,34 +34,68 @@ const SystemStatus: React.FC<SystemStatusProps> = ({ stats }) => {
       </CardHeader>
       <CardContent className="p-6">
         <div className="space-y-4">
-          <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+          <div
+            className="flex items-center justify-between p-3 rounded-lg"
+            style={{ backgroundColor: "#f0f9ff" }}
+          >
             <div className="flex items-center">
-              <CheckCircle className="w-5 h-5 text-green-600 mr-3" />
-              <span className="text-sm font-medium text-green-900">
+              <CheckCircle
+                className="w-5 h-5 mr-3"
+                style={{ color: "#22c55e" }}
+              />
+              <span
+                className="text-sm font-medium"
+                style={{ color: "#151269" }}
+              >
                 Blockchain Connection
               </span>
             </div>
-            <Badge className="bg-green-100 text-green-800">Online</Badge>
+            <Badge
+              className="text-green-800"
+              style={{ backgroundColor: "#dcfce7" }}
+            >
+              Online
+            </Badge>
           </div>
 
-          <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+          <div
+            className="flex items-center justify-between p-3 rounded-lg"
+            style={{ backgroundColor: "#f8fafc" }}
+          >
             <div className="flex items-center">
-              <Database className="w-5 h-5 text-blue-600 mr-3" />
-              <span className="text-sm font-medium text-blue-900">
+              <Database className="w-5 h-5 mr-3" style={{ color: "#0f1056" }} />
+              <span
+                className="text-sm font-medium"
+                style={{ color: "#151269" }}
+              >
                 Smart Contract
               </span>
             </div>
-            <Badge className="bg-blue-100 text-blue-800">Active</Badge>
+            <Badge
+              className="text-blue-800"
+              style={{ backgroundColor: "#aad6ec" }}
+            >
+              Active
+            </Badge>
           </div>
 
-          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+          <div
+            className="flex items-center justify-between p-3 rounded-lg"
+            style={{ backgroundColor: "#f9fafb" }}
+          >
             <div className="flex items-center">
-              <Users className="w-5 h-5 text-gray-600 mr-3" />
-              <span className="text-sm font-medium text-gray-900">
+              <Users className="w-5 h-5 mr-3" style={{ color: "#81b1ce" }} />
+              <span
+                className="text-sm font-medium"
+                style={{ color: "#151269" }}
+              >
                 User Sessions
               </span>
             </div>
-            <Badge className="bg-gray-100 text-gray-800">
+            <Badge
+              className="text-gray-800"
+              style={{ backgroundColor: "#e5e7eb" }}
+            >
               {stats?.totalUsers || 0} Active
             </Badge>
           </div>

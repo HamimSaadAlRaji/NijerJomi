@@ -20,6 +20,7 @@ import {
   approveTransferAsBuyer,
   getAllProperties,
 } from "@/services/blockchainService";
+import { API_BASE_URL } from "@/config/constants";
 import {
   FileText,
   CheckCircle,
@@ -88,51 +89,50 @@ const TransferManagement = () => {
   const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
   const [nidData, setNidData] = useState({ seller: null, buyer: null });
 
-
   // Check user access
   useEffect(() => {
     if (!isConnected || !user || !web3State.account) {
       navigate("/connect-wallet");
       return;
     }
-   const fetchNid = async () => {
-    try {
-      // Seller NID
-      if (selectedTransfer?.seller) {
-        const sellerRes = await fetch(
-          `http://localhost:3000/api/user/nid-by-wallet/${selectedTransfer.seller.toLowerCase()}`
-        );
-        console.log("Seller NID Response:", selectedTransfer.seller);
-        const sellerData = await sellerRes.json();
-        console.log("Seller NID Response:", sellerData);
+    const fetchNid = async () => {
+      try {
+        // Seller NID
+        if (selectedTransfer?.seller) {
+          const sellerRes = await fetch(
+            `${API_BASE_URL}/user/nid-by-wallet/${selectedTransfer.seller.toLowerCase()}`
+          );
+          console.log("Seller NID Response:", selectedTransfer.seller);
+          const sellerData = await sellerRes.json();
+          console.log("Seller NID Response:", sellerData);
 
-        if (sellerRes.ok && sellerData.success) {
-          setNidData((prev) => ({
-            ...prev,
-            seller: sellerData.nidNumber,
-          }));
+          if (sellerRes.ok && sellerData.success) {
+            setNidData((prev) => ({
+              ...prev,
+              seller: sellerData.nidNumber,
+            }));
+          }
         }
-      }
 
-      // Buyer NID
-      if (selectedTransfer?.buyer) {
-        const buyerRes = await fetch(
-          `http://localhost:3000/api/user/nid-by-wallet/${selectedTransfer.buyer.toLowerCase()}`
-        );
-        console.log("Buyer NID Response:", selectedTransfer.buyer);
-        const buyerData = await buyerRes.json();
+        // Buyer NID
+        if (selectedTransfer?.buyer) {
+          const buyerRes = await fetch(
+            `${API_BASE_URL}/user/nid-by-wallet/${selectedTransfer.buyer.toLowerCase()}`
+          );
+          console.log("Buyer NID Response:", selectedTransfer.buyer);
+          const buyerData = await buyerRes.json();
 
-        if (buyerRes.ok && buyerData.success) {
-          setNidData((prev) => ({
-            ...prev,
-            buyer: buyerData.nidNumber,
-          }));
+          if (buyerRes.ok && buyerData.success) {
+            setNidData((prev) => ({
+              ...prev,
+              buyer: buyerData.nidNumber,
+            }));
+          }
         }
+      } catch (error) {
+        console.error("Error fetching NID:", error);
       }
-    } catch (error) {
-      console.error("Error fetching NID:", error);
-    }
-  };
+    };
     fetchNid();
   }, [isConnected, user, web3State.account, navigate, selectedTransfer]);
 
@@ -304,20 +304,26 @@ const TransferManagement = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-white">
       <Navbar />
       <div className="container mx-auto px-4 py-8 pt-24">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-foreground mb-2">
+            <h1 className="text-3xl font-bold text-black mb-2">
               Transfer Management
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-gray-600">
               Manage your property transfer requests and approvals
             </p>
           </div>
-          <Button onClick={refreshData} disabled={refreshing} variant="outline">
+          <Button
+            onClick={refreshData}
+            disabled={refreshing}
+            variant="outline"
+            className="hover:bg-blue-50 transition-colors"
+            style={{ borderColor: "#81b1ce", color: "#151269" }}
+          >
             <RefreshCw
               className={`w-4 h-4 mr-2 ${refreshing ? "animate-spin" : ""}`}
             />
@@ -331,12 +337,15 @@ const TransferManagement = () => {
             <Card className="border-orange-200 bg-orange-50">
               <CardContent className="p-4">
                 <div className="flex items-center">
-                  <AlertCircle className="w-5 h-5 text-orange-600 mr-2" />
+                  <AlertCircle
+                    className="w-5 h-5 mr-2"
+                    style={{ color: "#151269" }}
+                  />
                   <div>
-                    <p className="text-orange-800 font-medium">
+                    <p className="text-black font-medium">
                       Account Not Verified
                     </p>
-                    <p className="text-orange-700 text-sm">
+                    <p className="text-gray-700 text-sm">
                       You must be verified to create or approve transfer
                       requests. Please complete your verification first.
                     </p>
@@ -349,15 +358,13 @@ const TransferManagement = () => {
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <Card>
+          <Card className="bg-white border" style={{ borderColor: "#aad6ec" }}>
             <CardContent className="p-6">
               <div className="flex items-center">
-                <Send className="w-8 h-8 text-blue-500" />
+                <Send className="w-8 h-8" style={{ color: "#151269" }} />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-muted-foreground">
-                    As Seller
-                  </p>
-                  <p className="text-2xl font-bold">
+                  <p className="text-sm font-medium text-gray-600">As Seller</p>
+                  <p className="text-2xl font-bold text-black">
                     {userTransfers.asSeller.length}
                   </p>
                 </div>
@@ -365,15 +372,13 @@ const TransferManagement = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white border" style={{ borderColor: "#81b1ce" }}>
             <CardContent className="p-6">
               <div className="flex items-center">
-                <FileText className="w-8 h-8 text-green-500" />
+                <FileText className="w-8 h-8" style={{ color: "#0f1056" }} />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-muted-foreground">
-                    As Buyer
-                  </p>
-                  <p className="text-2xl font-bold">
+                  <p className="text-sm font-medium text-gray-600">As Buyer</p>
+                  <p className="text-2xl font-bold text-black">
                     {userTransfers.asBuyer.length}
                   </p>
                 </div>
@@ -381,15 +386,15 @@ const TransferManagement = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white border" style={{ borderColor: "#113065" }}>
             <CardContent className="p-6">
               <div className="flex items-center">
-                <Clock className="w-8 h-8 text-orange-500" />
+                <Clock className="w-8 h-8" style={{ color: "#151269" }} />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-muted-foreground">
+                  <p className="text-sm font-medium text-gray-600">
                     Pending Action
                   </p>
-                  <p className="text-2xl font-bold">
+                  <p className="text-2xl font-bold text-black">
                     {
                       userTransfers.asBuyer.filter((t) => canApproveAsBuyer(t))
                         .length
@@ -400,15 +405,13 @@ const TransferManagement = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="bg-white border" style={{ borderColor: "#aad6ec" }}>
             <CardContent className="p-6">
               <div className="flex items-center">
-                <CheckCircle className="w-8 h-8 text-purple-500" />
+                <CheckCircle className="w-8 h-8" style={{ color: "#113065" }} />
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-muted-foreground">
-                    Completed
-                  </p>
-                  <p className="text-2xl font-bold">
+                  <p className="text-sm font-medium text-gray-600">Completed</p>
+                  <p className="text-2xl font-bold text-black">
                     {
                       [
                         ...userTransfers.asBuyer,
@@ -435,17 +438,20 @@ const TransferManagement = () => {
           <TabsContent value="as-buyer" className="space-y-4">
             {loading ? (
               <div className="flex items-center justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin" />
-                <span className="ml-2">Loading transfers...</span>
+                <Loader2
+                  className="w-8 h-8 animate-spin"
+                  style={{ color: "#151269" }}
+                />
+                <span className="ml-2 text-black">Loading transfers...</span>
               </div>
             ) : userTransfers.asBuyer.length === 0 ? (
-              <Card>
+              <Card className="bg-white">
                 <CardContent className="p-12 text-center">
                   <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">
+                  <h3 className="text-xl font-semibold mb-2 text-black">
                     No Purchase Requests
                   </h3>
-                  <p className="text-muted-foreground">
+                  <p className="text-gray-600">
                     You haven't been involved in any property purchases yet.
                   </p>
                 </CardContent>
@@ -458,13 +464,17 @@ const TransferManagement = () => {
                     return a.completed ? 1 : -1;
                   })
                   .map((transfer) => {
-                    const property = getPropertyForTransfer(transfer.propertyId);
+                    const property = getPropertyForTransfer(
+                      transfer.propertyId
+                    );
                     const status = getTransferStatus(transfer);
                     const needsApproval = canApproveAsBuyer(transfer);
                     return (
                       <Card
                         key={transfer.id}
-                        className={needsApproval ? "border-orange-200 bg-orange-50" : ""}
+                        className={
+                          needsApproval ? "border-orange-200 bg-orange-50" : ""
+                        }
                       >
                         <CardContent className="p-6">
                           <div className="flex items-center justify-between">
@@ -474,7 +484,10 @@ const TransferManagement = () => {
                                   Purchase Request #{transfer.id}
                                 </h4>
                                 {needsApproval && (
-                                  <Badge variant="destructive" className="text-xs">
+                                  <Badge
+                                    variant="destructive"
+                                    className="text-xs"
+                                  >
                                     Action Required
                                   </Badge>
                                 )}
@@ -482,40 +495,75 @@ const TransferManagement = () => {
                               <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
                                 <div>
                                   <p>
-                                    <strong>Property:</strong> {property?.location || `ID #${transfer.propertyId}`}
+                                    <strong>Property:</strong>{" "}
+                                    {property?.location ||
+                                      `ID #${transfer.propertyId}`}
                                   </p>
                                   <p>
-                                    <strong>Seller:</strong> {truncateAddress(transfer.seller)}
+                                    <strong>Seller:</strong>{" "}
+                                    {truncateAddress(transfer.seller)}
                                   </p>
                                 </div>
                                 <div>
                                   <p>
-                                    <strong>Price:</strong> {formatEther(transfer.agreedPrice)} ETH
+                                    <strong>Price:</strong>{" "}
+                                    {formatEther(transfer.agreedPrice)} ETH
                                   </p>
                                   <p>
-                                    <strong>Area:</strong> {property?.area || "N/A"} sq ft
+                                    <strong>Area:</strong>{" "}
+                                    {property?.area || "N/A"} sq ft
                                   </p>
                                 </div>
                               </div>
                               <div className="flex space-x-2 text-xs">
-                                <Badge variant={transfer.buyerApproved ? "default" : "secondary"}>
-                                  Your Approval: {transfer.buyerApproved ? "✓" : "Pending"}
+                                <Badge
+                                  className={
+                                    transfer.buyerApproved
+                                      ? "bg-green-100 text-green-700 border-green-200"
+                                      : "bg-yellow-50 text-yellow-600 border-yellow-200"
+                                  }
+                                >
+                                  Your Approval:{" "}
+                                  {transfer.buyerApproved ? "✓" : "Pending"}
                                 </Badge>
-                                <Badge variant={transfer.sellerApproved ? "default" : "secondary"}>
-                                  Seller: {transfer.sellerApproved ? "✓" : "Pending"}
+                                <Badge
+                                  className={
+                                    transfer.sellerApproved
+                                      ? "bg-green-100 text-green-700 border-green-200"
+                                      : "bg-yellow-50 text-yellow-600 border-yellow-200"
+                                  }
+                                >
+                                  Seller:{" "}
+                                  {transfer.sellerApproved ? "✓" : "Pending"}
                                 </Badge>
-                                <Badge variant={transfer.registrarApproved ? "default" : "secondary"}>
-                                  Registrar: {transfer.registrarApproved ? "✓" : "Pending"}
+                                <Badge
+                                  className={
+                                    transfer.registrarApproved
+                                      ? "bg-green-100 text-green-700 border-green-200"
+                                      : "bg-yellow-50 text-yellow-600 border-yellow-200"
+                                  }
+                                >
+                                  Registrar:{" "}
+                                  {transfer.registrarApproved ? "✓" : "Pending"}
                                 </Badge>
                               </div>
                             </div>
                             <div className="flex flex-col items-end space-y-2">
-                              <Badge className={getStatusColor(status)}>{status}</Badge>
+                              <Badge className={getStatusColor(status)}>
+                                {status}
+                              </Badge>
                               <div className="flex space-x-2">
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  onClick={() => showTransferDetails(transfer.id)}
+                                  onClick={() =>
+                                    showTransferDetails(transfer.id)
+                                  }
+                                  className="hover:bg-blue-50 transition-colors"
+                                  style={{
+                                    borderColor: "#81b1ce",
+                                    color: "#151269",
+                                  }}
                                 >
                                   <Eye className="w-4 h-4 mr-2" />
                                   Details
@@ -523,11 +571,18 @@ const TransferManagement = () => {
                                 {needsApproval && (
                                   <Button
                                     size="sm"
-                                    onClick={() => handleApproveAsBuyer(transfer.id)}
-                                    disabled={actionLoading === `approve-buyer-${transfer.id}`}
-                                    className="bg-green-600 hover:bg-green-700"
+                                    onClick={() =>
+                                      handleApproveAsBuyer(transfer.id)
+                                    }
+                                    disabled={
+                                      actionLoading ===
+                                      `approve-buyer-${transfer.id}`
+                                    }
+                                    className="text-white hover:opacity-90 transition-opacity"
+                                    style={{ backgroundColor: "#151269" }}
                                   >
-                                    {actionLoading === `approve-buyer-${transfer.id}` ? (
+                                    {actionLoading ===
+                                    `approve-buyer-${transfer.id}` ? (
                                       <Loader2 className="w-4 h-4 animate-spin mr-2" />
                                     ) : (
                                       <CheckCircle className="w-4 h-4 mr-2" />
@@ -549,17 +604,20 @@ const TransferManagement = () => {
           <TabsContent value="as-seller" className="space-y-4">
             {loading ? (
               <div className="flex items-center justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin" />
-                <span className="ml-2">Loading transfers...</span>
+                <Loader2
+                  className="w-8 h-8 animate-spin"
+                  style={{ color: "#151269" }}
+                />
+                <span className="ml-2 text-black">Loading transfers...</span>
               </div>
             ) : userTransfers.asSeller.length === 0 ? (
-              <Card>
+              <Card className="bg-white">
                 <CardContent className="p-12 text-center">
                   <Send className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold mb-2">
+                  <h3 className="text-xl font-semibold mb-2 text-black">
                     No Sale Requests
                   </h3>
-                  <p className="text-muted-foreground">
+                  <p className="text-gray-600">
                     You haven't created any property sale requests yet.
                   </p>
                 </CardContent>
@@ -572,7 +630,9 @@ const TransferManagement = () => {
                     return a.completed ? 1 : -1;
                   })
                   .map((transfer) => {
-                    const property = getPropertyForTransfer(transfer.propertyId);
+                    const property = getPropertyForTransfer(
+                      transfer.propertyId
+                    );
                     const status = getTransferStatus(transfer);
                     return (
                       <Card key={transfer.id}>
@@ -585,39 +645,72 @@ const TransferManagement = () => {
                               <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
                                 <div>
                                   <p>
-                                    <strong>Property:</strong> {property?.location || `ID #${transfer.propertyId}`}
+                                    <strong>Property:</strong>{" "}
+                                    {property?.location ||
+                                      `ID #${transfer.propertyId}`}
                                   </p>
                                   <p>
-                                    <strong>Buyer:</strong> {truncateAddress(transfer.buyer)}
+                                    <strong>Buyer:</strong>{" "}
+                                    {truncateAddress(transfer.buyer)}
                                   </p>
                                 </div>
                                 <div>
                                   <p>
-                                    <strong>Price:</strong> {formatEther(transfer.agreedPrice)} ETH
+                                    <strong>Price:</strong>{" "}
+                                    {formatEther(transfer.agreedPrice)} ETH
                                   </p>
                                   <p>
-                                    <strong>Area:</strong> {property?.area || "N/A"} sq ft
+                                    <strong>Area:</strong>{" "}
+                                    {property?.area || "N/A"} sq ft
                                   </p>
                                 </div>
                               </div>
                               <div className="flex space-x-2 text-xs">
-                                <Badge variant={transfer.buyerApproved ? "default" : "secondary"}>
-                                  Buyer: {transfer.buyerApproved ? "✓" : "Pending"}
+                                <Badge
+                                  className={
+                                    transfer.buyerApproved
+                                      ? "bg-green-100 text-green-700 border-green-200"
+                                      : "bg-yellow-50 text-yellow-600 border-yellow-200"
+                                  }
+                                >
+                                  Buyer:{" "}
+                                  {transfer.buyerApproved ? "✓" : "Pending"}
                                 </Badge>
-                                <Badge variant={transfer.sellerApproved ? "default" : "secondary"}>
-                                  Your Approval: {transfer.sellerApproved ? "✓" : "Pending"}
+                                <Badge
+                                  className={
+                                    transfer.sellerApproved
+                                      ? "bg-green-100 text-green-700 border-green-200"
+                                      : "bg-yellow-50 text-yellow-600 border-yellow-200"
+                                  }
+                                >
+                                  Your Approval:{" "}
+                                  {transfer.sellerApproved ? "✓" : "Pending"}
                                 </Badge>
-                                <Badge variant={transfer.registrarApproved ? "default" : "secondary"}>
-                                  Registrar: {transfer.registrarApproved ? "✓" : "Pending"}
+                                <Badge
+                                  className={
+                                    transfer.registrarApproved
+                                      ? "bg-green-100 text-green-700 border-green-200"
+                                      : "bg-yellow-50 text-yellow-600 border-yellow-200"
+                                  }
+                                >
+                                  Registrar:{" "}
+                                  {transfer.registrarApproved ? "✓" : "Pending"}
                                 </Badge>
                               </div>
                             </div>
                             <div className="flex flex-col items-end space-y-2">
-                              <Badge className={getStatusColor(status)}>{status}</Badge>
+                              <Badge className={getStatusColor(status)}>
+                                {status}
+                              </Badge>
                               <Button
                                 size="sm"
                                 variant="outline"
                                 onClick={() => showTransferDetails(transfer.id)}
+                                className="hover:bg-blue-50 transition-colors"
+                                style={{
+                                  borderColor: "#81b1ce",
+                                  color: "#151269",
+                                }}
                               >
                                 <Eye className="w-4 h-4 mr-2" />
                                 Details
@@ -635,110 +728,150 @@ const TransferManagement = () => {
 
         {/* Transfer Details Dialog */}
         <Dialog open={detailsDialogOpen} onOpenChange={setDetailsDialogOpen}>
-          <DialogContent className="max-w-2xl">
+          <DialogContent className="max-w-2xl bg-white">
             <DialogHeader>
-              <DialogTitle>Transfer Request Details</DialogTitle>
+              <DialogTitle className="text-black">
+                Transfer Request Details
+              </DialogTitle>
             </DialogHeader>
             {selectedTransfer && (
               <div className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <h4 className="font-semibold mb-2">Transfer Information</h4>
+                    <h4 className="font-semibold mb-2 text-black">
+                      Transfer Information
+                    </h4>
                     <div className="space-y-1 text-sm">
-                      <p>
+                      <p className="text-gray-700">
                         <strong>Transfer ID:</strong> {selectedTransfer.id}
                       </p>
-                      <p>
+                      <p className="text-gray-700">
                         <strong>Property ID:</strong>{" "}
                         {selectedTransfer.propertyId}
                       </p>
-                      <p>
+                      <p className="text-gray-700">
                         <strong>Agreed Price:</strong>{" "}
                         {formatEther(selectedTransfer.agreedPrice)} ETH
                       </p>
-                      <p>
+                      <p className="text-gray-700">
                         <strong>Status:</strong>{" "}
                         {getTransferStatus(selectedTransfer)}
                       </p>
                     </div>
                   </div>
                   <div>
-                    <h4 className="font-semibold mb-2">Parties</h4>
+                    <h4 className="font-semibold mb-2 text-black">Parties</h4>
                     <div className="space-y-1 text-sm">
-                      <p>
-                        <strong>Seller NID:</strong> {nidData.seller || "Loading..."}
+                      <p className="text-gray-700">
+                        <strong>Seller NID:</strong>{" "}
+                        {nidData.seller || "Loading..."}
                       </p>
-                      <p>
-                        <strong>Buyer NID:</strong> {nidData.buyer || "Loading..."}
+                      <p className="text-gray-700">
+                        <strong>Buyer NID:</strong>{" "}
+                        {nidData.buyer || "Loading..."}
                       </p>
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <h4 className="font-semibold mb-2">Approval Status</h4>
+                  <h4 className="font-semibold mb-2 text-black">
+                    Approval Status
+                  </h4>
                   <div className="relative flex items-center justify-between w-full mb-6">
-
                     {/* Step 1 - Seller */}
                     <div className="flex flex-col items-center z-10">
                       <div
-                        className={`w-8 h-8 rounded-full flex items-center justify-center 
-          ${selectedTransfer.sellerApproved ? "bg-green-500 text-white" : "bg-gray-300 text-gray-600"}`}
+                        className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold
+          ${selectedTransfer.sellerApproved ? "" : "text-gray-600"}`}
+                        style={{
+                          backgroundColor: selectedTransfer.sellerApproved
+                            ? "#113065"
+                            : "#d1d5db",
+                        }}
                       >
                         1
                       </div>
-                      <span className="mt-2 text-sm">Seller</span>
+                      <span className="mt-2 text-sm text-black">Seller</span>
                     </div>
 
                     {/* Line between Seller -> Buyer */}
                     <div
-                      className={`flex-1 h-1 mx-2
-        ${selectedTransfer.sellerApproved && selectedTransfer.buyerApproved ? "bg-green-500" : "bg-gray-300"}`}
+                      className="flex-1 h-1 mx-2"
+                      style={{
+                        backgroundColor:
+                          selectedTransfer.sellerApproved &&
+                          selectedTransfer.buyerApproved
+                            ? "#81b1ce"
+                            : "#d1d5db",
+                      }}
                     />
 
                     {/* Step 2 - Buyer */}
                     <div className="flex flex-col items-center z-10">
                       <div
-                        className={`w-8 h-8 rounded-full flex items-center justify-center 
-          ${selectedTransfer.buyerApproved ? "bg-green-500 text-white" : "bg-gray-300 text-gray-600"}`}
+                        className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold
+          ${selectedTransfer.buyerApproved ? "" : "text-gray-600"}`}
+                        style={{
+                          backgroundColor: selectedTransfer.buyerApproved
+                            ? "#0f1056"
+                            : "#d1d5db",
+                        }}
                       >
                         2
                       </div>
-                      <span className="mt-2 text-sm">Buyer</span>
+                      <span className="mt-2 text-sm text-black">Buyer</span>
                     </div>
 
                     {/* Line between Buyer -> Registrar */}
                     <div
-                      className={`flex-1 h-1 mx-2
-        ${selectedTransfer.buyerApproved && selectedTransfer.registrarApproved ? "bg-green-500" : "bg-gray-300"}`}
+                      className="flex-1 h-1 mx-2"
+                      style={{
+                        backgroundColor:
+                          selectedTransfer.buyerApproved &&
+                          selectedTransfer.registrarApproved
+                            ? "#151269"
+                            : "#d1d5db",
+                      }}
                     />
 
                     {/* Step 3 - Registrar */}
                     <div className="flex flex-col items-center z-10">
                       <div
-                        className={`w-8 h-8 rounded-full flex items-center justify-center 
-          ${selectedTransfer.registrarApproved ? "bg-green-500 text-white" : "bg-gray-300 text-gray-600"}`}
+                        className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold
+          ${selectedTransfer.registrarApproved ? "" : "text-gray-600"}`}
+                        style={{
+                          backgroundColor: selectedTransfer.registrarApproved
+                            ? "#151269"
+                            : "#d1d5db",
+                        }}
                       >
                         3
                       </div>
-                      <span className="mt-2 text-sm">Registrar</span>
+                      <span className="mt-2 text-sm text-black">Registrar</span>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-3 gap-2">
                     <div
-                      className={`p-3 rounded border text-center ${selectedTransfer.sellerApproved
-                        ? "bg-green-50 border-green-200"
-                        : "bg-red-50 border-red-200"
-                        }`}
+                      className={`p-3 rounded border text-center ${
+                        selectedTransfer.sellerApproved
+                          ? "border-green-200"
+                          : "border-yellow-200"
+                      }`}
+                      style={{
+                        backgroundColor: selectedTransfer.sellerApproved
+                          ? "#dcfce7"
+                          : "#fffbeb",
+                      }}
                     >
-                      <div className="font-medium">Seller</div>
+                      <div className="font-medium text-gray-800">Seller</div>
                       <div
-                        className={
-                          selectedTransfer.sellerApproved
-                            ? "text-green-600"
-                            : "text-red-600"
-                        }
+                        style={{
+                          color: selectedTransfer.sellerApproved
+                            ? "#16a34a"
+                            : "#d97706",
+                        }}
                       >
                         {selectedTransfer.sellerApproved
                           ? "✓ Approved"
@@ -746,18 +879,24 @@ const TransferManagement = () => {
                       </div>
                     </div>
                     <div
-                      className={`p-3 rounded border text-center ${selectedTransfer.buyerApproved
-                        ? "bg-green-50 border-green-200"
-                        : "bg-red-50 border-red-200"
-                        }`}
+                      className={`p-3 rounded border text-center ${
+                        selectedTransfer.buyerApproved
+                          ? "border-green-200"
+                          : "border-yellow-200"
+                      }`}
+                      style={{
+                        backgroundColor: selectedTransfer.buyerApproved
+                          ? "#dcfce7"
+                          : "#fffbeb",
+                      }}
                     >
-                      <div className="font-medium">Buyer</div>
+                      <div className="font-medium text-gray-800">Buyer</div>
                       <div
-                        className={
-                          selectedTransfer.buyerApproved
-                            ? "text-green-600"
-                            : "text-red-600"
-                        }
+                        style={{
+                          color: selectedTransfer.buyerApproved
+                            ? "#16a34a"
+                            : "#d97706",
+                        }}
                       >
                         {selectedTransfer.buyerApproved
                           ? "✓ Approved"
@@ -765,18 +904,24 @@ const TransferManagement = () => {
                       </div>
                     </div>
                     <div
-                      className={`p-3 rounded border text-center ${selectedTransfer.registrarApproved
-                        ? "bg-green-50 border-green-200"
-                        : "bg-red-50 border-red-200"
-                        }`}
+                      className={`p-3 rounded border text-center ${
+                        selectedTransfer.registrarApproved
+                          ? "border-green-200"
+                          : "border-yellow-200"
+                      }`}
+                      style={{
+                        backgroundColor: selectedTransfer.registrarApproved
+                          ? "#dcfce7"
+                          : "#fffbeb",
+                      }}
                     >
-                      <div className="font-medium">Registrar</div>
+                      <div className="font-medium text-gray-800">Registrar</div>
                       <div
-                        className={
-                          selectedTransfer.registrarApproved
-                            ? "text-green-600"
-                            : "text-red-600"
-                        }
+                        style={{
+                          color: selectedTransfer.registrarApproved
+                            ? "#16a34a"
+                            : "#d97706",
+                        }}
                       >
                         {selectedTransfer.registrarApproved
                           ? "✓ Approved"
@@ -788,8 +933,17 @@ const TransferManagement = () => {
 
                 {getPropertyForTransfer(selectedTransfer.propertyId) && (
                   <div>
-                    <h4 className="font-semibold mb-2">Property Details</h4>
-                    <div className="bg-gray-50 p-4 rounded">
+                    <h4 className="font-semibold mb-2 text-black">
+                      Property Details
+                    </h4>
+                    <div
+                      className="p-4 rounded"
+                      style={{
+                        backgroundColor: "#aad6ec20",
+                        borderColor: "#81b1ce",
+                        border: "1px solid",
+                      }}
+                    >
                       {(() => {
                         const property = getPropertyForTransfer(
                           selectedTransfer.propertyId
@@ -797,19 +951,19 @@ const TransferManagement = () => {
                         return property ? (
                           <div className="grid grid-cols-2 gap-4 text-sm">
                             <div>
-                              <p>
+                              <p className="text-gray-700">
                                 <strong>Location:</strong> {property.location}
                               </p>
-                              <p>
+                              <p className="text-gray-700">
                                 <strong>Area:</strong> {property.area} sq ft
                               </p>
                             </div>
                             <div>
-                              <p>
+                              <p className="text-gray-700">
                                 <strong>Market Value:</strong>{" "}
                                 {formatEther(property.marketValue)} ETH
                               </p>
-                              <p>
+                              <p className="text-gray-700">
                                 <strong>For Sale:</strong>{" "}
                                 {property.isForSale ? "Yes" : "No"}
                               </p>
