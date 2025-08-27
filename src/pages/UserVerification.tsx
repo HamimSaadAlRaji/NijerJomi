@@ -265,8 +265,10 @@ const UserVerification = () => {
   };
 
   return (
-    <BackgroundImage>
+    <div className="min-h-screen bg-white">
       <Navbar />
+
+      <div className="container mx-auto px-4 py-8 mt-20">
       {/* Header Section */}
       <HeaderSection
         title="User Verification"
@@ -339,7 +341,8 @@ const UserVerification = () => {
           window.location.href = "/dashboard";
         }}
       />
-    </BackgroundImage>
+      </div>
+      </div>
   );
 };
 
