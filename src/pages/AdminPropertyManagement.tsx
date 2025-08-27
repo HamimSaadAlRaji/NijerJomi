@@ -47,6 +47,8 @@ import {
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ethers } from "ethers";
+import { getUserNidFromWallet } from "@/services/userServices";
+import { all } from "axios";
 
 interface Property {
   id: number;
@@ -82,6 +84,9 @@ const AdminPropertyManagement = () => {
   const [transferRequests, setTransferRequests] = useState<TransferRequest[]>(
     []
   );
+  const [buyerNIDs, setBuyerNIDs] = useState<Map<string, string>>(new Map());
+  const [sellerNIDs, setSellerNIDs] = useState<Map<string, string>>(new Map());
+
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
@@ -221,9 +226,32 @@ const AdminPropertyManagement = () => {
 
       console.log("Fetched properties:", allProperties.length);
       console.log("Fetched transfer requests:", allTransfers.length);
+      console.log(allTransfers);
 
       setProperties(allProperties);
       setTransferRequests(allTransfers);
+      console.log(transferRequests);
+
+      // load the buyer and seller nid map
+      const buyerMap = new Map<string, string>();
+  const sellerMap = new Map<string, string>();
+  for (const transfer of allTransfers) {
+    const buyerNID = await getUserNidFromWallet(transfer.buyer.toLowerCase());
+    const sellerNID = await getUserNidFromWallet(transfer.seller.toLowerCase());
+    buyerMap.set(transfer.buyer.toLowerCase(), buyerNID);
+    sellerMap.set(transfer.seller.toLowerCase(), sellerNID);
+  }
+  setBuyerNIDs(buyerMap);
+  setSellerNIDs(sellerMap);
+
+//         buyerNIDs.forEach((value, key) => {
+//   console.log(`Key: ${key}, Value: ${value}`);
+// });
+
+//     sellerNIDs.forEach((value, key) => {
+//   console.log(`Key: ${key}, Value: ${value}`);
+// });
+
     } catch (error) {
       console.error("Error fetching data:", error);
       toast({
@@ -256,6 +284,7 @@ const AdminPropertyManagement = () => {
     }
   }, [web3State.contract, web3State.isLoading]);
 
+  
   // Register new property
   const handleRegisterProperty = async () => {
     if (
@@ -980,6 +1009,7 @@ const AdminPropertyManagement = () => {
                         (p) => p.id === transfer.propertyId
                       );
                       const status = getTransferStatus(transfer);
+                      //const buyerNID = await getUserNidFromWallet(transfer.buyer)
                       return (
                         <Card
                           key={transfer.id}
@@ -1006,13 +1036,13 @@ const AdminPropertyManagement = () => {
                                       <strong style={{ color: "#151269" }}>
                                         Seller:
                                       </strong>{" "}
-                                      {truncateAddress(transfer.seller)}
+                                      {sellerNIDs.get(transfer.seller.toLowerCase())}
                                     </p>
                                     <p>
                                       <strong style={{ color: "#151269" }}>
                                         Buyer:
                                       </strong>{" "}
-                                      {truncateAddress(transfer.buyer)}
+                                      {buyerNIDs.get(transfer.buyer.toLowerCase())}
                                     </p>
                                   </div>
                                   <div>
