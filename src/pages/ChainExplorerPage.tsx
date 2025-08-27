@@ -16,6 +16,7 @@ import Tag from "../components/ui/Tag";
 const ChainExplorerPage: React.FC = () => {
   const [events, setEvents] = useState<ContractEvent[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [nid, setNid] = useState("");
   const { web3State } = useWalletContext();
 
   const fetchEvents = useCallback(async () => {
@@ -33,6 +34,8 @@ const ChainExplorerPage: React.FC = () => {
       fetchEvents();
     }
   }, [web3State.isLoading, fetchEvents]);
+
+  useEffect(() => {}, []);
 
   // Utility function to format time ago
   const formatTimeAgo = (timestamp: number) => {
