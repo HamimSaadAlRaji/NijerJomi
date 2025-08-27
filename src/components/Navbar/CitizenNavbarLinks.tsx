@@ -26,7 +26,7 @@ const CitizenNavbarLinks: React.FC<CitizenNavbarLinksProps> = ({
       <Link
         to="/marketplace"
         className={`${linkBase} ${linkColor} ${
-          ["/marketplace", "/dashboard"].includes(location.pathname)
+          ["/marketplace"].includes(location.pathname)
             ? "underline"
             : ""
         }`}
