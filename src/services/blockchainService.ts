@@ -307,10 +307,50 @@ export const getContractEvents = async (
 
     for (const filter of eventFilters) {
       const logs = await contract.queryFilter(filter, 0, "latest");
-      const parsedLogs = logs
-        .map((log) => {
-          const parsed = contract.interface.parseLog(log);
-          if (!parsed) return null;
+
+      // Process logs with additional details
+      const parsedLogsPromises = logs.map(async (log) => {
+        const parsed = contract.interface.parseLog(log);
+        if (!parsed) return null;
+
+        try {
+          // Get the provider from the contract - checking both runner.provider and provider
+          const provider =
+            (contract.runner as any)?.provider || contract.provider;
+
+          if (!provider) {
+            throw new Error("No provider available");
+          }
+
+          // Fetch block details for timestamp
+          const block = await provider.getBlock(log.blockNumber);
+
+          // Fetch transaction details for gas information and sender
+          const transaction = await provider.getTransaction(
+            log.transactionHash
+          );
+          const receipt = await provider.getTransactionReceipt(
+            log.transactionHash
+          );
+
+          return {
+            name: parsed.name,
+            blockNumber: log.blockNumber,
+            transactionHash: log.transactionHash,
+            args: Object.fromEntries(
+              Object.entries(parsed.args).map(([key, value]) => [
+                key,
+                value.toString(),
+              ])
+            ),
+            timestamp: block?.timestamp,
+            gasUsed: receipt?.gasUsed?.toString(),
+            gasPrice: transaction?.gasPrice?.toString(),
+            from: transaction?.from,
+          };
+        } catch (error) {
+          console.error(`Error fetching additional details for event:`, error);
+          // Return basic event if we can't fetch additional details
           return {
             name: parsed.name,
             blockNumber: log.blockNumber,
@@ -322,12 +362,17 @@ export const getContractEvents = async (
               ])
             ),
           };
-        })
-        .filter(Boolean) as ContractEvent[];
+        }
+      });
+
+      const parsedLogs = (await Promise.all(parsedLogsPromises)).filter(
+        Boolean
+      ) as ContractEvent[];
+
       allEvents = [...allEvents, ...parsedLogs];
     }
 
-    // Sort all events chronologically by block number
+    // Sort all events chronologically by block number (newest first)
     allEvents.sort((a, b) => b.blockNumber - a.blockNumber);
 
     return allEvents;

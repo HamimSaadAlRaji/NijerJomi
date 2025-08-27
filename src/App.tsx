@@ -21,6 +21,7 @@ import NotFound from "./pages/NotFound";
 const WhyBlockchain = lazy(() => import("./pages/WhyBlockchain"));
 const AntiCorruption = lazy(() => import("./pages/AntiCorruption"));
 const UserBenefits = lazy(() => import("./pages/UserBenefits"));
+const ChainExplorerPage = lazy(() => import("./pages/ChainExplorerPage"));
 
 // Lazy load user pages
 const Properties = lazy(() => import("./pages/Properties"));
@@ -108,6 +109,16 @@ const App = () => (
               element={
                 <LazyRoute>
                   <UserBenefits />
+                </LazyRoute>
+              }
+            />
+
+            {/* Chain Explorer - Public access */}
+            <Route
+              path="/chain-explorer"
+              element={
+                <LazyRoute>
+                  <ChainExplorerPage />
                 </LazyRoute>
               }
             />
