@@ -264,7 +264,7 @@ const MarketPlace: React.FC = () => {
           className="absolute inset-0"
           style={{ backgroundColor: "#aad6ec10" }}
         ></div>
-        <div className="relative container mx-auto px-4 py-16">
+        <div className="relative container mx-auto px-4 py-16 mt-5">
           <div className="text-center max-w-4xl mx-auto">
             <h1
               className="text-4xl lg:text-5xl font-bold mb-4"

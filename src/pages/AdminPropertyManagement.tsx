@@ -797,14 +797,14 @@ const AdminPropertyManagement = () => {
           >
             <TabsTrigger
               value="properties"
-              className="data-[state=active]:bg-gray-50"
+              className="data-[state=active]:bg-blue-300/20"
               style={{ color: "#151269" }}
             >
               Properties
             </TabsTrigger>
             <TabsTrigger
               value="transfers"
-              className="data-[state=active]:bg-gray-50"
+              className="data-[state=active]:bg-blue-300/20"
               style={{ color: "#151269" }}
             >
               Transfer Requests

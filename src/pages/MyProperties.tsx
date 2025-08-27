@@ -483,18 +483,6 @@ const MyProperties = () => {
 
         {/* My Properties Section */}
         <div className="mb-12">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-black">My Properties</h2>
-            <Button
-              onClick={() => navigate("/register")}
-              className="flex items-center text-white hover:opacity-90 transition-opacity"
-              style={{ backgroundColor: "#151269" }}
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Register New Property
-            </Button>
-          </div>
-
           {loading ? (
             <div className="flex items-center justify-center py-12">
               <Loader2
@@ -561,49 +549,54 @@ const MyProperties = () => {
             </Card>
           ) : (
             <div className="space-y-4">
-              {transferRequests.map((transfer) => {
-                const property = properties.find(
-                  (p) => p.id === transfer.propertyId
-                );
-                const status = getTransferStatus(transfer);
-                const isUserSeller =
-                  transfer.seller.toLowerCase() ===
-                  web3State.account?.toLowerCase();
+              {[...transferRequests]
+                .sort((a, b) => {
+                  if (a.completed === b.completed) return 0;
+                  return a.completed ? 1 : -1;
+                })
+                .map((transfer) => {
+                  const property = properties.find(
+                    (p) => p.id === transfer.propertyId
+                  );
+                  const status = getTransferStatus(transfer);
+                  const isUserSeller =
+                    transfer.seller.toLowerCase() ===
+                    web3State.account?.toLowerCase();
 
-                return (
-                  <Card
-                    key={transfer.id}
-                    className="bg-white border"
-                    style={{ borderColor: "#aad6ec" }}
-                  >
-                    <CardContent className="p-6">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h4 className="font-semibold text-black">
-                            {property?.location ||
-                              `Property #${transfer.propertyId}`}
-                          </h4>
-                          <div className="text-sm text-gray-600 space-y-1">
-                            <p>Transfer ID: {transfer.id}</p>
-                            <p>
-                              Price: {formatEther(transfer.agreedPrice)} ETH
-                            </p>
-                            <p>
-                              {isUserSeller ? "Buyer" : "Seller"}:{" "}
-                              {truncateAddress(
-                                isUserSeller ? transfer.buyer : transfer.seller
-                              )}
-                            </p>
+                  return (
+                    <Card
+                      key={transfer.id}
+                      className="bg-white border"
+                      style={{ borderColor: "#aad6ec" }}
+                    >
+                      <CardContent className="p-6">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <h4 className="font-semibold text-black">
+                              {property?.location ||
+                                `Property #${transfer.propertyId}`}
+                            </h4>
+                            <div className="text-sm text-gray-600 space-y-1">
+                              <p>Transfer ID: {transfer.id}</p>
+                              <p>
+                                Price: {formatEther(transfer.agreedPrice)} ETH
+                              </p>
+                              <p>
+                                {isUserSeller ? "Buyer" : "Seller"}: {" "}
+                                {truncateAddress(
+                                  isUserSeller ? transfer.buyer : transfer.seller
+                                )}
+                              </p>
+                            </div>
                           </div>
+                          <Badge className={getTransferStatusColor(status)}>
+                            {status}
+                          </Badge>
                         </div>
-                        <Badge className={getTransferStatusColor(status)}>
-                          {status}
-                        </Badge>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
+                      </CardContent>
+                    </Card>
+                  );
+                })}
             </div>
           )}
         </div>
@@ -661,69 +654,6 @@ const MyProperties = () => {
                     Report Dispute
                   </Button>
                 </div>
-              </div>
-            )}
-          </DialogContent>
-        </Dialog>
-
-        {/* Transfer Request Dialog */}
-        <Dialog open={transferDialogOpen} onOpenChange={setTransferDialogOpen}>
-          <DialogContent className="bg-white">
-            <DialogHeader>
-              <DialogTitle className="text-black">
-                Create Transfer Request
-              </DialogTitle>
-            </DialogHeader>
-            {selectedProperty && (
-              <div className="space-y-4">
-                <div>
-                  <p className="text-sm text-gray-600">
-                    Property: {selectedProperty.location}
-                  </p>
-                </div>
-                <div>
-                  <Label htmlFor="buyerAddress" className="text-black">
-                    Buyer Address
-                  </Label>
-                  <Input
-                    id="buyerAddress"
-                    value={buyerAddress}
-                    onChange={(e) => setBuyerAddress(e.target.value)}
-                    placeholder="0x..."
-                    className="border-gray-300 focus:border-blue-500"
-                    style={{ borderColor: "#81b1ce" }}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="agreedPrice" className="text-black">
-                    Agreed Price (ETH)
-                  </Label>
-                  <Input
-                    id="agreedPrice"
-                    value={agreedPrice}
-                    onChange={(e) => setAgreedPrice(e.target.value)}
-                    placeholder="1.5"
-                    type="number"
-                    step="0.01"
-                    className="border-gray-300 focus:border-blue-500"
-                    style={{ borderColor: "#81b1ce" }}
-                  />
-                </div>
-                <Button
-                  onClick={handleRequestTransfer}
-                  disabled={
-                    actionLoading === `transfer-${selectedProperty.id}` ||
-                    !buyerAddress ||
-                    !agreedPrice
-                  }
-                  className="text-white hover:opacity-90 transition-opacity"
-                  style={{ backgroundColor: "#151269" }}
-                >
-                  {actionLoading === `transfer-${selectedProperty.id}` && (
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  )}
-                  Create Transfer Request
-                </Button>
               </div>
             )}
           </DialogContent>

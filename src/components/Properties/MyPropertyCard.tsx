@@ -198,15 +198,6 @@ const MyPropertyCard: React.FC<MyPropertyCardProps> = ({
                 <Edit className="w-4 h-4" />
                 Manage
               </Button>
-              <Button
-                onClick={handleTransferClick}
-                className="text-white px-3 py-1 text-sm font-medium transition-colors flex items-center gap-1 hover:opacity-90"
-                style={{ backgroundColor: "#151269" }}
-                disabled={!userVerified}
-              >
-                <Send className="w-4 h-4" />
-                Transfer
-              </Button>
             </div>
           </div>
         </CardContent>

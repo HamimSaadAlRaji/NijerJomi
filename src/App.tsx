@@ -21,6 +21,9 @@ import NotFound from "./pages/NotFound";
 const WhyBlockchain = lazy(() => import("./pages/WhyBlockchain"));
 const AntiCorruption = lazy(() => import("./pages/AntiCorruption"));
 const UserBenefits = lazy(() => import("./pages/UserBenefits"));
+// Lazy load ComingSoon and NotVerified pages
+const ComingSoon = lazy(() => import("./pages/comingSoon"));
+const NotVerified = lazy(() => import("./pages/notVerified"));
 
 // Lazy load user pages
 const Properties = lazy(() => import("./pages/Properties"));
@@ -112,13 +115,15 @@ const App = () => (
               }
             />
 
-            {/* MarketPlace - Public access */}
+            {/* MarketPlace - Verified users only */}
             <Route
               path="/marketplace"
               element={
-                <LazyRoute>
-                  <MarketPlace />
-                </LazyRoute>
+                <CitizenProtectedRoute>
+                  <LazyRoute>
+                    <MarketPlace />
+                  </LazyRoute>
+                </CitizenProtectedRoute>
               }
             />
 
@@ -300,8 +305,22 @@ const App = () => (
               }
             />
 
+            {/* Not Verified Route */}
+            <Route
+              path="/not-verified"
+              element={
+                <LazyRoute>
+                  <NotVerified />
+                </LazyRoute>
+              }
+            />
+
             {/* Catch-all route */}
-            <Route path="*" element={<NotFound />} />
+            <Route path="*" element={
+              <LazyRoute>
+                <ComingSoon />
+              </LazyRoute>
+            } />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>

@@ -27,6 +27,28 @@ interface WalletConnectButtonProps {
   showDropdown?: boolean;
 }
 
+interface UserData {
+  _id: string;
+  walletAddress: string;
+  fullName: string;
+  nidNumber: string;
+  phoneNumber: string;
+  presentAddress: string;
+  permanentAddress: string;
+  isVerified: boolean;
+  status: "pending" | "accepted" | "rejected";
+  userRole:
+    | "ADMIN"
+    | "REGISTRAR"
+    | "CITIZEN"
+    | "admin"
+    | "register"
+    | "citizen"; // Support both formats
+  createdAt: string;
+  updatedAt: string;
+  profilePicture?: string;
+}
+
 const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
   size = "lg",
   className = "",
@@ -127,8 +149,13 @@ const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
     }
   };
 
-  const formatAddress = (address: string) => {
-    return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  // Helper for user photo (fallback to avatar)
+  const getUserPhoto = () => {
+    if (user && user.profilePicture) {
+      return user.profilePicture;
+    }
+    // fallback avatar
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.fullName || "User")}&background=0D8ABC&color=fff&size=128`;
   };
 
   // Single button with different text based on connection status
@@ -139,15 +166,22 @@ const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
           <Button
             size={size}
             variant={variant}
-            className={`bg-primary hover:bg-primary/90 text-primary-foreground rounded-full text-xl px-8 py-3 ${className}`}
+            className={`rounded-full text-xl flex items-center gap-3 ${className}`}
             disabled={isLoading}
           >
             {isLoading ? (
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
             ) : (
-              <Wallet className="w-4 h-4 mr-2" />
+              <img
+                src={getUserPhoto()}
+                alt={user?.fullName || "User"}
+                className="w-10 h-10 rounded-full object-cover mr-2 border-2 border-blue-400"
+              />
             )}
-            {formatAddress(walletAddress!)}
+            <span className="flex flex-col items-start">
+              <span className="font-bold text-base leading-tight">{user?.fullName || "User"}</span>
+              <span className="text-xs text-blue-700 dark:text-blue-400 font-medium">{user?.userRole || "Citizen"}</span>
+            </span>
             <ChevronDown className="w-4 h-4 ml-2" />
           </Button>
         </DropdownMenuTrigger>
@@ -174,17 +208,27 @@ const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
       onClick={handleWalletAction}
       size={size}
       variant={variant}
-      className={`bg-primary hover:bg-primary/90 text-primary-foreground rounded-full text-xl px-8 py-3 ${className}`}
+      className={`rounded-full text-xl flex items-center gap-3 ${className}`}
       disabled={isLoading}
     >
       {isLoading ? (
         <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+      ) : isConnected && user ? (
+        <>
+          <img
+            src={getUserPhoto()}
+            alt={user?.fullName || "User"}
+            className="w-10 h-10 rounded-full object-cover mr-2 border-2 border-blue-400"
+          />
+          <div className="flex flex-col items-center justify-center">
+            <div className="font-bold text-base leading-tight">{user?.fullName || "User"}</div>
+            <div className="text-xs text-blue-700 dark:text-blue-400 font-medium">{user?.userRole || "Citizen"}</div>
+          </div>
+        </>
       ) : (
         <Wallet className="w-4 h-4 mr-2" />
       )}
-      {isConnected && user
-        ? `${formatAddress(walletAddress!)}`
-        : "Connect Wallet"}
+      {(!isConnected || !user) && "Connect Wallet"}
     </Button>
   );
 };
