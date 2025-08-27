@@ -426,11 +426,22 @@ const TransferManagement = () => {
         </div>
 
         <Tabs defaultValue="as-buyer" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="as-buyer">
+          <TabsList 
+            className="grid w-full grid-cols-2 bg-white border"
+            style={{ borderColor: "#aad6ec" }}
+          >
+            <TabsTrigger 
+              value="as-buyer"
+              className="data-[state=active]:bg-blue-300/20"
+              style={{ color: "#151269" }}
+            >
               As Buyer ({userTransfers.asBuyer.length})
             </TabsTrigger>
-            <TabsTrigger value="as-seller">
+            <TabsTrigger             
+              value="as-seller"
+              className="data-[state=active]:bg-blue-300/20"
+              style={{ color: "#151269" }}
+            >
               As Seller ({userTransfers.asSeller.length})
             </TabsTrigger>
           </TabsList>
