@@ -4,17 +4,21 @@ import {
   CubeTransparentIcon,
   ClockIcon,
   UserIcon,
+  IdentificationIcon
 } from "@heroicons/react/24/outline";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 import { ContractEvent } from "../../types";
 import * as blockchainService from "../services/blockchainService";
+import * as userServices from "../services/userServices";
 import Spinner from "../components/ui/Spinner";
 import Tag from "../components/ui/Tag";
 
 const ChainExplorerPage: React.FC = () => {
   const [events, setEvents] = useState<ContractEvent[]>([]);
+  const [userNids, setUserNIDs] = useState<Map<string, string>>(new Map());
+  const [userRoles, setUserRoles] = useState<Map<string, string>>(new Map());
   const [isLoading, setIsLoading] = useState(true);
   const [nid, setNid] = useState("");
   const { web3State } = useWalletContext();
@@ -26,16 +30,32 @@ const ChainExplorerPage: React.FC = () => {
       web3State.contract
     );
     setEvents(fetchedEvents);
+
+    const userMap = new Map<string, string>();
+    const roleMap = new Map<string, string>();
+    await Promise.all(
+      fetchedEvents.map(async (event) => {
+      if (event.from) {
+        const user = await userServices.getUserByWallet(event.from.toLowerCase());
+        console.log("Fetched user for wallet", event.from.toLowerCase(), user);
+        const role = user?.userRole || "Unknown";
+        const userNID = user?.nidNumber || "Unknown";
+        userMap.set(event.from.toLowerCase(), userNID);
+        roleMap.set(event.from.toLowerCase(), role);
+      }
+    })
+  );
+    setUserNIDs(userMap);
+    setUserRoles(roleMap);
     setIsLoading(false);
   }, [web3State.contract]);
+
 
   useEffect(() => {
     if (!web3State.isLoading) {
       fetchEvents();
     }
   }, [web3State.isLoading, fetchEvents]);
-
-  useEffect(() => {}, []);
 
   // Utility function to format time ago
   const formatTimeAgo = (timestamp: number) => {
@@ -172,6 +192,12 @@ const ChainExplorerPage: React.FC = () => {
                         >
                           User
                         </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider"
+                        >
+                          User Role
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-[#aad6ec]">
@@ -219,27 +245,25 @@ const ChainExplorerPage: React.FC = () => {
 
                             <td className="px-6 py-4">
                               <div className="flex flex-col space-y-2">
-                                {event.from ? (
-                                  <>
-                                    <div className="flex items-center space-x-2 text-xs">
-                                      <UserIcon className="h-4 w-4 text-[#81b1ce]" />
-                                      <span className="font-mono bg-[#aad6ec]/20 px-2 py-1 rounded border border-[#81b1ce] text-[#113065]">
-                                        {`${event.from.substring(
-                                          0,
-                                          6
-                                        )}...${event.from.substring(
-                                          event.from.length - 4
-                                        )}`}
-                                      </span>
-                                    </div>
-                                    <div className="text-xs"></div>
-                                  </>
-                                ) : (
-                                  <div className="text-xs text-[#81b1ce] flex items-center space-x-2">
-                                    <UserIcon className="h-4 w-4" />
-                                    <span>System/Contract</span>
-                                  </div>
-                                )}
+                                <div className="flex items-center space-x-2 text-xs">
+                                  <UserIcon className="h-4 w-4 text-[#81b1ce]" />
+                                    <span className="font-mono bg-[#aad6ec]/20 px-2 py-1 rounded border border-[#81b1ce] text-[#113065]">
+                                      {userNids.get(event.from.toLowerCase())|| "System Contract"}
+                                    </span>
+                                </div>
+                                <div className="text-xs"></div>
+                              </div>
+                            </td>
+
+                            <td className="px-6 py-4">
+                              <div className="flex flex-col space-y-2">
+                                <div className="flex items-center space-x-2 text-xs">
+                                  <IdentificationIcon className="h-4 w-4 text-[#81b1ce]" />
+                                    <span className="font-mono bg-[#aad6ec]/20 px-2 py-1 rounded border border-[#81b1ce] text-[#113065]">
+                                      {userRoles.get(event.from.toLowerCase())|| "System Contract"}
+                                    </span>
+                                </div>
+                                <div className="text-xs"></div>
                               </div>
                             </td>
                           </tr>

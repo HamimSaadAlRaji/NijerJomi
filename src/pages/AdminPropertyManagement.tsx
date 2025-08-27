@@ -224,34 +224,21 @@ const AdminPropertyManagement = () => {
         getAllTransferRequests(web3State.contract),
       ]);
 
-      console.log("Fetched properties:", allProperties.length);
-      console.log("Fetched transfer requests:", allTransfers.length);
-      console.log(allTransfers);
-
       setProperties(allProperties);
       setTransferRequests(allTransfers);
-      console.log(transferRequests);
 
       // load the buyer and seller nid map
       const buyerMap = new Map<string, string>();
-  const sellerMap = new Map<string, string>();
-  for (const transfer of allTransfers) {
-    const buyerNID = await getUserNidFromWallet(transfer.buyer.toLowerCase());
-    const sellerNID = await getUserNidFromWallet(transfer.seller.toLowerCase());
-    buyerMap.set(transfer.buyer.toLowerCase(), buyerNID);
-    sellerMap.set(transfer.seller.toLowerCase(), sellerNID);
-  }
-  setBuyerNIDs(buyerMap);
-  setSellerNIDs(sellerMap);
+      const sellerMap = new Map<string, string>();
+      for (const transfer of allTransfers) {
+        const buyerNID = await getUserNidFromWallet(transfer.buyer.toLowerCase());
+        const sellerNID = await getUserNidFromWallet(transfer.seller.toLowerCase());
+        buyerMap.set(transfer.buyer.toLowerCase(), buyerNID);
+        sellerMap.set(transfer.seller.toLowerCase(), sellerNID);
+      }
 
-//         buyerNIDs.forEach((value, key) => {
-//   console.log(`Key: ${key}, Value: ${value}`);
-// });
-
-//     sellerNIDs.forEach((value, key) => {
-//   console.log(`Key: ${key}, Value: ${value}`);
-// });
-
+      setBuyerNIDs(buyerMap);
+      setSellerNIDs(sellerMap);
     } catch (error) {
       console.error("Error fetching data:", error);
       toast({
