@@ -483,18 +483,6 @@ const MyProperties = () => {
 
         {/* My Properties Section */}
         <div className="mb-12">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-black">My Properties</h2>
-            <Button
-              onClick={() => navigate("/register")}
-              className="flex items-center text-white hover:opacity-90 transition-opacity"
-              style={{ backgroundColor: "#151269" }}
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Register New Property
-            </Button>
-          </div>
-
           {loading ? (
             <div className="flex items-center justify-center py-12">
               <Loader2
