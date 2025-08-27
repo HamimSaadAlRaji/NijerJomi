@@ -15,3 +15,18 @@ export async function getUserNidFromWallet(wallet: string) {
     return { success: false, message: "Failed to fetch user" };
   }
 }
+
+
+export async function getUserByWallet(wallet: string) {
+  try {
+    const user = await fetch(`${API_BASE}/${wallet}`);
+    if (!user.ok) {
+      throw new Error(`HTTP error! status: ${user.status}`);
+    }
+    const data = await user.json();
+    return data.data;
+  } catch (error) {
+    console.error("Error fetching user by wallet:", error);
+    return { success: false, message: "Failed to fetch user" };
+  }
+}
