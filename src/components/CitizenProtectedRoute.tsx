@@ -36,6 +36,11 @@ const CitizenProtectedRoute: React.FC<CitizenProtectedRouteProps> = ({
     );
   }
 
+  // If user exists but is not verified, redirect to not-verified page
+  if (user && user.status !== "accepted") {
+    return <Navigate to="/not-verified" state={{ from: location }} replace />;
+  }
+
   // If user is admin, redirect to admin dashboard
   if (user && isRole(user.userRole || "", UserRole.ADMIN)) {
     return (

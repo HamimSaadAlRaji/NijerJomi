@@ -32,6 +32,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     );
   }
 
+  // If user exists but is not verified, redirect to not-verified page
+  if (user && user.status !== "accepted") {
+    return <Navigate to="/not-verified" state={{ from: location }} replace />;
+  }
+
   // If everything is good, render the protected component
   return <>{children}</>;
 };
