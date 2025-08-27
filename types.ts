@@ -60,6 +60,10 @@ export interface ContractEvent {
   blockNumber: number;
   transactionHash: string;
   args: Record<string, any>;
+  timestamp?: number;
+  gasUsed?: string;
+  gasPrice?: string;
+  from?: string;
 }
 
 export interface Bid {

@@ -49,6 +49,14 @@ const CitizenNavbarLinks: React.FC<CitizenNavbarLinksProps> = ({
       >
         Transfer Management
       </Link>
+      <Link
+        to="/chain-explorer"
+        className={`${linkBase} ${linkColor} ${
+          isActive("/chain-explorer") ? "underline" : ""
+        }`}
+      >
+        Chain Explorer
+      </Link>
     </nav>
   );
 };
