@@ -52,13 +52,7 @@ const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
               Home
             </Link>
           )}
-          <Link
-            to="/marketplace"
-            className={linkClasses("/marketplace")}
-            onClick={scrollToTop}
-          >
-            MarketPlace
-          </Link>
+
           <Link
             to="/why-blockchain"
             className={linkClasses("/why-blockchain")}
