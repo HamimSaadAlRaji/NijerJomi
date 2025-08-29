@@ -169,18 +169,18 @@ const MyPropertyCard: React.FC<MyPropertyCardProps> = ({
               {/* Owner info */}
               <div
                 className="p-2 rounded-md mb-2 border"
-                style={{ backgroundColor: "#aad6ec20", borderColor: "#81b1ce" }}
+                style={{ backgroundColor: "#e6f4ea", borderColor: "#a1d99b" }}
               >
                 <div className="flex items-center gap-1 mb-0.5">
-                  <User className="w-3 h-3" style={{ color: "#151269" }} />
+                  <User className="w-3 h-3" style={{ color: "#006d2c" }} />
                   <span
                     className="text-xs font-medium"
-                    style={{ color: "#0f1056" }}
+                    style={{ color: "#006d2c" }}
                   >
                     Owner
                   </span>
                 </div>
-                <div className="text-sm font-bold" style={{ color: "#113065" }}>
+                <div className="text-sm font-bold" style={{ color: "#006d2c" }}>
                   {formatAddress(property.ownerAddress)}
                 </div>
               </div>
@@ -191,8 +191,22 @@ const MyPropertyCard: React.FC<MyPropertyCardProps> = ({
               <Button
                 onClick={handleEditClick}
                 variant="outline"
-                className="px-3 py-1 text-sm font-medium transition-colors flex items-center gap-1 hover:bg-blue-50"
-                style={{ borderColor: "#81b1ce", color: "#151269" }}
+                className="px-3 py-1 text-sm font-medium transition-colors flex items-center gap-1"
+                style={{
+                  borderColor: "#a1d99b",
+                  color: "#006d2c",
+                  backgroundColor: "#fff",
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.backgroundColor = "#e6f4ea";
+                  e.currentTarget.style.color = "#006d2c";
+                  e.currentTarget.style.borderColor = "#41ab5d";
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.backgroundColor = "#fff";
+                  e.currentTarget.style.color = "#006d2c";
+                  e.currentTarget.style.borderColor = "#a1d99b";
+                }}
                 disabled={!userVerified}
               >
                 <Edit className="w-4 h-4" />

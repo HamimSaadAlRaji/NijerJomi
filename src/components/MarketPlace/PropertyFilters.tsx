@@ -58,7 +58,7 @@ const PropertyFilters: React.FC<PropertyFiltersProps> = ({
 
   return (
     <div
-      className="bg-[#f7fcf5] p-6 rounded-2xl shadow-lg"
+      className="bg-white p-6 rounded-2xl shadow-lg"
       style={{ border: "1px solid #a1d99b" }}
     >
       <div className="flex flex-col lg:flex-row gap-4">
@@ -75,7 +75,7 @@ const PropertyFilters: React.FC<PropertyFiltersProps> = ({
               onChange={(e) => handleInputChange("searchTerm", e.target.value)}
               className="pl-12 py-3 rounded-xl text-black placeholder:text-gray-500"
               style={{
-                backgroundColor: "#e6f4ea",
+                backgroundColor: "#fff",
                 border: "1px solid #41ab5d",
                 outline: "none",
               }}
@@ -100,14 +100,14 @@ const PropertyFilters: React.FC<PropertyFiltersProps> = ({
             <SelectTrigger
               className="py-3 rounded-xl text-black"
               style={{
-                backgroundColor: "#e6f4ea",
+                backgroundColor: "#ffffff",
                 border: "1px solid #41ab5d",
               }}
             >
               <SelectValue placeholder="Sort by..." />
             </SelectTrigger>
             <SelectContent
-              className="bg-[#f7fcf5] border"
+              className="bg-white border"
               style={{ borderColor: "#a1d99b" }}
             >
               <SelectItem
