@@ -823,124 +823,214 @@ const AdminPropertyManagement = () => {
                 </span>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {properties.map((property) => (
-                  <Card
-                    key={property.id}
-                    className="overflow-hidden bg-white shadow-sm border"
-                    style={{ borderColor: "#aad6ec" }}
-                  >
-                    <div className="aspect-video overflow-hidden">
-                      <img
-                        src={property.imageUrl}
-                        alt={property.location}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.src =
-                            "https://gateway.pinata.cloud/ipfs/bafkreierbmgzqa4h7hpcdsyxjvcjromsamqbffj4z2zwv2dyjk3ttaubcu";
-                        }}
-                      />
-                    </div>
-                    <CardContent className="p-4">
-                      <div className="flex items-start justify-between mb-2">
-                        <h3
-                          className="font-semibold truncate"
-                          style={{ color: "#151269" }}
-                        >
-                          {property.location}
-                        </h3>
-                        <div className="flex flex-col space-y-1">
-                          {property.isForSale && (
-                            <Badge className="bg-success text-success-foreground text-xs">
-                              For Sale
-                            </Badge>
-                          )}
-                          {property.hasDispute && (
-                            <Badge className="bg-property-disputed text-property-disputed-foreground text-xs">
-                              Dispute
-                            </Badge>
-                          )}
-                        </div>
-                      </div>
+              <div className="space-y-6">
+                {properties.map((property) => {
+                  const getPropertyType = () => {
+                    const area = property.area || 0;
+                    if (area > 10000) return "Large Commercial Land";
+                    if (area > 5000) return "Commercial Land";
+                    if (area > 2000) return "Residential Plot";
+                    if (area > 1000) return "Building Plot";
+                    return "Land Plot";
+                  };
 
-                      <div
-                        className="space-y-2 text-sm"
-                        style={{ color: "#81b1ce" }}
-                      >
-                        <div className="flex items-center">
-                          <MapPin className="w-3 h-3 mr-1" />
-                          <span>ID: {property.id}</span>
-                        </div>
-                        <div className="flex items-center">
-                          <Building className="w-3 h-3 mr-1" />
-                          <span>{property.area} sq ft</span>
-                        </div>
-                        <div className="flex items-center">
-                          <DollarSign className="w-3 h-3 mr-1" />
-                          <span>{formatEther(property.marketValue)} ETH</span>
-                        </div>
-                        <div className="flex items-center">
-                          <User className="w-3 h-3 mr-1" />
-                          <span>{truncateAddress(property.ownerAddress)}</span>
-                        </div>
-                      </div>
+                  return (
+                    <Card
+                      key={property.id}
+                      className="group transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden shadow-md bg-white"
+                      style={{ border: "1px solid #aad6ec" }}
+                    >
+                      <div className="flex">
+                        {/* Property Image */}
+                        <div className="relative w-[450px] h-full rounded-lg overflow-hidden flex-shrink-0 p-6">
+                          <img
+                            src={property.imageUrl}
+                            alt={`Property ${property.id}`}
+                            className="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-105 rounded-lg"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.src =
+                                "https://gateway.pinata.cloud/ipfs/bafkreierbmgzqa4h7hpcdsyxjvcjromsamqbffj4z2zwv2dyjk3ttaubcu";
+                            }}
+                          />
 
-                      <div className="flex space-x-2 mt-4">
-                        {property.hasDispute && (
-                          <>
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() =>
-                                handleResolveDispute(property.id, true)
-                              }
-                              disabled={
-                                actionLoading === `dispute-${property.id}`
-                              }
-                              className="flex-1 text-xs"
+                          {/* Property Status Badges */}
+                          <div className="absolute top-3 left-3 flex gap-2">
+                            {property.hasDispute && (
+                              <Badge
+                                className="text-white shadow-lg"
+                                style={{ backgroundColor: "#dc2626" }}
+                              >
+                                <AlertTriangle className="w-4 h-4 mr-1" />
+                                Dispute
+                              </Badge>
+                            )}
+                            {property.isForSale && (
+                              <Badge
+                                className="text-white shadow-lg"
+                                style={{ backgroundColor: "#16a34a" }}
+                              >
+                                For Sale
+                              </Badge>
+                            )}
+                            <Badge
+                              className="text-white shadow-lg"
+                              style={{ backgroundColor: "#81b1ce" }}
                             >
-                              {actionLoading === `dispute-${property.id}` ? (
-                                <Loader2 className="w-3 h-3 animate-spin" />
-                              ) : (
-                                <CheckCircle className="w-3 h-3 mr-1" />
+                              Registered
+                            </Badge>
+                          </div>
+
+                          {/* Admin icon */}
+                          <div className="absolute top-3 right-3">
+                            <div className="w-10 h-10 bg-white/80 rounded-full flex items-center justify-center shadow-lg">
+                              <Building
+                                className="w-6 h-6"
+                                style={{ color: "#151269" }}
+                              />
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Property Details */}
+                        <CardContent className="flex-1 p-6">
+                          <div className="h-full flex flex-col justify-between">
+                            <div>
+                              {/* Price and basic info */}
+                              <div className="mb-4">
+                                <div
+                                  className="text-3xl font-bold mb-2"
+                                  style={{ color: "#151269" }}
+                                >
+                                  {formatEther(property.marketValue)} ETH
+                                </div>
+                                <h3
+                                  className="text-xl font-semibold mb-2"
+                                  style={{ color: "#0f1056" }}
+                                >
+                                  {getPropertyType()} #{property.id.toString()}
+                                </h3>
+                                <div className="flex items-center text-gray-600 mb-3">
+                                  <MapPin
+                                    className="w-5 h-5 mr-2"
+                                    style={{ color: "#151269" }}
+                                  />
+                                  <span
+                                    className="text-lg font-medium"
+                                    style={{ color: "#113065" }}
+                                  >
+                                    {property.location}
+                                  </span>
+                                </div>
+                              </div>
+
+                              {/* Owner Information */}
+                              <div
+                                className="p-3 rounded-lg mb-4"
+                                style={{
+                                  backgroundColor: "#aad6ec20",
+                                  border: "1px solid #81b1ce",
+                                }}
+                              >
+                                <div className="flex items-center gap-2 mb-1">
+                                  <User
+                                    className="w-4 h-4"
+                                    style={{ color: "#151269" }}
+                                  />
+                                  <span
+                                    className="text-sm font-medium"
+                                    style={{ color: "#113065" }}
+                                  >
+                                    Property Owner
+                                  </span>
+                                </div>
+                                <div
+                                  className="text-base font-bold"
+                                  style={{ color: "#0f1056" }}
+                                >
+                                  {truncateAddress(property.ownerAddress)}
+                                </div>
+                              </div>
+
+                              {/* Property Features */}
+                              <div className="flex items-center gap-4 mb-4 text-sm">
+                                <span
+                                  className="flex items-center gap-1"
+                                  style={{ color: "#81b1ce" }}
+                                >
+                                  <Building className="w-4 h-4" />
+                                  {property.area.toLocaleString()} sq ft
+                                </span>
+                                <span
+                                  className="flex items-center gap-1"
+                                  style={{ color: "#81b1ce" }}
+                                >
+                                  <FileText className="w-4 h-4" />
+                                  ID: {property.id}
+                                </span>
+                              </div>
+                            </div>
+
+                            {/* Admin Action Buttons */}
+                            <div className="space-y-3">
+                              {property.hasDispute && (
+                                <div className="flex gap-2">
+                                  <Button
+                                    onClick={() =>
+                                      handleResolveDispute(property.id, true)
+                                    }
+                                    disabled={
+                                      actionLoading === `dispute-${property.id}`
+                                    }
+                                    className="flex-1 text-white px-4 py-2 rounded-lg text-sm font-medium transition-opacity hover:opacity-90 flex items-center justify-center gap-2"
+                                    style={{ backgroundColor: "#16a34a" }}
+                                  >
+                                    {actionLoading ===
+                                    `dispute-${property.id}` ? (
+                                      <Loader2 className="w-4 h-4 animate-spin" />
+                                    ) : (
+                                      <CheckCircle className="w-4 h-4" />
+                                    )}
+                                    Resolve Dispute
+                                  </Button>
+                                  <Button
+                                    onClick={() =>
+                                      handleResolveDispute(property.id, false)
+                                    }
+                                    disabled={
+                                      actionLoading === `dispute-${property.id}`
+                                    }
+                                    className="flex-1 text-white px-4 py-2 rounded-lg text-sm font-medium transition-opacity hover:opacity-90 flex items-center justify-center gap-2"
+                                    style={{ backgroundColor: "#dc2626" }}
+                                  >
+                                    <XCircle className="w-4 h-4" />
+                                    Reject Dispute
+                                  </Button>
+                                </div>
                               )}
-                              Resolve
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="destructive"
-                              onClick={() =>
-                                handleResolveDispute(property.id, false)
-                              }
-                              disabled={
-                                actionLoading === `dispute-${property.id}`
-                              }
-                              className="flex-1 text-xs"
-                            >
-                              <XCircle className="w-3 h-3 mr-1" />
-                              Reject
-                            </Button>
-                          </>
-                        )}
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleMarkTaxPaid(property.id)}
-                          disabled={actionLoading === `tax-${property.id}`}
-                          className="flex-1 text-xs"
-                        >
-                          {actionLoading === `tax-${property.id}` ? (
-                            <Loader2 className="w-3 h-3 animate-spin" />
-                          ) : (
-                            <DollarSign className="w-3 h-3 mr-1" />
-                          )}
-                          Tax Paid
-                        </Button>
+                              <div className="flex justify-end">
+                                <Button
+                                  onClick={() =>
+                                    navigate(`/property/${property.id}`)
+                                  }
+                                  variant="outline"
+                                  className="px-6 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2 border hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-indigo-300 hover:text-indigo-700 hover:shadow-md"
+                                  style={{
+                                    borderColor: "#aad6ec",
+                                    color: "#151269",
+                                  }}
+                                >
+                                  <Eye className="w-4 h-4" />
+                                  View Details
+                                </Button>
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
                       </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                    </Card>
+                  );
+                })}
               </div>
             )}
           </TabsContent>
