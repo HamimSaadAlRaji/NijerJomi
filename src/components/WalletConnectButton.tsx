@@ -155,7 +155,9 @@ const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
       return user.profilePicture;
     }
     // fallback avatar
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(user?.fullName || "User")}&background=0D8ABC&color=fff&size=128`;
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(
+      user?.fullName || "User"
+    )}&background=0D8ABC&color=fff&size=128`;
   };
 
   // Single button with different text based on connection status
@@ -175,12 +177,20 @@ const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
               <img
                 src={getUserPhoto()}
                 alt={user?.fullName || "User"}
-                className="w-10 h-10 rounded-full object-cover mr-2 border-2 border-blue-400"
+                className="w-10 h-10 rounded-full object-cover mr-2 border-2"
+                style={{ borderColor: "#41ab5d" }}
               />
             )}
             <span className="flex flex-col items-start">
-              <span className="font-bold text-base leading-tight">{user?.fullName || "User"}</span>
-              <span className="text-xs text-blue-700 dark:text-blue-400 font-medium">{user?.userRole || "Citizen"}</span>
+              <span className="font-bold text-base leading-tight">
+                {user?.fullName || "User"}
+              </span>
+              <span
+                className="text-xs font-medium"
+                style={{ color: "#41ab5d" }}
+              >
+                {user?.userRole || "Citizen"}
+              </span>
             </span>
             <ChevronDown className="w-4 h-4 ml-2" />
           </Button>
@@ -208,7 +218,10 @@ const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
       onClick={handleWalletAction}
       size={size}
       variant={variant}
-      className={`rounded-full text-xl flex items-center gap-3 ${className}`}
+      className={`rounded-full text-xl flex items-center gap-3 ${
+        !isConnected || !user ? "text-white hover:opacity-90" : ""
+      } ${className}`}
+      style={!isConnected || !user ? { backgroundColor: "#41ab5d" } : {}}
       disabled={isLoading}
     >
       {isLoading ? (
@@ -218,11 +231,16 @@ const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
           <img
             src={getUserPhoto()}
             alt={user?.fullName || "User"}
-            className="w-10 h-10 rounded-full object-cover mr-2 border-2 border-blue-400"
+            className="w-10 h-10 rounded-full object-cover mr-2 border-2"
+            style={{ borderColor: "#41ab5d" }}
           />
           <div className="flex flex-col items-center justify-center">
-            <div className="font-bold text-base leading-tight">{user?.fullName || "User"}</div>
-            <div className="text-xs text-blue-700 dark:text-blue-400 font-medium">{user?.userRole || "Citizen"}</div>
+            <div className="font-bold text-base leading-tight">
+              {user?.fullName || "User"}
+            </div>
+            <div className="text-xs font-medium" style={{ color: "#41ab5d" }}>
+              {user?.userRole || "Citizen"}
+            </div>
           </div>
         </>
       ) : (
