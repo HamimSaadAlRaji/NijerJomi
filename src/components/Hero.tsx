@@ -51,35 +51,27 @@ const Hero = () => {
           </div>
 
           {/* Right Content - Card Mockup */}
-          <div className="flex justify-start items-end h-full">
+          <div className="flex justify-start items-end h-full -mt-48">
             <div className="relative">
               {/* Main Card Container */}
-              <div className="backdrop-blur-sm border-l-[3px] border-r-[3px] border-t-[3px] border-white/30 rounded-t-3xl p-10 w-[500px] h-[70vh] relative flex flex-col justify-start bg-white/10">
+              <div className="backdrop-blur-sm border border-white/30 rounded-3xl p-10 w-[500px] h-[70vh] relative flex flex-col justify-center bg-white/10">
                 {/* Header Section */}
                 <div className="text-center mb-12">
-                  <p className="text-white/80 text-lg mb-4">Land Registry</p>
+                  <p className="font-extrabold text-white text-6xl mb-4">
+                    Land Registry
+                  </p>
                   <h2 className="text-white text-6xl font-bold">150</h2>
                   <p className="text-white/60 text-sm">Properties Verified</p>
                 </div>
 
-                {/* Center Button */}
-                <div className="flex justify-center mb-16">
-                  <Button
-                    size="lg"
-                    className="bg-white text-black border-none rounded-full px-10 py-4 font-medium text-xl hover:bg-white/90"
-                  >
-                    View Properties
-                  </Button>
-                </div>
-
                 {/* Bottom Transaction Card */}
-                <div className="mt-auto">
+                <div className="flex justify-center -mt-8">
                   <div className="bg-white rounded-2xl p-8">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-5">
                         {/* Icon Circle */}
-                        <div className="w-14 h-14 bg-primary rounded-full flex items-center justify-center">
-                          <Shield className="w-7 h-7 text-primary-foreground" />
+                        <div className="w-14 h-14 bg-sky-400 rounded-full flex items-center justify-center">
+                          <Shield className="w-7 h-7 text-white" />
                         </div>
                         <div>
                           <p className="font-semibold text-foreground text-xl">
@@ -90,11 +82,23 @@ const Hero = () => {
                           </p>
                         </div>
                       </div>
-                      <span className="font-bold text-green-600 text-2xl">
-                        Verified ✓
-                      </span>
+                      <div className="flex items-center">
+                        <span className="font-bold text-green-600 text-2xl">
+                          Verified✓
+                        </span>
+                      </div>
                     </div>
                   </div>
+                </div>
+
+                {/* Center Button */}
+                <div className="flex justify-center mt-16">
+                  <Button
+                    size="lg"
+                    className="bg-white text-black border-none rounded-full px-10 py-4 font-medium text-xl hover:bg-white/90"
+                  >
+                    View Properties
+                  </Button>
                 </div>
               </div>
 

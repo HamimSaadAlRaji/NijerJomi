@@ -45,7 +45,7 @@ const PlatformOverview = () => {
         <div ref={buttonRef} className="text-center mb-24">
           <Button
             size="lg"
-            className={`bg-black text-white hover:bg-gray-800 text-lg px-16 py-6 rounded-lg font-medium hover:scale-105 transition-all duration-500 ${
+            className={`bg-[#238b45] text-white hover:bg-[#006d2c] text-lg px-16 py-6 rounded-lg font-medium hover:scale-105 transition-all duration-500 ${
               buttonVisible
                 ? "animate-fade-in-up animation-delay-600"
                 : "opacity-0 translate-y-10"
@@ -68,9 +68,9 @@ const PlatformOverview = () => {
                 : "opacity-0 translate-y-10"
             }`}
           >
-            <div className="bg-black text-white p-8 h-72 rounded-lg hover:transform hover:scale-105 transition-all duration-500 hover:shadow-2xl">
+            <div className="bg-[#238b45] text-white p-8 h-72 rounded-lg hover:transform hover:scale-105 transition-all duration-500 hover:shadow-2xl">
               <div
-                className={`text-sm text-gray-300 mb-4 transition-all duration-500 delay-150 ${
+                className={`text-sm text-[#c7e9c0] mb-4 transition-all duration-500 delay-150 ${
                   cardsVisible
                     ? "animate-slide-in-left animation-delay-1000"
                     : "opacity-0 -translate-x-4"
@@ -97,7 +97,7 @@ const PlatformOverview = () => {
                 Immutable
               </div>
               <div
-                className={`border border-white px-6 py-3 inline-block rounded-lg hover:bg-white hover:text-black transition-all duration-500 delay-300 ${
+                className={`border border-[#c7e9c0] px-6 py-3 inline-block rounded-lg hover:bg-[#c7e9c0] hover:text-[#238b45] transition-all duration-500 delay-300 ${
                   cardsVisible
                     ? "animate-fade-in animation-delay-1600"
                     : "opacity-0"
@@ -116,9 +116,9 @@ const PlatformOverview = () => {
                 : "opacity-0 translate-y-10"
             }`}
           >
-            <div className="bg-white border-2 border-black text-black p-8 h-72 rounded-lg hover:transform hover:scale-105 transition-all duration-500 hover:shadow-2xl">
+            <div className="bg-white border-2 border-[#41ab5d] text-black p-8 h-72 rounded-lg hover:transform hover:scale-105 transition-all duration-500 hover:shadow-2xl">
               <div
-                className={`text-sm text-gray-600 mb-4 transition-all duration-500 delay-250 ${
+                className={`text-sm text-[#41ab5d] mb-4 transition-all duration-500 delay-250 ${
                   cardsVisible
                     ? "animate-slide-in-left animation-delay-1200"
                     : "opacity-0 -translate-x-4"
@@ -145,7 +145,7 @@ const PlatformOverview = () => {
                 Verification
               </div>
               <div
-                className={`border border-black px-6 py-3 inline-block rounded-lg hover:bg-black hover:text-white transition-all duration-500 delay-400 ${
+                className={`border border-[#41ab5d] px-6 py-3 inline-block rounded-lg hover:bg-[#41ab5d] hover:text-white transition-all duration-500 delay-400 ${
                   cardsVisible
                     ? "animate-fade-in animation-delay-1800"
                     : "opacity-0"
@@ -164,9 +164,9 @@ const PlatformOverview = () => {
                 : "opacity-0 translate-y-10"
             }`}
           >
-            <div className="bg-gray-100 text-black p-8 h-72 rounded-lg hover:transform hover:scale-105 transition-all duration-500 hover:shadow-2xl">
+            <div className="bg-[#f7fcf5] border border-[#e5f5e0] text-black p-8 h-72 rounded-lg hover:transform hover:scale-105 transition-all duration-500 hover:shadow-2xl">
               <div
-                className={`text-sm text-gray-600 mb-4 transition-all duration-500 delay-350 ${
+                className={`text-sm text-[#41ab5d] mb-4 transition-all duration-500 delay-350 ${
                   cardsVisible
                     ? "animate-slide-in-left animation-delay-1400"
                     : "opacity-0 -translate-x-4"
@@ -193,7 +193,7 @@ const PlatformOverview = () => {
                 Global
               </div>
               <div
-                className={`border border-black px-6 py-3 inline-block rounded-lg hover:bg-black hover:text-white transition-all duration-500 delay-500 ${
+                className={`border border-[#74c476] px-6 py-3 inline-block rounded-lg hover:bg-[#74c476] hover:text-white transition-all duration-500 delay-500 ${
                   cardsVisible
                     ? "animate-fade-in animation-delay-2000"
                     : "opacity-0"

@@ -35,19 +35,19 @@ const GlobalReach = () => {
   ];
 
   return (
-    <section className="py-32 bg-black">
+    <section className="py-32 bg-gradient-to-br from-[#1a5e35] via-[#5ee692] to-[#002f13]">
       <div className="max-w-5xl mx-auto px-4">
         {/* Header */}
         <div ref={headerRef} className="text-center mb-20">
           <h2
-            className={`text-5xl lg:text-6xl font-bold text-white mb-8 transition-all duration-500 ${
+            className={`text-5xl lg:text-6xl font-bold text-[#f7fcf5] mb-8 transition-all duration-500 ${
               headerVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
             }`}
           >
             GLOBAL TRUST
           </h2>
           <p
-            className={`text-xl text-gray-300 max-w-2xl mx-auto transition-all duration-500 delay-100 ${
+            className={`text-xl text-[#c7e9c0] max-w-2xl mx-auto transition-all duration-500 delay-100 ${
               headerVisible
                 ? "animate-fade-in-up animation-delay-200"
                 : "opacity-0 translate-y-10"
@@ -66,17 +66,17 @@ const GlobalReach = () => {
                 : "opacity-0 translate-y-10"
             }`}
           >
-            <div className="w-16 h-16 bg-white flex items-center justify-center mx-auto mb-4 rounded-lg hover:rotate-12 transition-transform duration-300">
-              <Globe className="w-8 h-8 text-black" />
+            <div className="w-16 h-16 bg-[#c7e9c0] flex items-center justify-center mx-auto mb-4 rounded-lg hover:rotate-12 transition-transform duration-300">
+              <Globe className="w-8 h-8 text-[#006d2c]" />
             </div>
             <div
-              className={`text-3xl font-bold text-white mb-2 transition-all duration-500 ${
+              className={`text-3xl font-bold text-[#f7fcf5] mb-2 transition-all duration-500 ${
                 statsVisible ? "animate-pulse" : "opacity-0"
               }`}
             >
               50+
             </div>
-            <div className="text-gray-300 text-sm">Countries</div>
+            <div className="text-[#a1d99b] text-sm">Countries</div>
           </div>
 
           <div
@@ -86,17 +86,17 @@ const GlobalReach = () => {
                 : "opacity-0 translate-y-10"
             }`}
           >
-            <div className="w-16 h-16 bg-white flex items-center justify-center mx-auto mb-4 rounded-lg hover:rotate-12 transition-transform duration-300">
-              <Users className="w-8 h-8 text-black" />
+            <div className="w-16 h-16 bg-[#c7e9c0] flex items-center justify-center mx-auto mb-4 rounded-lg hover:rotate-12 transition-transform duration-300">
+              <Users className="w-8 h-8 text-[#006d2c]" />
             </div>
             <div
-              className={`text-3xl font-bold text-white mb-2 transition-all duration-500 ${
+              className={`text-3xl font-bold text-[#f7fcf5] mb-2 transition-all duration-500 ${
                 statsVisible ? "animate-pulse" : "opacity-0"
               }`}
             >
               10K+
             </div>
-            <div className="text-gray-300 text-sm">Users</div>
+            <div className="text-[#a1d99b] text-sm">Users</div>
           </div>
 
           <div
@@ -106,17 +106,17 @@ const GlobalReach = () => {
                 : "opacity-0 translate-y-10"
             }`}
           >
-            <div className="w-16 h-16 bg-white flex items-center justify-center mx-auto mb-4 rounded-lg hover:rotate-12 transition-transform duration-300">
-              <MapPin className="w-8 h-8 text-black" />
+            <div className="w-16 h-16 bg-[#c7e9c0] flex items-center justify-center mx-auto mb-4 rounded-lg hover:rotate-12 transition-transform duration-300">
+              <MapPin className="w-8 h-8 text-[#006d2c]" />
             </div>
             <div
-              className={`text-3xl font-bold text-white mb-2 transition-all duration-500 ${
+              className={`text-3xl font-bold text-[#f7fcf5] mb-2 transition-all duration-500 ${
                 statsVisible ? "animate-pulse" : "opacity-0"
               }`}
             >
               75K+
             </div>
-            <div className="text-gray-300 text-sm">Properties</div>
+            <div className="text-[#a1d99b] text-sm">Properties</div>
           </div>
 
           <div
@@ -126,31 +126,31 @@ const GlobalReach = () => {
                 : "opacity-0 translate-y-10"
             }`}
           >
-            <div className="w-16 h-16 bg-white flex items-center justify-center mx-auto mb-4 rounded-lg hover:rotate-12 transition-transform duration-300">
-              <Clock className="w-8 h-8 text-black" />
+            <div className="w-16 h-16 bg-[#c7e9c0] flex items-center justify-center mx-auto mb-4 rounded-lg hover:rotate-12 transition-transform duration-300">
+              <Clock className="w-8 h-8 text-[#006d2c]" />
             </div>
             <div
-              className={`text-3xl font-bold text-white mb-2 transition-all duration-500 ${
+              className={`text-3xl font-bold text-[#f7fcf5] mb-2 transition-all duration-500 ${
                 statsVisible ? "animate-pulse" : "opacity-0"
               }`}
             >
               24/7
             </div>
-            <div className="text-gray-300 text-sm">Access</div>
+            <div className="text-[#a1d99b] text-sm">Access</div>
           </div>
         </div>
 
         {/* Country Statistics */}
         <div
           ref={countryRef}
-          className={`border border-white p-8 mb-20 rounded-lg hover:transform hover:scale-105 transition-all duration-500 delay-400 hover:shadow-2xl ${
+          className={`border border-[#c7e9c0] p-8 mb-20 rounded-lg hover:transform hover:scale-105 transition-all duration-500 delay-400 hover:shadow-2xl bg-[#238b45]/20 ${
             countryVisible
               ? "animate-fade-in-up animation-delay-800"
               : "opacity-0 translate-y-10"
           }`}
         >
           <h3
-            className={`text-2xl font-bold text-white mb-8 text-center transition-all duration-500 delay-450 ${
+            className={`text-2xl font-bold text-[#f7fcf5] mb-8 text-center transition-all duration-500 delay-450 ${
               countryVisible
                 ? "animate-fade-in-up animation-delay-900"
                 : "opacity-0 translate-y-6"
@@ -163,7 +163,7 @@ const GlobalReach = () => {
             {globalStats.map((stat, index) => (
               <div
                 key={index}
-                className={`bg-white text-black p-6 rounded-lg hover:transform hover:scale-105 transition-all duration-500 hover:shadow-lg ${
+                className={`bg-[#f7fcf5] text-[#006d2c] p-6 rounded-lg hover:transform hover:scale-105 transition-all duration-500 hover:shadow-lg hover:bg-[#e5f5e0] ${
                   countryVisible
                     ? `animate-fade-in-up animation-delay-${1000 + index * 100}`
                     : "opacity-0 translate-y-10"
@@ -181,7 +181,7 @@ const GlobalReach = () => {
                     </span>
                     <div>
                       <div className="font-semibold">{stat.country}</div>
-                      <div className="text-sm text-gray-600">Active Users</div>
+                      <div className="text-sm text-[#238b45]">Active Users</div>
                     </div>
                   </div>
                   <div
@@ -204,7 +204,7 @@ const GlobalReach = () => {
             ctaVisible ? "" : "opacity-0 translate-y-10"
           }`}
         >
-          <div className="bg-white text-black p-12 rounded-lg hover:transform hover:scale-105 transition-all duration-500 hover:shadow-2xl">
+          <div className="bg-[#f7fcf5] text-[#006d2c] p-12 rounded-lg hover:transform hover:scale-105 transition-all duration-500 hover:shadow-2xl">
             <h3
               className={`text-4xl font-bold mb-6 transition-all duration-500 delay-750 ${
                 ctaVisible
@@ -215,7 +215,7 @@ const GlobalReach = () => {
               READY TO JOIN?
             </h3>
             <p
-              className={`text-xl text-gray-600 mb-8 max-w-2xl mx-auto transition-all duration-500 delay-800 ${
+              className={`text-xl text-[#238b45] mb-8 max-w-2xl mx-auto transition-all duration-500 delay-800 ${
                 ctaVisible
                   ? "animate-fade-in-up animation-delay-1600"
                   : "opacity-0 translate-y-6"
@@ -233,13 +233,13 @@ const GlobalReach = () => {
             >
               <Button
                 size="lg"
-                className="bg-black text-white hover:bg-gray-800 text-lg px-12 py-4 rounded-lg font-medium hover:scale-105 transition-all duration-300 hover:shadow-xl"
+                className="bg-[#238b45] text-white hover:bg-[#006d2c] text-lg px-12 py-4 rounded-lg font-medium hover:scale-105 transition-all duration-300 hover:shadow-xl"
               >
                 Get Started
               </Button>
               <Button
                 size="lg"
-                className="border-2 border-black text-white hover:bg-black hover:text-white text-lg px-12 py-4 rounded-lg font-medium hover:scale-105 transition-all duration-300 hover:shadow-xl"
+                className="border-2 border-[#238b45] text-[#238b45] hover:bg-[#238b45] hover:text-white text-lg px-12 py-4 rounded-lg font-medium hover:scale-105 transition-all duration-300 hover:shadow-xl"
               >
                 Learn More
               </Button>
