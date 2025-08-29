@@ -15,32 +15,36 @@ const Hero = () => {
         />
       </div>
 
-      <div className="container mx-auto px-4 relative z-20 h-full pt-20">
+      <div className="container mx-auto px-4 relative z-20 h-full pt-10">
         {/* Hero Content */}
         <div className="grid lg:grid-cols-2 gap-12 items-center h-full">
           {/* Left Content - Text Section */}
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight tracking-tight">
-                SECURE THE WAY YOU
-                <br />
-                <span className="text-white ">OWN LAND</span>
-              </h1>
-            </div>
+          <div className="space-y-5">
+            <div className="space-y-16">
+              <div>
+                <div className="space-y-2">
+                  <h1 className="text-4xl lg:text-2xl xl:text-6xl font-bold text-white leading-tight tracking-tight">
+                    SECURE THE WAY
+                    <br />
+                    <span className="text-white ">YOU OWN LAND</span>
+                  </h1>
+                </div>
 
-            {/* Subtitle */}
-            <p className="text-lg text-white/80 leading-relaxed max-w-lg">
-              Protect what you own, your land, your future
-            </p>
-
-            {/* Blockchain Powered Badge */}
-            <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-xl px-4 py-2 w-fit">
-              <div className="w-5 h-5 bg-green-400 rounded-lg flex items-center justify-center">
-                <Shield className="w-3 h-3 text-white" />
+                {/* Subtitle */}
+                <p className="text-lg text-white/80 leading-relaxed max-w-lg">
+                  Protect what you own, your land, your future
+                </p>
               </div>
-              <span className="text-white text-sm font-medium">
-                Blockchain Powered
-              </span>
+
+              {/* Blockchain Powered Badge */}
+              <div className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-xl px-4 py-2 w-fit">
+                <div className="w-5 h-5 bg-green-400 rounded-lg flex items-center justify-center">
+                  <Shield className="w-3 h-3 text-white" />
+                </div>
+                <span className="text-white text-sm font-medium">
+                  Blockchain Powered
+                </span>
+              </div>
             </div>
 
             {/* Feature Grid */}
@@ -70,51 +74,39 @@ const Hero = () => {
                 </span>
               </div>
             </div>
-
-            {/* Stats */}
-            <div className="flex items-center space-x-6">
-              <div className="text-left">
-                <div className="text-xl font-bold text-white">99.9%</div>
-                <div className="text-white text-xs">Uptime</div>
-              </div>
-              <div className="text-left">
-                <div className="text-xl font-bold text-white">150+</div>
-                <div className="text-white text-xs">Properties</div>
-              </div>
-              <div className="text-left">
-                <div className="text-xl font-bold text-white">24/7</div>
-                <div className="text-white text-xs">Support</div>
-              </div>
-            </div>
+            {/* Spacer to push buttons down */}
+            <div className="h-20"></div>
 
             {/* Call to Action Buttons */}
-            <div className="flex items-center space-x-3">
-              <Button
-                size="sm"
-                className="bg-green-900 hover:bg-green-600 text-white text-xl px-12 py-8 rounded-3xl font-medium"
-              >
-                Connect Wallet
-              </Button>
-              <Button
-                size="sm"
-                className="border border-white/30 bg-transparent hover:bg-white/10 text-white text-sm px-5 py-2 rounded-xl font-medium"
-              >
-                Learn More
-              </Button>
+            <div className="flex items-center space-x-9">
+              <div className="flex items-center space-x-6">
+                <div className="text-left">
+                  <div className="text-4xl font-bold text-white">99.9%</div>
+                  <div className="text-white text-xl">Uptime</div>
+                </div>
+                <div className="text-left">
+                  <div className="text-4xl font-bold text-white">150+</div>
+                  <div className="text-white text-xl">Properties</div>
+                </div>
+                <div className="text-left">
+                  <div className="text-4xl font-bold text-white">24/7</div>
+                  <div className="text-white text-xl">Support</div>
+                </div>
+              </div>
             </div>
           </div>
 
           {/* Right Content - Card Mockup */}
-          <div className="flex justify-start items-end h-full -mt-48">
+          <div className="flex justify-start items-end h-full -mt-48 ml-36">
             <div className="relative">
               {/* Main Card Container */}
               <div className="backdrop-blur-sm border border-white/30 rounded-3xl p-10 w-[500px] h-[70vh] relative flex flex-col justify-center bg-white/10">
                 {/* Header Section */}
                 <div className="text-center mb-12">
-                  <p className="font-extrabold text-white text-6xl mb-4">
+                  <p className="font-extrabold text-white text-5xl mb-4">
                     Land Registry
                   </p>
-                  <h2 className="text-white text-6xl font-bold">150</h2>
+                  <h2 className="text-white text-5xl font-bold">150</h2>
                   <p className="text-white/60 text-sm">Properties Verified</p>
                 </div>
 
@@ -124,7 +116,7 @@ const Hero = () => {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-5">
                         {/* Icon Circle */}
-                        <div className="w-14 h-14 bg-sky-400 rounded-full flex items-center justify-center">
+                        <div className="w-14 h-14 bg-green-400 rounded-full flex items-center justify-center">
                           <Shield className="w-7 h-7 text-white" />
                         </div>
                         <div>
