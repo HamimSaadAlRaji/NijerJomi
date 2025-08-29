@@ -261,12 +261,12 @@ const PropertyDetails: React.FC = () => {
   };
 
   const formatBidAmount = (amount: number) => {
-    return `${amount.toFixed(4)} ETH`;
+    return `${amount.toFixed(4)} BDT`;
   };
 
   const formatMarketValue = (value: bigint) => {
-    const ethValue = Number(value) / 1e18;
-    return `${ethValue.toFixed(4)} ETH`;
+    const bdtValue = Number(value) / 1e18;
+    return `${bdtValue.toFixed(4)} BDT`;
   };
 
   const formatDate = (dateString: string) => {
@@ -668,7 +668,7 @@ const PropertyDetails: React.FC = () => {
                               <div className="space-y-4">
                                 <div>
                                   <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                                    Bid Amount (ETH)
+                                    Bid Amount (BDT)
                                   </label>
                                   <Input
                                     type="number"
@@ -691,7 +691,7 @@ const PropertyDetails: React.FC = () => {
                                   {bidAmount && !isBidAmountValid && (
                                     <p className="text-xs text-red-600 dark:text-red-400 mt-1">
                                       Bid amount must be at least{" "}
-                                      {minimumBidAmount.toString()} ETH
+                                      {minimumBidAmount.toString()} BDT
                                     </p>
                                   )}
                                 </div>

@@ -317,7 +317,7 @@ const MyProperties = () => {
   };
 
   const formatMarketValue = (value: bigint) => {
-    return `${parseFloat(ethers.formatEther(value)).toFixed(4)} ETH`;
+    return `${parseFloat(ethers.formatEther(value)).toFixed(4)} BDT`;
   };
 
   const handleEditProperty = (property: Property) => {
@@ -597,7 +597,7 @@ const MyProperties = () => {
                                 <span
                                   style={{ color: "#006d2c", fontWeight: 600 }}
                                 >
-                                  {formatEther(transfer.agreedPrice)} ETH
+                                  {formatEther(transfer.agreedPrice)} BDT
                                 </span>
                               </p>
                               <p>

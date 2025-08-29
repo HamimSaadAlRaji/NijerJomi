@@ -125,7 +125,7 @@ const StatsOverview: React.FC<StatsOverviewProps> = ({ stats }) => {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold" style={{ color: "#41ab5d" }}>
-            {stats?.totalMarketValue || "0 ETH"}
+            {stats?.totalMarketValue || "0 BDT"}
           </div>
           <p className="text-sm" style={{ color: "#465465" }}>
             Total registry value

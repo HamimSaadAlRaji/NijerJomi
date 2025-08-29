@@ -200,7 +200,7 @@ const MarketPlace: React.FC = () => {
 
   const formatMarketValue = (value: bigint) => {
     const ethValue = Number(value) / 1e18;
-    return `${ethValue.toFixed(4)} ETH`;
+    return `${ethValue.toFixed(4)} BDT`;
   };
 
   const handleFiltersChange = (newFilters: FilterOptions) => {

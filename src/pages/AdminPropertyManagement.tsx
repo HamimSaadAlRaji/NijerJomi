@@ -639,7 +639,7 @@ const AdminPropertyManagement = () => {
                   </div>
                   <div>
                     <Label htmlFor="market-value" style={{ color: "#151269" }}>
-                      Market Value (ETH) *
+                      Market Value (BDT) *
                     </Label>
                     <Input
                       id="market-value"
@@ -931,7 +931,7 @@ const AdminPropertyManagement = () => {
                                   className="text-3xl font-bold mb-2"
                                   style={{ color: "#293842" }}
                                 >
-                                  {formatEther(property.marketValue)} ETH
+                                  {formatEther(property.marketValue)} BDT
                                 </div>
                                 <h3
                                   className="text-xl font-semibold mb-2"
@@ -1146,7 +1146,7 @@ const AdminPropertyManagement = () => {
                                       <strong style={{ color: "#293842" }}>
                                         Price:
                                       </strong>{" "}
-                                      {formatEther(transfer.agreedPrice)} ETH
+                                      {formatEther(transfer.agreedPrice)} BDT
                                     </p>
                                     <p>
                                       <strong style={{ color: "#293842" }}>
@@ -1294,7 +1294,7 @@ const AdminPropertyManagement = () => {
                           Agreed Price:
                         </strong>{" "}
                         <span style={{ color: "#81b1ce" }}>
-                          {formatEther(selectedTransfer.agreedPrice)} ETH
+                          {formatEther(selectedTransfer.agreedPrice)} BDT
                         </span>
                       </p>
                       <p>
@@ -1501,7 +1501,7 @@ const AdminPropertyManagement = () => {
                                   Market Value:
                                 </strong>{" "}
                                 <span style={{ color: "#81b1ce" }}>
-                                  {formatEther(property.marketValue)} ETH
+                                  {formatEther(property.marketValue)} BDT
                                 </span>
                               </p>
                               <p>

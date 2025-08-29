@@ -532,7 +532,7 @@ const TransferManagement = () => {
                                 <div>
                                   <p>
                                     <strong>Price:</strong>{" "}
-                                    {formatEther(transfer.agreedPrice)} ETH
+                                    {formatEther(transfer.agreedPrice)} BDT
                                   </p>
                                   <p>
                                     <strong>Area:</strong>{" "}
@@ -697,7 +697,7 @@ const TransferManagement = () => {
                                 <div>
                                   <p>
                                     <strong>Price:</strong>{" "}
-                                    {formatEther(transfer.agreedPrice)} ETH
+                                    {formatEther(transfer.agreedPrice)} BDT
                                   </p>
                                   <p>
                                     <strong>Area:</strong>{" "}
@@ -804,7 +804,7 @@ const TransferManagement = () => {
                       </p>
                       <p className="text-gray-700">
                         <strong>Agreed Price:</strong>{" "}
-                        {formatEther(selectedTransfer.agreedPrice)} ETH
+                        {formatEther(selectedTransfer.agreedPrice)} BDT
                       </p>
                       <p className="text-gray-700">
                         <strong>Status:</strong>{" "}
@@ -1014,7 +1014,7 @@ const TransferManagement = () => {
                             <div>
                               <p className="text-gray-700">
                                 <strong>Market Value:</strong>{" "}
-                                {formatEther(property.marketValue)} ETH
+                                {formatEther(property.marketValue)} BDT
                               </p>
                               <p className="text-gray-700">
                                 <strong>For Sale:</strong>{" "}
