@@ -59,6 +59,8 @@ const PropertyDetails: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isFavorited, setIsFavorited] = useState(false);
+  const [nid, setNid] = useState<string | null>(null);
+
 
   // Bidding state
   const [bids, setBids] = useState<Bid[]>([]);
@@ -95,6 +97,18 @@ const PropertyDetails: React.FC = () => {
       );
       setProperty(propertyData);
       setMarketValue(propertyData.marketValue);
+      // Fetch owner NID using backend nid-by-wallet API
+      try {
+        setNid(null);
+        const nidResp = await userServices.getUserNidFromWallet(
+          propertyData.ownerAddress.toLowerCase()
+        );
+        if (typeof nidResp === "string" && nidResp.trim().length > 0) {
+          setNid(nidResp);
+        }
+      } catch (e) {
+        // Leave NID as null if fetch fails
+      }
     } catch (err) {
       console.error("Error fetching property details:", err);
       setError("Failed to load property details. Please try again.");
@@ -515,12 +529,12 @@ const PropertyDetails: React.FC = () => {
 
                       <div>
                         <label className="text-sm font-medium text-slate-600 dark:text-slate-400">
-                          Owner
+                          Owner NID
                         </label>
                         <div className="flex items-center space-x-2 mt-1">
                           <User className="w-4 h-4 text-blue-500 dark:text-blue-400" />
                           <span className="font-mono text-sm bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-lg text-slate-700 dark:text-slate-300">
-                            {formatAddress(property.ownerAddress)}
+                            {nid ?? "Unknown"}
                           </span>
                         </div>
                       </div>
@@ -904,10 +918,10 @@ const PropertyDetails: React.FC = () => {
                   </div>
                   <div>
                     <label className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
-                      Owner Address
+                      Owner NID
                     </label>
                     <div className="font-mono text-sm mt-2 break-all bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-slate-700 dark:text-slate-300">
-                      {formatAddress(property.ownerAddress)}
+                      {nid ?? "Unknown"}
                     </div>
                   </div>
                 </CardContent>
