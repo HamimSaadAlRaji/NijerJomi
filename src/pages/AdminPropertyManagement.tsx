@@ -540,7 +540,7 @@ const AdminPropertyManagement = () => {
               className="text-3xl font-bold mb-2"
               style={{
                 background:
-                  "linear-gradient(135deg, #151269 0%, #0f1056 50%, #113065 100%)",
+                  "linear-gradient(135deg, #465465 0%, #465465 50%, #293842 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -548,18 +548,17 @@ const AdminPropertyManagement = () => {
             >
               Property Management System
             </h1>
-            <p style={{ color: "#81b1ce" }}>
+            <p style={{ color: "#293842" }}>
               Admin controls for property registration and transfer management
             </p>
           </div>
           <div className="flex space-x-2">
-            <Button
-              onClick={refreshData}
-              disabled={refreshing}
-              variant="outline"
-              className="border"
-              style={{ borderColor: "#aad6ec", color: "#151269" }}
-            >
+              <Button
+                onClick={refreshData}
+                disabled={refreshing}
+                className="border hover:bg-green-50 hover:text-green-700 hover:-translate-y-1 hover:shadow-lg transition-transform duration-150"
+                style={{ borderColor: "#a1d99b", color: "#006d2c", backgroundColor: "#fff" }}
+              >
               <RefreshCw
                 className={`w-4 h-4 mr-2 ${refreshing ? "animate-spin" : ""}`}
               />
@@ -571,8 +570,8 @@ const AdminPropertyManagement = () => {
             >
               <DialogTrigger asChild>
                 <Button
-                  className="text-white"
-                  style={{ backgroundColor: "#113065" }}
+                  className="text-white hover:-translate-y-1 hover:shadow-lg transition-transform duration-150"
+                  style={{ backgroundColor: "#006d2c" }}
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Register Property
@@ -580,7 +579,7 @@ const AdminPropertyManagement = () => {
               </DialogTrigger>
               <DialogContent
                 className="max-w-md bg-white border"
-                style={{ borderColor: "#aad6ec" }}
+                style={{ borderColor: "#4caf50" }}
               >
                 <DialogHeader>
                   <DialogTitle style={{ color: "#151269" }}>
@@ -700,21 +699,21 @@ const AdminPropertyManagement = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
           <Card
             className="bg-white shadow-sm border"
-            style={{ borderColor: "#aad6ec" }}
+            style={{ borderColor: "#a1d99b" }}
           >
             <CardContent className="p-6">
               <div className="flex items-center">
-                <Building className="w-8 h-8" style={{ color: "#151269" }} />
+                <Building className="w-8 h-8" style={{ color: "#293842" }} />
                 <div className="ml-4">
                   <p
                     className="text-sm font-medium"
-                    style={{ color: "#81b1ce" }}
+                    style={{ color: "#465465" }}
                   >
                     Total Properties
                   </p>
                   <p
                     className="text-2xl font-bold"
-                    style={{ color: "#151269" }}
+                    style={{ color: "#293842" }}
                   >
                     {properties.length}
                   </p>
@@ -725,21 +724,21 @@ const AdminPropertyManagement = () => {
 
           <Card
             className="bg-white shadow-sm border"
-            style={{ borderColor: "#81b1ce" }}
+            style={{ borderColor: "#a1d99b" }}
           >
             <CardContent className="p-6">
               <div className="flex items-center">
-                <FileText className="w-8 h-8" style={{ color: "#0f1056" }} />
+                <FileText className="w-8 h-8" style={{ color: "#293842" }} />
                 <div className="ml-4">
                   <p
                     className="text-sm font-medium"
-                    style={{ color: "#81b1ce" }}
+                    style={{ color: "#465465" }}
                   >
                     Transfer Requests
                   </p>
                   <p
                     className="text-2xl font-bold"
-                    style={{ color: "#0f1056" }}
+                    style={{ color: "#293842" }}
                   >
                     {transferRequests.length}
                   </p>
@@ -750,7 +749,7 @@ const AdminPropertyManagement = () => {
 
           <Card
             className="bg-white shadow-sm border"
-            style={{ borderColor: "#113065" }}
+            style={{ borderColor: "#a1d99b" }}
           >
             <CardContent className="p-6">
               <div className="flex items-center">
@@ -761,7 +760,7 @@ const AdminPropertyManagement = () => {
                 <div className="ml-4">
                   <p
                     className="text-sm font-medium"
-                    style={{ color: "#81b1ce" }}
+                    style={{ color: "#465465" }}
                   >
                     Disputes
                   </p>
@@ -778,21 +777,21 @@ const AdminPropertyManagement = () => {
 
           <Card
             className="bg-white shadow-sm border"
-            style={{ borderColor: "#0f1056" }}
+            style={{ borderColor: "#a1d99b" }}
           >
             <CardContent className="p-6">
               <div className="flex items-center">
-                <CheckCircle className="w-8 h-8" style={{ color: "#113065" }} />
+                <CheckCircle className="w-8 h-8" style={{ color: "#293842" }} />
                 <div className="ml-4">
                   <p
                     className="text-sm font-medium"
-                    style={{ color: "#81b1ce" }}
+                    style={{ color: "#465465" }}
                   >
                     Pending Approvals
                   </p>
                   <p
                     className="text-2xl font-bold"
-                    style={{ color: "#113065" }}
+                    style={{ color: "#293842" }}
                   >
                     {
                       transferRequests.filter(
@@ -809,19 +808,19 @@ const AdminPropertyManagement = () => {
         <Tabs defaultValue="properties" className="w-full">
           <TabsList
             className="grid w-full grid-cols-2 bg-white border"
-            style={{ borderColor: "#aad6ec" }}
+            style={{ borderColor: "#a1d99b" }}
           >
             <TabsTrigger
               value="properties"
-              className="data-[state=active]:bg-blue-300/20"
-              style={{ color: "#151269" }}
+              className="data-[state=active]:bg-green-300/20"
+              style={{ color: "#006d2c" }}
             >
               Properties
             </TabsTrigger>
             <TabsTrigger
               value="transfers"
-              className="data-[state=active]:bg-blue-300/20"
-              style={{ color: "#151269" }}
+              className="data-[state=active]:bg-green-300/20"
+              style={{ color: "#006d2c" }}
             >
               Transfer Requests
             </TabsTrigger>
@@ -832,9 +831,9 @@ const AdminPropertyManagement = () => {
               <div className="flex items-center justify-center py-12">
                 <Loader2
                   className="w-8 h-8 animate-spin"
-                  style={{ color: "#151269" }}
+                  style={{ color: "#a1d99b" }}
                 />
-                <span className="ml-2" style={{ color: "#81b1ce" }}>
+                <span className="ml-2" style={{ color: "#006d2c" }}>
                   Loading properties...
                 </span>
               </div>
@@ -854,7 +853,7 @@ const AdminPropertyManagement = () => {
                     <Card
                       key={property.id}
                       className="group transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden shadow-md bg-white"
-                      style={{ border: "1px solid #aad6ec" }}
+                      style={{ border: "1px solid #a1d99b", backgroundColor: "#f7fcf5" }}
                     >
                       <div className="flex">
                         {/* Property Image */}
@@ -884,14 +883,14 @@ const AdminPropertyManagement = () => {
                             {property.isForSale && (
                               <Badge
                                 className="text-white shadow-lg"
-                                style={{ backgroundColor: "#16a34a" }}
+                                style={{ backgroundColor: "#4677d3ff" }}
                               >
                                 For Sale
                               </Badge>
                             )}
                             <Badge
                               className="text-white shadow-lg"
-                              style={{ backgroundColor: "#81b1ce" }}
+                              style={{ backgroundColor: "#16a34a" }}
                             >
                               Registered
                             </Badge>
@@ -899,10 +898,10 @@ const AdminPropertyManagement = () => {
 
                           {/* Admin icon */}
                           <div className="absolute top-3 right-3">
-                            <div className="w-10 h-10 bg-white/80 rounded-full flex items-center justify-center shadow-lg">
+                            <div className="w-9 h-9 bg-white/80 rounded-full flex items-center justify-center shadow-lg">
                               <Building
                                 className="w-6 h-6"
-                                style={{ color: "#151269" }}
+                                style={{ color: "#293842" }}
                               />
                             </div>
                           </div>
@@ -916,24 +915,24 @@ const AdminPropertyManagement = () => {
                               <div className="mb-4">
                                 <div
                                   className="text-3xl font-bold mb-2"
-                                  style={{ color: "#151269" }}
+                                  style={{ color: "#293842" }}
                                 >
                                   {formatEther(property.marketValue)} ETH
                                 </div>
                                 <h3
                                   className="text-xl font-semibold mb-2"
-                                  style={{ color: "#0f1056" }}
+                                  style={{ color: "#006d2c" }}
                                 >
                                   {getPropertyType()} #{property.id.toString()}
                                 </h3>
                                 <div className="flex items-center text-gray-600 mb-3">
                                   <MapPin
                                     className="w-5 h-5 mr-2"
-                                    style={{ color: "#151269" }}
+                                    style={{ color: "#41ab5d" }}
                                   />
                                   <span
                                     className="text-lg font-medium"
-                                    style={{ color: "#113065" }}
+                                    style={{ color: "#006d2c" }}
                                   >
                                     {property.location}
                                   </span>
@@ -944,25 +943,25 @@ const AdminPropertyManagement = () => {
                               <div
                                 className="p-3 rounded-lg mb-4"
                                 style={{
-                                  backgroundColor: "#aad6ec20",
-                                  border: "1px solid #81b1ce",
+                                  backgroundColor: "#f7fcf5",
+                                  border: "1px solid #c7e9c0",
                                 }}
                               >
                                 <div className="flex items-center gap-2 mb-1">
                                   <User
                                     className="w-4 h-4"
-                                    style={{ color: "#151269" }}
+                                    style={{ color: "#293842" }}
                                   />
                                   <span
                                     className="text-sm font-medium"
-                                    style={{ color: "#113065" }}
+                                    style={{ color: "#293842" }}
                                   >
                                     Property Owner
                                   </span>
                                 </div>
                                 <div
                                   className="text-base font-bold"
-                                  style={{ color: "#0f1056" }}
+                                  style={{ color: "#293842" }}
                                 >
                                   {truncateAddress(property.ownerAddress)}
                                 </div>
@@ -972,14 +971,14 @@ const AdminPropertyManagement = () => {
                               <div className="flex items-center gap-4 mb-4 text-sm">
                                 <span
                                   className="flex items-center gap-1"
-                                  style={{ color: "#81b1ce" }}
+                                  style={{ color: "#41ab5d" }}
                                 >
                                   <Building className="w-4 h-4" />
                                   {property.area.toLocaleString()} sq ft
                                 </span>
                                 <span
                                   className="flex items-center gap-1"
-                                  style={{ color: "#81b1ce" }}
+                                  style={{ color: "#41ab5d" }}
                                 >
                                   <FileText className="w-4 h-4" />
                                   ID: {property.id}
@@ -1026,16 +1025,16 @@ const AdminPropertyManagement = () => {
                               )}
                               <div className="flex justify-end">
                                 <Button
-                                  onClick={() =>
-                                    navigate(`/property/${property.id}`)
-                                  }
-                                  variant="outline"
-                                  className="px-6 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2 border hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:border-indigo-300 hover:text-indigo-700 hover:shadow-md"
-                                  style={{
-                                    borderColor: "#aad6ec",
-                                    color: "#151269",
-                                  }}
-                                >
+                                    onClick={() =>
+                                      navigate(`/property/${property.id}`)
+                                    }
+                                    variant="outline"
+                                    className="px-6 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2 border hover:bg-[#c7e9c0] hover:border-[#a1d99b] hover:text-[#006d2c] hover:shadow-md"
+                                    style={{
+                                      borderColor: "#aad6ec",
+                                      color: "#006d2c",
+                                    }}
+                                  >
                                   <Eye className="w-4 h-4" />
                                   View Details
                                 </Button>

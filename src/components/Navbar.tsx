@@ -50,8 +50,8 @@ const Navbar = () => {
   // Determine navbar styles based on scroll position and page
   const getNavbarStyles = () => {
     if (!isLandingPage) {
-      // Non-landing pages: aligned with MarketPlace theme - slate to indigo gradient
-      return "fixed top-0 w-full z-50 bg-gradient-to-r from-slate-700/90 via-blue-500/90 to-blue-900/90 dark:from-slate-900/90 dark:via-slate-800/90 dark:to-slate-900/90 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-700/50 transition-all duration-300";
+      // Non-landing pages: aligned with MarketPlace theme - slate to green gradient
+      return "fixed top-0 w-full z-50 bg-gradient-to-r from-slate-800/90 via-green-600/90 to-green-900/90 dark:from-slate-900/90 dark:via-green-800/90 dark:to-slate-900/90 backdrop-blur-md border-b border-slate-200/50 dark:border-slate-700/50 transition-all duration-300";
     }
 
     if (scrollY < 10) {
