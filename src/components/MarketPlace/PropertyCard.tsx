@@ -86,9 +86,9 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   // List view layout (horizontal)
   return (
     <Card
-      className="group cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden shadow-md bg-white"
+      className="group cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden shadow-md"
       onClick={handleViewDetails}
-      style={{ border: "1px solid #aad6ec" }}
+      style={{ border: "1px solid #a1d99b", backgroundColor: "#ffffff" }}
     >
       <div className="flex">
         {/* Property Image - Much wider */}
@@ -116,14 +116,14 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
             )}
             <Badge
               className="text-white shadow-lg"
-              style={{ backgroundColor: "#81b1ce" }}
+              style={{ backgroundColor: "#41ab5d" }}
             >
               Recently added
             </Badge>
             {highestBid && (
               <Badge
                 className="text-white shadow-lg"
-                style={{ backgroundColor: "#16a34a" }}
+                style={{ backgroundColor: "#006d2c" }}
               >
                 <Gavel className="w-4 h-4 mr-1" />
                 {formatBidAmount(highestBid.bidAmount)}
@@ -157,18 +157,27 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
             <div>
               {/* Price and basic info */}
               <div className="mb-2">
-                <div className="text-2xl font-bold text-black mb-1">
+                <div
+                  className="text-2xl font-bold mb-1"
+                  style={{ color: "#293842" }}
+                >
                   {formatMarketValue(property.marketValue)}
                 </div>
-                <h3 className="text-base font-semibold text-black mb-1">
+                <h3
+                  className="text-base font-semibold mb-1"
+                  style={{ color: "#465465" }}
+                >
                   {propertyType} #{property.id.toString()}
                 </h3>
-                <div className="flex items-center text-gray-600 mb-2">
+                <div className="flex items-center mb-2">
                   <MapPin
                     className="w-5 h-5 mr-1"
-                    style={{ color: "#151269" }}
+                    style={{ color: "#465465" }}
                   />
-                  <span className="text-2xl font-medium">
+                  <span
+                    className="text-2xl font-medium"
+                    style={{ color: "#293842" }}
+                  >
                     {property.location}
                   </span>
                 </div>
@@ -179,22 +188,22 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
                 <div
                   className="p-2 rounded-md mb-2"
                   style={{
-                    backgroundColor: "#aad6ec20",
-                    border: "1px solid #81b1ce",
+                    backgroundColor: "#f7fcf5",
+                    border: "1px solid #a1d99b",
                   }}
                 >
                   <div className="flex items-center gap-1 mb-0.5">
-                    <Gavel className="w-3 h-3" style={{ color: "#151269" }} />
+                    <Gavel className="w-3 h-3" style={{ color: "#006d2c" }} />
                     <span
                       className="text-xs font-medium"
-                      style={{ color: "#113065" }}
+                      style={{ color: "#006d2c" }}
                     >
                       Highest Bid
                     </span>
                   </div>
                   <div
                     className="text-lg font-bold"
-                    style={{ color: "#0f1056" }}
+                    style={{ color: "#293842" }}
                   >
                     {formatBidAmount(highestBid.bidAmount)}
                   </div>
@@ -202,7 +211,10 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
               )}
 
               {/* Property Features - Land specific */}
-              <div className="flex items-center gap-3 mb-2 text-xs text-gray-600">
+              <div
+                className="flex items-center gap-3 mb-2 text-xs"
+                style={{ color: "#465465" }}
+              >
                 <span className="flex items-center gap-1">
                   <Maximize className="w-3 h-3" />
                   {property.area.toLocaleString()} sq ft
@@ -217,11 +229,11 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
             {/* Bottom section - Compact */}
             <div className="flex items-center justify-end">
               <div className="flex flex-col justify-center m-5">
-                {/* User's wallet address in blue */}
+                {/* User's wallet address in green */}
                 {web3State.account && (
                   <div
                     className="text-2xl font-medium mb-1 flex justify-between items-center"
-                    style={{ color: "#113065" }}
+                    style={{ color: "#006d2c" }}
                   >
                     <User className="w-7 h-7 mr-1" />
                     <span> {formatAddress(web3State.account)}</span>
@@ -230,7 +242,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
                 <Button
                   onClick={handlePlaceBid}
                   className="text-white px-3 py-1 rounded-3xl text-xl font-medium transition-opacity hover:opacity-90 flex items-center gap-1"
-                  style={{ backgroundColor: "#151269" }}
+                  style={{ backgroundColor: "#006d2c" }}
                 >
                   <Gavel className="w-5 h-5" />
                   View Details

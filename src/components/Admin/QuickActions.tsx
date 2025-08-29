@@ -10,9 +10,9 @@ const QuickActions: React.FC = () => {
   return (
     <Card
       className="bg-white border shadow-sm"
-      style={{ borderColor: "#aad6ec" }}
+      style={{ borderColor: "#a1d99b" }}
     >
-      <CardHeader className="text-white" style={{ backgroundColor: "#151269" }}>
+      <CardHeader className="text-white" style={{ backgroundColor: "#006d2c" }}>
         <CardTitle className="flex items-center">
           <Settings className="w-5 h-5 mr-2" />
           System Management
@@ -22,7 +22,7 @@ const QuickActions: React.FC = () => {
         <div className="space-y-3">
           <Button
             className="w-full justify-start text-white hover:opacity-90"
-            style={{ backgroundColor: "#113065" }}
+            style={{ backgroundColor: "#41ab5d" }}
             onClick={() => navigate("/admin/property-management")}
           >
             <Building className="w-4 h-4 mr-2" />
@@ -32,8 +32,8 @@ const QuickActions: React.FC = () => {
           <Button
             className="w-full justify-start bg-white border hover:bg-gray-50"
             style={{
-              borderColor: "#81b1ce",
-              color: "#151269",
+              borderColor: "#a1d99b",
+              color: "#006d2c",
             }}
             onClick={() => navigate("/admin/user-management")}
           >
@@ -44,8 +44,8 @@ const QuickActions: React.FC = () => {
           <Button
             className="w-full justify-start bg-white border hover:bg-gray-50"
             style={{
-              borderColor: "#aad6ec",
-              color: "#0f1056",
+              borderColor: "#a1d99b",
+              color: "#293842",
             }}
             onClick={() => navigate("/admin/set-role")}
           >
@@ -56,8 +56,8 @@ const QuickActions: React.FC = () => {
           <Button
             className="w-full justify-start bg-white border hover:bg-gray-50"
             style={{
-              borderColor: "#113065",
-              color: "#151269",
+              borderColor: "#41ab5d",
+              color: "#006d2c",
             }}
             onClick={() => navigate("/analytics")}
           >

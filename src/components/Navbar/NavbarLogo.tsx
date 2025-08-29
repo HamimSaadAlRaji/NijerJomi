@@ -19,8 +19,22 @@ const NavbarLogo: React.FC<NavbarLogoProps> = ({ isDarkTheme = false }) => {
               : "text-white"
           }`}
         >
-          nijerJomi
+          NijerJomi
         </h1>
+        <p
+          className={`text-xs tracking-widest font-semibold uppercase drop-shadow-sm letter-motto mt-0 ${
+            isDarkTheme
+              ? "bg-gradient-to-r from-[#006d2c] via-[#186733] to-[#74c476] bg-clip-text text-transparent"
+              : "text-white"
+          }`}
+          style={{
+            letterSpacing: "0.05em",
+            fontFamily: "Roboto, sans-serif",
+            marginTop: 0,
+          }}
+        >
+          LAND REGISTRY
+        </p>
       </div>
     </Link>
   );

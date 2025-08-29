@@ -73,14 +73,22 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
   return (
     <div className="space-y-8">
       <div className="text-center mb-8">
-        <MapPin className="w-16 h-16 text-green-500 mx-auto mb-4" />
-        <h3 className="text-2xl font-bold text-black">Address Information</h3>
+        <MapPin
+          className="w-16 h-16 mx-auto mb-4"
+          style={{ color: "#41ab5d" }}
+        />
+        <h3 className="text-2xl font-bold" style={{ color: "#293842" }}>
+          Address Information
+        </h3>
       </div>
 
       {/* Present Address Form */}
       <div className="">
-        <h4 className="text-xl font-semibold text-black mb-4 flex items-center">
-          <MapPin className="w-5 h-5 text-green-500 mr-2" />
+        <h4
+          className="text-xl font-semibold mb-4 flex items-center"
+          style={{ color: "#293842" }}
+        >
+          <MapPin className="w-5 h-5 mr-2" style={{ color: "#41ab5d" }} />
           Present Address
         </h4>
 
@@ -89,7 +97,8 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
           <div>
             <Label
               htmlFor="presentHouse"
-              className="text-sm font-medium text-black"
+              className="text-sm font-medium"
+              style={{ color: "#293842" }}
             >
               House/Flat No.
             </Label>
@@ -101,8 +110,11 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
               className={`mt-1 h-10 border-2 transition-colors duration-300 ${
                 errors.presentHouse
                   ? "border-red-500 focus:border-red-500"
-                  : "border-gray-200 focus:border-green-500"
+                  : "focus:border-green-600"
               }`}
+              style={{
+                borderColor: errors.presentHouse ? "#dc2626" : "#a1d99b",
+              }}
               placeholder="House/Flat number"
             />
             {errors.presentHouse && (
@@ -114,7 +126,8 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
           <div>
             <Label
               htmlFor="presentRoad"
-              className="text-sm font-medium text-black"
+              className="text-sm font-medium"
+              style={{ color: "#293842" }}
             >
               Road/Street
             </Label>
@@ -126,8 +139,11 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
               className={`mt-1 h-10 border-2 transition-colors duration-300 ${
                 errors.presentRoad
                   ? "border-red-500 focus:border-red-500"
-                  : "border-gray-200 focus:border-green-500"
+                  : "focus:border-green-600"
               }`}
+              style={{
+                borderColor: errors.presentRoad ? "#dc2626" : "#a1d99b",
+              }}
               placeholder="Road/Street name"
             />
             {errors.presentRoad && (
@@ -139,7 +155,8 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
           <div>
             <Label
               htmlFor="presentPostCode"
-              className="text-sm font-medium text-black"
+              className="text-sm font-medium"
+              style={{ color: "#293842" }}
             >
               Post Code
             </Label>
@@ -151,8 +168,11 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
               className={`mt-1 h-10 border-2 transition-colors duration-300 ${
                 errors.presentPostCode
                   ? "border-red-500 focus:border-red-500"
-                  : "border-gray-200 focus:border-green-500"
+                  : "focus:border-green-600"
               }`}
+              style={{
+                borderColor: errors.presentPostCode ? "#dc2626" : "#a1d99b",
+              }}
               placeholder="Post code"
             />
             {errors.presentPostCode && (
@@ -166,7 +186,8 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
           <div>
             <Label
               htmlFor="presentCity"
-              className="text-sm font-medium text-black"
+              className="text-sm font-medium"
+              style={{ color: "#293842" }}
             >
               City
             </Label>
@@ -178,7 +199,7 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
               className={`mt-1 h-10 border-2 transition-colors duration-300 ${
                 errors.presentCity
                   ? "border-red-500 focus:border-red-500"
-                  : "border-gray-200 focus:border-green-500"
+                  : "focus:border-green-600"
               }`}
               placeholder="City"
             />
@@ -193,7 +214,8 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
           <div>
             <Label
               htmlFor="presentAddress"
-              className="text-sm font-medium text-black"
+              className="text-sm font-medium"
+              style={{ color: "#293842" }}
             >
               Detailed Address
             </Label>
@@ -205,7 +227,7 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
               className={`mt-1 h-10 border-2 transition-colors duration-300 ${
                 errors.presentAddress
                   ? "border-red-500 focus:border-red-500"
-                  : "border-gray-200 focus:border-green-500"
+                  : "focus:border-green-600"
               }`}
               placeholder="Detailed address (Area, Landmark, etc.)"
             />
@@ -219,7 +241,8 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
           <div>
             <Label
               htmlFor="presentDivision"
-              className="text-sm font-medium text-black"
+              className="text-sm font-medium"
+              style={{ color: "#293842" }}
             >
               Division
             </Label>
@@ -231,7 +254,7 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
               className={`mt-1 h-10 border-2 transition-colors duration-300 ${
                 errors.presentDivision
                   ? "border-red-500 focus:border-red-500"
-                  : "border-gray-200 focus:border-green-500"
+                  : "focus:border-green-600"
               }`}
               placeholder="Division"
             />
@@ -247,8 +270,11 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
       {/* Permanent Address Form */}
       <div className="">
         <div className="flex items-center justify-between mb-4">
-          <h4 className="text-xl font-semibold text-black flex items-center">
-            <MapPin className="w-5 h-5 text-green-500 mr-2" />
+          <h4
+            className="text-xl font-semibold flex items-center"
+            style={{ color: "#293842" }}
+          >
+            <MapPin className="w-5 h-5 mr-2" style={{ color: "#41ab5d" }} />
             Permanent Address
           </h4>
 
@@ -258,11 +284,13 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
               id="sameAsPresent"
               checked={sameAsPresent}
               onCheckedChange={onSameAsPresentChange}
-              className="border-2 border-gray-300"
+              className="border-2"
+              style={{ borderColor: "#a1d99b" }}
             />
             <Label
               htmlFor="sameAsPresent"
-              className="text-sm font-medium text-gray-700 cursor-pointer"
+              className="text-sm font-medium cursor-pointer"
+              style={{ color: "#465465" }}
             >
               Same as present address
             </Label>
@@ -274,7 +302,8 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
           <div>
             <Label
               htmlFor="permanentHouse"
-              className="text-sm font-medium text-black"
+              className="text-sm font-medium"
+              style={{ color: "#293842" }}
             >
               House/Flat No.
             </Label>
@@ -289,7 +318,7 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
                   ? "bg-gray-100 cursor-not-allowed"
                   : errors.permanentHouse
                   ? "border-red-500 focus:border-red-500"
-                  : "border-gray-200 focus:border-green-500"
+                  : "focus:border-green-600"
               }`}
               placeholder="House/Flat number"
             />
@@ -304,7 +333,8 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
           <div>
             <Label
               htmlFor="permanentRoad"
-              className="text-sm font-medium text-black"
+              className="text-sm font-medium"
+              style={{ color: "#293842" }}
             >
               Road/Street
             </Label>
@@ -319,7 +349,7 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
                   ? "bg-gray-100 cursor-not-allowed"
                   : errors.permanentRoad
                   ? "border-red-500 focus:border-red-500"
-                  : "border-gray-200 focus:border-green-500"
+                  : "focus:border-green-600"
               }`}
               placeholder="Road/Street name"
             />
@@ -334,7 +364,8 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
           <div>
             <Label
               htmlFor="permanentPostCode"
-              className="text-sm font-medium text-black"
+              className="text-sm font-medium"
+              style={{ color: "#293842" }}
             >
               Post Code
             </Label>
@@ -351,7 +382,7 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
                   ? "bg-gray-100 cursor-not-allowed"
                   : errors.permanentPostCode
                   ? "border-red-500 focus:border-red-500"
-                  : "border-gray-200 focus:border-green-500"
+                  : "focus:border-green-600"
               }`}
               placeholder="Post code"
             />
@@ -366,7 +397,8 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
           <div>
             <Label
               htmlFor="permanentCity"
-              className="text-sm font-medium text-black"
+              className="text-sm font-medium"
+              style={{ color: "#293842" }}
             >
               City
             </Label>
@@ -381,7 +413,7 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
                   ? "bg-gray-100 cursor-not-allowed"
                   : errors.permanentCity
                   ? "border-red-500 focus:border-red-500"
-                  : "border-gray-200 focus:border-green-500"
+                  : "focus:border-green-600"
               }`}
               placeholder="City"
             />
@@ -398,7 +430,8 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
           <div>
             <Label
               htmlFor="permanentAddress"
-              className="text-sm font-medium text-black"
+              className="text-sm font-medium"
+              style={{ color: "#293842" }}
             >
               Detailed Address
             </Label>
@@ -415,7 +448,7 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
                   ? "bg-gray-100 cursor-not-allowed"
                   : errors.permanentAddress
                   ? "border-red-500 focus:border-red-500"
-                  : "border-gray-200 focus:border-green-500"
+                  : "focus:border-green-600"
               }`}
               placeholder="Detailed address (Area, Landmark, etc.)"
             />
@@ -429,7 +462,8 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
           <div>
             <Label
               htmlFor="permanentDivision"
-              className="text-sm font-medium text-black"
+              className="text-sm font-medium"
+              style={{ color: "#293842" }}
             >
               Division
             </Label>
@@ -446,7 +480,7 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
                   ? "bg-gray-100 cursor-not-allowed"
                   : errors.permanentDivision
                   ? "border-red-500 focus:border-red-500"
-                  : "border-gray-200 focus:border-green-500"
+                  : "focus:border-green-600"
               }`}
               placeholder="Division"
             />

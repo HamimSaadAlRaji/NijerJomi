@@ -26,24 +26,24 @@ const StatsOverview: React.FC<StatsOverviewProps> = ({ stats }) => {
       <Card
         className="shadow-sm hover:shadow-md transition-shadow"
         style={{
-          border: "1px solid #aad6ec",
-          background: "linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%)",
+          border: "1px solid #a1d99b",
+          background: "linear-gradient(135deg, #f7fcf5 0%, #ffffff 100%)",
         }}
       >
         <CardHeader className="pb-2">
           <CardTitle
             className="flex items-center text-sm font-medium"
-            style={{ color: "#113065" }}
+            style={{ color: "#293842" }}
           >
-            <Building className="w-4 h-4 mr-2" style={{ color: "#151269" }} />
+            <Building className="w-4 h-4 mr-2" style={{ color: "#293842" }} />
             Total Properties
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-3xl font-bold" style={{ color: "#151269" }}>
+          <div className="text-3xl font-bold" style={{ color: "#293842" }}>
             {stats?.totalProperties || 0}
           </div>
-          <p className="text-sm" style={{ color: "#81b1ce" }}>
+          <p className="text-sm" style={{ color: "#465465" }}>
             Registered in system
           </p>
         </CardContent>
@@ -53,24 +53,24 @@ const StatsOverview: React.FC<StatsOverviewProps> = ({ stats }) => {
       <Card
         className="shadow-sm hover:shadow-md transition-shadow"
         style={{
-          border: "1px solid #81b1ce",
-          background: "linear-gradient(135deg, #f8fafc 0%, #ffffff 100%)",
+          border: "1px solid #a1d99b",
+          background: "linear-gradient(135deg, #f7fcf5 0%, #ffffff 100%)",
         }}
       >
         <CardHeader className="pb-2">
           <CardTitle
             className="flex items-center text-sm font-medium"
-            style={{ color: "#113065" }}
+            style={{ color: "#293842" }}
           >
-            <DollarSign className="w-4 h-4 mr-2" style={{ color: "#0f1056" }} />
+            <DollarSign className="w-4 h-4 mr-2" style={{ color: "#006d2c" }} />
             For Sale
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-3xl font-bold" style={{ color: "#0f1056" }}>
+          <div className="text-3xl font-bold" style={{ color: "#006d2c" }}>
             {stats?.propertiesForSale || 0}
           </div>
-          <p className="text-sm" style={{ color: "#81b1ce" }}>
+          <p className="text-sm" style={{ color: "#465465" }}>
             Available for purchase
           </p>
         </CardContent>
@@ -80,14 +80,14 @@ const StatsOverview: React.FC<StatsOverviewProps> = ({ stats }) => {
       <Card
         className="shadow-sm hover:shadow-md transition-shadow"
         style={{
-          border: "1px solid #113065",
+          border: "1px solid #a1d99b",
           background: "linear-gradient(135deg, #fef2f2 0%, #ffffff 100%)",
         }}
       >
         <CardHeader className="pb-2">
           <CardTitle
             className="flex items-center text-sm font-medium"
-            style={{ color: "#113065" }}
+            style={{ color: "#293842" }}
           >
             <AlertTriangle
               className="w-4 h-4 mr-2"
@@ -100,7 +100,7 @@ const StatsOverview: React.FC<StatsOverviewProps> = ({ stats }) => {
           <div className="text-3xl font-bold" style={{ color: "#dc2626" }}>
             {stats?.propertiesWithDisputes || 0}
           </div>
-          <p className="text-sm" style={{ color: "#81b1ce" }}>
+          <p className="text-sm" style={{ color: "#465465" }}>
             Require attention
           </p>
         </CardContent>
@@ -110,24 +110,24 @@ const StatsOverview: React.FC<StatsOverviewProps> = ({ stats }) => {
       <Card
         className="shadow-sm hover:shadow-md transition-shadow"
         style={{
-          border: "1px solid #aad6ec",
-          background: "linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%)",
+          border: "1px solid #a1d99b",
+          background: "linear-gradient(135deg, #f7fcf5 0%, #ffffff 100%)",
         }}
       >
         <CardHeader className="pb-2">
           <CardTitle
             className="flex items-center text-sm font-medium"
-            style={{ color: "#113065" }}
+            style={{ color: "#293842" }}
           >
-            <TrendingUp className="w-4 h-4 mr-2" style={{ color: "#113065" }} />
+            <TrendingUp className="w-4 h-4 mr-2" style={{ color: "#41ab5d" }} />
             Market Value
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold" style={{ color: "#113065" }}>
+          <div className="text-2xl font-bold" style={{ color: "#41ab5d" }}>
             {stats?.totalMarketValue || "0 ETH"}
           </div>
-          <p className="text-sm" style={{ color: "#81b1ce" }}>
+          <p className="text-sm" style={{ color: "#465465" }}>
             Total registry value
           </p>
         </CardContent>

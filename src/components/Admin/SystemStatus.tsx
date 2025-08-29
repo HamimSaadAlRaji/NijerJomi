@@ -24,9 +24,9 @@ const SystemStatus: React.FC<SystemStatusProps> = ({ stats }) => {
   return (
     <Card
       className="bg-white border shadow-sm"
-      style={{ borderColor: "#aad6ec" }}
+      style={{ borderColor: "#a1d99b" }}
     >
-      <CardHeader className="text-white" style={{ backgroundColor: "#113065" }}>
+      <CardHeader className="text-white" style={{ backgroundColor: "#41ab5d" }}>
         <CardTitle className="flex items-center">
           <Activity className="w-5 h-5 mr-2" />
           System Status
@@ -36,7 +36,7 @@ const SystemStatus: React.FC<SystemStatusProps> = ({ stats }) => {
         <div className="space-y-4">
           <div
             className="flex items-center justify-between p-3 rounded-lg"
-            style={{ backgroundColor: "#f0f9ff" }}
+            style={{ backgroundColor: "#f7fcf5" }}
           >
             <div className="flex items-center">
               <CheckCircle
@@ -45,7 +45,7 @@ const SystemStatus: React.FC<SystemStatusProps> = ({ stats }) => {
               />
               <span
                 className="text-sm font-medium"
-                style={{ color: "#151269" }}
+                style={{ color: "#006d2c" }}
               >
                 Blockchain Connection
               </span>
@@ -60,20 +60,20 @@ const SystemStatus: React.FC<SystemStatusProps> = ({ stats }) => {
 
           <div
             className="flex items-center justify-between p-3 rounded-lg"
-            style={{ backgroundColor: "#f8fafc" }}
+            style={{ backgroundColor: "#f7fcf5" }}
           >
             <div className="flex items-center">
-              <Database className="w-5 h-5 mr-3" style={{ color: "#0f1056" }} />
+              <Database className="w-5 h-5 mr-3" style={{ color: "#293842" }} />
               <span
                 className="text-sm font-medium"
-                style={{ color: "#151269" }}
+                style={{ color: "#006d2c" }}
               >
                 Smart Contract
               </span>
             </div>
             <Badge
-              className="text-blue-800"
-              style={{ backgroundColor: "#aad6ec" }}
+              className="text-green-800"
+              style={{ backgroundColor: "#a1d99b" }}
             >
               Active
             </Badge>
@@ -81,13 +81,13 @@ const SystemStatus: React.FC<SystemStatusProps> = ({ stats }) => {
 
           <div
             className="flex items-center justify-between p-3 rounded-lg"
-            style={{ backgroundColor: "#f9fafb" }}
+            style={{ backgroundColor: "#f7fcf5" }}
           >
             <div className="flex items-center">
-              <Users className="w-5 h-5 mr-3" style={{ color: "#81b1ce" }} />
+              <Users className="w-5 h-5 mr-3" style={{ color: "#465465" }} />
               <span
                 className="text-sm font-medium"
-                style={{ color: "#151269" }}
+                style={{ color: "#006d2c" }}
               >
                 User Sessions
               </span>

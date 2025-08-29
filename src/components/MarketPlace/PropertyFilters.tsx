@@ -59,7 +59,7 @@ const PropertyFilters: React.FC<PropertyFiltersProps> = ({
   return (
     <div
       className="bg-white p-6 rounded-2xl shadow-lg"
-      style={{ border: "1px solid #aad6ec" }}
+      style={{ border: "1px solid #a1d99b" }}
     >
       <div className="flex flex-col lg:flex-row gap-4">
         {/* Search Section */}
@@ -67,7 +67,7 @@ const PropertyFilters: React.FC<PropertyFiltersProps> = ({
           <div className="relative">
             <Search
               className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5"
-              style={{ color: "#81b1ce" }}
+              style={{ color: "#41ab5d" }}
             />
             <Input
               placeholder="Search properties by ID, location, or owner..."
@@ -75,16 +75,16 @@ const PropertyFilters: React.FC<PropertyFiltersProps> = ({
               onChange={(e) => handleInputChange("searchTerm", e.target.value)}
               className="pl-12 py-3 rounded-xl text-black placeholder:text-gray-500"
               style={{
-                backgroundColor: "#aad6ec10",
-                border: "1px solid #81b1ce",
+                backgroundColor: "#fff",
+                border: "1px solid #41ab5d",
                 outline: "none",
               }}
               onFocus={(e) => {
-                e.target.style.borderColor = "#151269";
-                e.target.style.boxShadow = "0 0 0 2px rgba(21, 18, 105, 0.1)";
+                e.target.style.borderColor = "#006d2c";
+                e.target.style.boxShadow = "0 0 0 2px #a1d99b";
               }}
               onBlur={(e) => {
-                e.target.style.borderColor = "#81b1ce";
+                e.target.style.borderColor = "#41ab5d";
                 e.target.style.boxShadow = "none";
               }}
             />
@@ -100,55 +100,55 @@ const PropertyFilters: React.FC<PropertyFiltersProps> = ({
             <SelectTrigger
               className="py-3 rounded-xl text-black"
               style={{
-                backgroundColor: "#aad6ec10",
-                border: "1px solid #81b1ce",
+                backgroundColor: "#ffffff",
+                border: "1px solid #41ab5d",
               }}
             >
               <SelectValue placeholder="Sort by..." />
             </SelectTrigger>
             <SelectContent
               className="bg-white border"
-              style={{ borderColor: "#81b1ce" }}
+              style={{ borderColor: "#a1d99b" }}
             >
               <SelectItem
                 value="newest"
-                className="hover:bg-blue-50 focus:bg-blue-50"
-                style={{ color: "#151269" }}
+                className="hover:bg-[#e6f4ea] focus:bg-[#e6f4ea]"
+                style={{ color: "#465465" }}
               >
                 Newest First
               </SelectItem>
               <SelectItem
                 value="oldest"
-                className="hover:bg-blue-50 focus:bg-blue-50"
-                style={{ color: "#151269" }}
+                className="hover:bg-[#e6f4ea] focus:bg-[#e6f4ea]"
+                style={{ color: "#465465" }}
               >
                 Oldest First
               </SelectItem>
               <SelectItem
                 value="price-asc"
-                className="hover:bg-blue-50 focus:bg-blue-50"
-                style={{ color: "#151269" }}
+                className="hover:bg-[#e6f4ea] focus:bg-[#e6f4ea]"
+                style={{ color: "#465465" }}
               >
                 Price: Low to High
               </SelectItem>
               <SelectItem
                 value="price-desc"
-                className="hover:bg-blue-50 focus:bg-blue-50"
-                style={{ color: "#151269" }}
+                className="hover:bg-[#e6f4ea] focus:bg-[#e6f4ea]"
+                style={{ color: "#465465" }}
               >
                 Price: High to Low
               </SelectItem>
               <SelectItem
                 value="area-asc"
-                className="hover:bg-blue-50 focus:bg-blue-50"
-                style={{ color: "#151269" }}
+                className="hover:bg-[#e6f4ea] focus:bg-[#e6f4ea]"
+                style={{ color: "#465465" }}
               >
                 Area: Small to Large
               </SelectItem>
               <SelectItem
                 value="area-desc"
-                className="hover:bg-blue-50 focus:bg-blue-50"
-                style={{ color: "#151269" }}
+                className="hover:bg-[#e6f4ea] focus:bg-[#e6f4ea]"
+                style={{ color: "#465465" }}
               >
                 Area: Large to Small
               </SelectItem>

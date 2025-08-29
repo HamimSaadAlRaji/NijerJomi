@@ -231,8 +231,12 @@ const AdminPropertyManagement = () => {
       const buyerMap = new Map<string, string>();
       const sellerMap = new Map<string, string>();
       for (const transfer of allTransfers) {
-        const buyerNID = await getUserNidFromWallet(transfer.buyer.toLowerCase());
-        const sellerNID = await getUserNidFromWallet(transfer.seller.toLowerCase());
+        const buyerNID = await getUserNidFromWallet(
+          transfer.buyer.toLowerCase()
+        );
+        const sellerNID = await getUserNidFromWallet(
+          transfer.seller.toLowerCase()
+        );
         buyerMap.set(transfer.buyer.toLowerCase(), buyerNID);
         sellerMap.set(transfer.seller.toLowerCase(), sellerNID);
       }
@@ -271,7 +275,6 @@ const AdminPropertyManagement = () => {
     }
   }, [web3State.contract, web3State.isLoading]);
 
-  
   // Register new property
   const handleRegisterProperty = async () => {
     if (
@@ -553,12 +556,16 @@ const AdminPropertyManagement = () => {
             </p>
           </div>
           <div className="flex space-x-2">
-              <Button
-                onClick={refreshData}
-                disabled={refreshing}
-                className="border hover:bg-green-50 hover:text-green-700 hover:-translate-y-1 hover:shadow-lg transition-transform duration-150"
-                style={{ borderColor: "#a1d99b", color: "#006d2c", backgroundColor: "#fff" }}
-              >
+            <Button
+              onClick={refreshData}
+              disabled={refreshing}
+              className="border hover:bg-green-50 hover:text-green-700 hover:-translate-y-1 hover:shadow-lg transition-transform duration-150"
+              style={{
+                borderColor: "#a1d99b",
+                color: "#006d2c",
+                backgroundColor: "#fff",
+              }}
+            >
               <RefreshCw
                 className={`w-4 h-4 mr-2 ${refreshing ? "animate-spin" : ""}`}
               />
@@ -852,8 +859,12 @@ const AdminPropertyManagement = () => {
                   return (
                     <Card
                       key={property.id}
-                      className="group transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden shadow-md bg-white"
-                      style={{ border: "1px solid #a1d99b", backgroundColor: "#f7fcf5" }}
+                      className="group transition-all duration-300 hover:shadow-xl hover:-translate-y-1 overflow-hidden shadow-md bg-white cursor-pointer"
+                      style={{
+                        border: "1px solid #a1d99b",
+                        backgroundColor: "#f7fcf5",
+                      }}
+                      onClick={() => navigate(`/property/${property.id}`)}
                     >
                       <div className="flex">
                         {/* Property Image */}
@@ -991,9 +1002,10 @@ const AdminPropertyManagement = () => {
                               {property.hasDispute && (
                                 <div className="flex gap-2">
                                   <Button
-                                    onClick={() =>
-                                      handleResolveDispute(property.id, true)
-                                    }
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleResolveDispute(property.id, true);
+                                    }}
                                     disabled={
                                       actionLoading === `dispute-${property.id}`
                                     }
@@ -1009,9 +1021,10 @@ const AdminPropertyManagement = () => {
                                     Resolve Dispute
                                   </Button>
                                   <Button
-                                    onClick={() =>
-                                      handleResolveDispute(property.id, false)
-                                    }
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      handleResolveDispute(property.id, false);
+                                    }}
                                     disabled={
                                       actionLoading === `dispute-${property.id}`
                                     }
@@ -1025,16 +1038,17 @@ const AdminPropertyManagement = () => {
                               )}
                               <div className="flex justify-end">
                                 <Button
-                                    onClick={() =>
-                                      navigate(`/property/${property.id}`)
-                                    }
-                                    variant="outline"
-                                    className="px-6 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2 border hover:bg-[#c7e9c0] hover:border-[#a1d99b] hover:text-[#006d2c] hover:shadow-md"
-                                    style={{
-                                      borderColor: "#aad6ec",
-                                      color: "#006d2c",
-                                    }}
-                                  >
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate(`/property/${property.id}`);
+                                  }}
+                                  variant="outline"
+                                  className="px-6 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2 border hover:bg-[#c7e9c0] hover:border-[#a1d99b] hover:text-[#006d2c] hover:shadow-md"
+                                  style={{
+                                    borderColor: "#aad6ec",
+                                    color: "#006d2c",
+                                  }}
+                                >
                                   <Eye className="w-4 h-4" />
                                   View Details
                                 </Button>
@@ -1055,9 +1069,9 @@ const AdminPropertyManagement = () => {
               <div className="flex items-center justify-center py-12">
                 <Loader2
                   className="w-8 h-8 animate-spin"
-                  style={{ color: "#151269" }}
+                  style={{ color: "#a1d99b" }}
                 />
-                <span className="ml-2" style={{ color: "#81b1ce" }}>
+                <span className="ml-2" style={{ color: "#006d2c" }}>
                   Loading transfer requests...
                 </span>
               </div>
@@ -1065,10 +1079,10 @@ const AdminPropertyManagement = () => {
               <div className="space-y-4">
                 {transferRequests.length === 0 ? (
                   <div className="text-center py-12">
-                    <p style={{ color: "#81b1ce" }}>
+                    <p style={{ color: "#006d2c" }}>
                       No transfer requests found.
                     </p>
-                    <p className="text-xs mt-2" style={{ color: "#aad6ec" }}>
+                    <p className="text-xs mt-2" style={{ color: "#465465" }}>
                       Contract:{" "}
                       {web3State.contract ? "Connected" : "Not connected"} |
                       Role: {user?.blockchainRole || user?.userRole || "None"}
@@ -1085,19 +1099,18 @@ const AdminPropertyManagement = () => {
                         (p) => p.id === transfer.propertyId
                       );
                       const status = getTransferStatus(transfer);
-                      //const buyerNID = await getUserNidFromWallet(transfer.buyer)
                       return (
                         <Card
                           key={transfer.id}
                           className="bg-white shadow-sm border"
-                          style={{ borderColor: "#aad6ec" }}
+                          style={{ borderColor: "#a1d99b" }}
                         >
                           <CardContent className="p-6">
                             <div className="flex items-center justify-between">
                               <div className="space-y-2">
                                 <h4
                                   className="font-semibold"
-                                  style={{ color: "#151269" }}
+                                  style={{ color: "#293842" }}
                                 >
                                   Transfer #{transfer.id} -{" "}
                                   {property?.location ||
@@ -1105,31 +1118,35 @@ const AdminPropertyManagement = () => {
                                 </h4>
                                 <div
                                   className="grid grid-cols-2 gap-4 text-sm"
-                                  style={{ color: "#81b1ce" }}
+                                  style={{ color: "#6b7280" }}
                                 >
                                   <div>
                                     <p>
-                                      <strong style={{ color: "#151269" }}>
+                                      <strong style={{ color: "#293842" }}>
                                         Seller:
                                       </strong>{" "}
-                                      {sellerNIDs.get(transfer.seller.toLowerCase())}
+                                      {sellerNIDs.get(
+                                        transfer.seller.toLowerCase()
+                                      )}
                                     </p>
                                     <p>
-                                      <strong style={{ color: "#151269" }}>
+                                      <strong style={{ color: "#293842" }}>
                                         Buyer:
                                       </strong>{" "}
-                                      {buyerNIDs.get(transfer.buyer.toLowerCase())}
+                                      {buyerNIDs.get(
+                                        transfer.buyer.toLowerCase()
+                                      )}
                                     </p>
                                   </div>
                                   <div>
                                     <p>
-                                      <strong style={{ color: "#151269" }}>
+                                      <strong style={{ color: "#293842" }}>
                                         Price:
                                       </strong>{" "}
                                       {formatEther(transfer.agreedPrice)} ETH
                                     </p>
                                     <p>
-                                      <strong style={{ color: "#151269" }}>
+                                      <strong style={{ color: "#293842" }}>
                                         Property ID:
                                       </strong>{" "}
                                       {transfer.propertyId}
@@ -1138,10 +1155,10 @@ const AdminPropertyManagement = () => {
                                 </div>
                                 <div className="flex space-x-2 text-xs">
                                   <Badge
-                                    variant={
+                                    className={
                                       transfer.buyerApproved
-                                        ? "default"
-                                        : "secondary"
+                                        ? "bg-green-100 text-green-800"
+                                        : "bg-gray-100 text-gray-600"
                                     }
                                   >
                                     Buyer:{" "}
@@ -1150,10 +1167,10 @@ const AdminPropertyManagement = () => {
                                       : "Pending"}
                                   </Badge>
                                   <Badge
-                                    variant={
+                                    className={
                                       transfer.sellerApproved
-                                        ? "default"
-                                        : "secondary"
+                                        ? "bg-green-100 text-green-800"
+                                        : "bg-gray-100 text-gray-600"
                                     }
                                   >
                                     Seller:{" "}
@@ -1162,10 +1179,10 @@ const AdminPropertyManagement = () => {
                                       : "Pending"}
                                   </Badge>
                                   <Badge
-                                    variant={
+                                    className={
                                       transfer.registrarApproved
-                                        ? "default"
-                                        : "secondary"
+                                        ? "bg-green-100 text-green-800"
+                                        : "bg-gray-100 text-gray-600"
                                     }
                                   >
                                     Registrar:{" "}
@@ -1186,10 +1203,10 @@ const AdminPropertyManagement = () => {
                                     onClick={() =>
                                       showTransferDetails(transfer.id)
                                     }
-                                    className="border"
+                                    className="border hover:bg-[#c7e9c0] hover:border-[#a1d99b] hover:text-[#006d2c]"
                                     style={{
-                                      borderColor: "#aad6ec",
-                                      color: "#151269",
+                                      borderColor: "#a1d99b",
+                                      color: "#293842",
                                     }}
                                   >
                                     <Eye className="w-4 h-4 mr-2" />
@@ -1207,8 +1224,8 @@ const AdminPropertyManagement = () => {
                                             `approve-${transfer.id}` ||
                                           !transfer.buyerApproved
                                         }
-                                        className="text-white"
-                                        style={{ backgroundColor: "#113065" }}
+                                        className="text-white hover:opacity-90"
+                                        style={{ backgroundColor: "#006d2c" }}
                                       >
                                         {actionLoading ===
                                         `approve-${transfer.id}` ? (

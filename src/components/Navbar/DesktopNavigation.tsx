@@ -33,7 +33,7 @@ const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
 
   const linkClasses = (path: string) => {
     const baseClasses =
-      "font-medium transition-colors duration-200 hover:scale-105";
+      "font-medium text-2xl transition-colors duration-200 hover:scale-105";
     const activeClasses = isActive(path) ? "border-b-2" : "";
 
     if (isDarkTheme) {

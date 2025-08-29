@@ -382,8 +382,22 @@ const MyProperties = () => {
             onClick={refreshData}
             disabled={refreshing}
             variant="outline"
-            className="flex items-center hover:bg-blue-50 transition-colors"
-            style={{ borderColor: "#81b1ce", color: "#151269" }}
+            className="flex items-center transition-colors"
+            style={{
+              borderColor: "#a1d99b",
+              color: "#006d2c",
+              backgroundColor: "#fff",
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.backgroundColor = "#e6f4ea";
+              e.currentTarget.style.color = "#006d2c";
+              e.currentTarget.style.borderColor = "#41ab5d";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.backgroundColor = "#fff";
+              e.currentTarget.style.color = "#006d2c";
+              e.currentTarget.style.borderColor = "#a1d99b";
+            }}
           >
             <RefreshCw
               className={`w-4 h-4 mr-2 ${refreshing ? "animate-spin" : ""}`}
@@ -420,7 +434,7 @@ const MyProperties = () => {
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <Card className="bg-white border" style={{ borderColor: "#aad6ec" }}>
+          <Card className="bg-white border" style={{ borderColor: "#a1d99b" }}>
             <CardContent className="p-6">
               <div className="flex items-center">
                 <Home className="w-8 h-8" style={{ color: "#151269" }} />
@@ -436,7 +450,7 @@ const MyProperties = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-white border" style={{ borderColor: "#81b1ce" }}>
+          <Card className="bg-white border" style={{ borderColor: "#a1d99b" }}>
             <CardContent className="p-6">
               <div className="flex items-center">
                 <TrendingUp className="w-8 h-8" style={{ color: "#0f1056" }} />
@@ -450,7 +464,7 @@ const MyProperties = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-white border" style={{ borderColor: "#113065" }}>
+          <Card className="bg-white border" style={{ borderColor: "#a1d99b" }}>
             <CardContent className="p-6">
               <div className="flex items-center">
                 <Send className="w-8 h-8" style={{ color: "#151269" }} />
@@ -466,7 +480,7 @@ const MyProperties = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-white border" style={{ borderColor: "#aad6ec" }}>
+          <Card className="bg-white border" style={{ borderColor: "#a1d99b" }}>
             <CardContent className="p-6">
               <div className="flex items-center">
                 <AlertTriangle className="w-8 h-8 text-red-500" />
@@ -567,7 +581,7 @@ const MyProperties = () => {
                     <Card
                       key={transfer.id}
                       className="bg-white border"
-                      style={{ borderColor: "#aad6ec" }}
+                      style={{ borderColor: "#a1d99b" }}
                     >
                       <CardContent className="p-6">
                         <div className="flex items-center justify-between">
@@ -579,12 +593,19 @@ const MyProperties = () => {
                             <div className="text-sm text-gray-600 space-y-1">
                               <p>Transfer ID: {transfer.id}</p>
                               <p>
-                                Price: {formatEther(transfer.agreedPrice)} ETH
+                                Price:{" "}
+                                <span
+                                  style={{ color: "#006d2c", fontWeight: 600 }}
+                                >
+                                  {formatEther(transfer.agreedPrice)} ETH
+                                </span>
                               </p>
                               <p>
-                                {isUserSeller ? "Buyer" : "Seller"}: {" "}
+                                {isUserSeller ? "Buyer" : "Seller"}:{" "}
                                 {truncateAddress(
-                                  isUserSeller ? transfer.buyer : transfer.seller
+                                  isUserSeller
+                                    ? transfer.buyer
+                                    : transfer.seller
                                 )}
                               </p>
                             </div>
@@ -648,8 +669,22 @@ const MyProperties = () => {
                       setDisputeDialogOpen(true);
                     }}
                     disabled={selectedProperty.hasDispute}
-                    className="hover:bg-blue-50 transition-colors"
-                    style={{ borderColor: "#81b1ce", color: "#151269" }}
+                    className="transition-colors"
+                    style={{
+                      borderColor: "#a1d99b",
+                      color: "#006d2c",
+                      backgroundColor: "#fff",
+                    }}
+                    onMouseOver={(e) => {
+                      e.currentTarget.style.backgroundColor = "#e6f4ea";
+                      e.currentTarget.style.color = "#006d2c";
+                      e.currentTarget.style.borderColor = "#41ab5d";
+                    }}
+                    onMouseOut={(e) => {
+                      e.currentTarget.style.backgroundColor = "#fff";
+                      e.currentTarget.style.color = "#006d2c";
+                      e.currentTarget.style.borderColor = "#a1d99b";
+                    }}
                   >
                     Report Dispute
                   </Button>
@@ -681,8 +716,23 @@ const MyProperties = () => {
                 <Button
                   onClick={handleReportDispute}
                   disabled={actionLoading === `dispute-${selectedProperty.id}`}
-                  className="text-white hover:opacity-90 transition-opacity"
-                  style={{ backgroundColor: "#dc2626" }}
+                  variant="outline"
+                  className="transition-colors"
+                  style={{
+                    borderColor: "#a1d99b",
+                    color: "#006d2c",
+                    backgroundColor: "#fff",
+                  }}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.backgroundColor = "#e6f4ea";
+                    e.currentTarget.style.color = "#006d2c";
+                    e.currentTarget.style.borderColor = "#41ab5d";
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.backgroundColor = "#fff";
+                    e.currentTarget.style.color = "#006d2c";
+                    e.currentTarget.style.borderColor = "#a1d99b";
+                  }}
                 >
                   {actionLoading === `dispute-${selectedProperty.id}` && (
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />

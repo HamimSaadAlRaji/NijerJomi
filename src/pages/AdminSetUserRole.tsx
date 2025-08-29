@@ -264,7 +264,7 @@ const AdminSetUserRole = () => {
             className="text-3xl font-bold mb-2"
             style={{
               background:
-                "linear-gradient(135deg, #151269 0%, #0f1056 50%, #113065 100%)",
+                "linear-gradient(135deg, #465465 0%, #465465 50%, #293842 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
@@ -272,7 +272,7 @@ const AdminSetUserRole = () => {
           >
             User Role Management
           </h1>
-          <p style={{ color: "#81b1ce" }}>
+          <p style={{ color: "#293842" }}>
             Assign and manage user roles with blockchain integration
           </p>
         </div>
@@ -281,21 +281,21 @@ const AdminSetUserRole = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <Card
             className="bg-white shadow-sm border"
-            style={{ borderColor: "#aad6ec" }}
+            style={{ borderColor: "#a1d99b" }}
           >
             <CardContent className="p-6">
               <div className="flex items-center">
-                <Users className="w-8 h-8" style={{ color: "#151269" }} />
+                <Users className="w-8 h-8" style={{ color: "#293842" }} />
                 <div className="ml-4">
                   <p
                     className="text-sm font-medium"
-                    style={{ color: "#81b1ce" }}
+                    style={{ color: "#465465" }}
                   >
                     Total Users
                   </p>
                   <p
                     className="text-2xl font-bold"
-                    style={{ color: "#151269" }}
+                    style={{ color: "#293842" }}
                   >
                     {users.length}
                   </p>
@@ -306,19 +306,19 @@ const AdminSetUserRole = () => {
 
           <Card
             className="bg-white shadow-sm border"
-            style={{ borderColor: "#81b1ce" }}
+            style={{ borderColor: "#a1d99b" }}
           >
             <CardContent className="p-6">
               <div className="flex items-center">
-                <Shield className="w-8 h-8" style={{ color: "#0f1056" }} />
+                <Shield className="w-8 h-8" style={{ color: "#293842" }} />
                 <div className="ml-4">
                   <p
                     className="text-sm font-medium"
-                    style={{ color: "#81b1ce" }}
+                    style={{ color: "#465465" }}
                   >
                     Role System
                   </p>
-                  <p className="text-lg font-bold" style={{ color: "#22c55e" }}>
+                  <p className="text-lg font-bold" style={{ color: "#006d2c" }}>
                     Active
                   </p>
                 </div>
@@ -328,22 +328,22 @@ const AdminSetUserRole = () => {
 
           <Card
             className="bg-white shadow-sm border"
-            style={{ borderColor: "#113065" }}
+            style={{ borderColor: "#a1d99b" }}
           >
             <CardContent className="p-6">
               <div className="flex items-center">
                 <AlertTriangle
                   className="w-8 h-8"
-                  style={{ color: "#113065" }}
+                  style={{ color: "#293842" }}
                 />
                 <div className="ml-4">
                   <p
                     className="text-sm font-medium"
-                    style={{ color: "#81b1ce" }}
+                    style={{ color: "#465465" }}
                   >
                     Blockchain
                   </p>
-                  <p className="text-lg font-bold" style={{ color: "#22c55e" }}>
+                  <p className="text-lg font-bold" style={{ color: "#006d2c" }}>
                     Connected
                   </p>
                 </div>
@@ -355,21 +355,21 @@ const AdminSetUserRole = () => {
         {/* Role Assignment Section */}
         <Card
           className="mb-8 bg-white shadow-sm border"
-          style={{ borderColor: "#aad6ec" }}
+          style={{ borderColor: "#a1d99b" }}
         >
-          <CardHeader className="border-b" style={{ borderColor: "#81b1ce" }}>
+          <CardHeader className="border-b" style={{ borderColor: "#c7e9c0" }}>
             <CardTitle
               className="flex items-center"
-              style={{ color: "#151269" }}
+              style={{ color: "#293842" }}
             >
-              <Settings className="w-5 h-5 mr-2" style={{ color: "#113065" }} />
+              <Settings className="w-5 h-5 mr-2" style={{ color: "#006d2c" }} />
               Set User Role
             </CardTitle>
           </CardHeader>
           <CardContent className="p-6 space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="user-select" style={{ color: "#151269" }}>
+                <Label htmlFor="user-select" style={{ color: "#293842" }}>
                   Select User
                 </Label>
                 <Select
@@ -382,25 +382,25 @@ const AdminSetUserRole = () => {
                   <SelectTrigger
                     className="border bg-white h-10 focus:ring-2"
                     style={{
-                      borderColor: "#aad6ec",
-                      color: "#151269",
+                      borderColor: "#a1d99b",
+                      color: "#293842",
                     }}
                   >
                     <SelectValue
                       placeholder="Choose a user"
-                      style={{ color: "#81b1ce" }}
+                      style={{ color: "#465465" }}
                     />
                   </SelectTrigger>
                   <SelectContent
                     className="bg-white border"
-                    style={{ borderColor: "#aad6ec" }}
+                    style={{ borderColor: "#a1d99b" }}
                   >
                     {filteredUsers.map((user) => (
                       <SelectItem
                         key={user._id}
                         value={user._id}
-                        className="hover:bg-gray-50 focus:bg-gray-50"
-                        style={{ color: "#151269" }}
+                        className="hover:bg-green-50 focus:bg-green-50"
+                        style={{ color: "#293842" }}
                       >
                         {user.fullName} ({truncateAddress(user.walletAddress)})
                       </SelectItem>
@@ -410,7 +410,7 @@ const AdminSetUserRole = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="role-select" style={{ color: "#151269" }}>
+                <Label htmlFor="role-select" style={{ color: "#293842" }}>
                   Select Role
                 </Label>
                 <Select
@@ -420,51 +420,51 @@ const AdminSetUserRole = () => {
                   <SelectTrigger
                     className="border bg-white h-10 focus:ring-2"
                     style={{
-                      borderColor: "#81b1ce",
-                      color: "#151269",
+                      borderColor: "#a1d99b",
+                      color: "#293842",
                     }}
                   >
                     <SelectValue
                       placeholder="Choose a role"
-                      style={{ color: "#81b1ce" }}
+                      style={{ color: "#465465" }}
                     />
                   </SelectTrigger>
                   <SelectContent
                     className="bg-white border"
-                    style={{ borderColor: "#81b1ce" }}
+                    style={{ borderColor: "#a1d99b" }}
                   >
                     <SelectItem
                       value={UserRole.ADMIN}
-                      className="hover:bg-gray-50 focus:bg-gray-50"
-                      style={{ color: "#151269" }}
+                      className="hover:bg-green-50 focus:bg-green-50"
+                      style={{ color: "#293842" }}
                     >
                       Admin
                     </SelectItem>
                     <SelectItem
                       value={UserRole.REGISTRAR}
-                      className="hover:bg-gray-50 focus:bg-gray-50"
-                      style={{ color: "#151269" }}
+                      className="hover:bg-green-50 focus:bg-green-50"
+                      style={{ color: "#293842" }}
                     >
                       Registrar
                     </SelectItem>
                     <SelectItem
                       value={UserRole.COURT}
-                      className="hover:bg-gray-50 focus:bg-gray-50"
-                      style={{ color: "#151269" }}
+                      className="hover:bg-green-50 focus:bg-green-50"
+                      style={{ color: "#293842" }}
                     >
                       Court
                     </SelectItem>
                     <SelectItem
                       value={UserRole.TAX_AUTHORITY}
-                      className="hover:bg-gray-50 focus:bg-gray-50"
-                      style={{ color: "#151269" }}
+                      className="hover:bg-green-50 focus:bg-green-50"
+                      style={{ color: "#293842" }}
                     >
                       Tax Authority
                     </SelectItem>
                     <SelectItem
                       value={UserRole.CITIZEN}
-                      className="hover:bg-gray-50 focus:bg-gray-50"
-                      style={{ color: "#151269" }}
+                      className="hover:bg-green-50 focus:bg-green-50"
+                      style={{ color: "#293842" }}
                     >
                       Citizen
                     </SelectItem>
@@ -479,18 +479,18 @@ const AdminSetUserRole = () => {
                   disabled={
                     !selectedUser || !selectedRole || processingUser !== null
                   }
-                  className="w-full text-white h-10 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full text-white h-10 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:-translate-y-1 hover:shadow-lg"
                   style={{
-                    backgroundColor: "#113065",
+                    backgroundColor: "#006d2c",
                   }}
                   onMouseEnter={(e) => {
                     if (!e.currentTarget.disabled) {
-                      e.currentTarget.style.backgroundColor = "#0f1056";
+                      e.currentTarget.style.backgroundColor = "#005a24";
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (!e.currentTarget.disabled) {
-                      e.currentTarget.style.backgroundColor = "#113065";
+                      e.currentTarget.style.backgroundColor = "#006d2c";
                     }
                   }}
                 >
@@ -513,25 +513,25 @@ const AdminSetUserRole = () => {
               <div
                 className="mt-4 p-4 rounded-lg"
                 style={{
-                  backgroundColor: "#f0f9ff",
-                  border: "1px solid #aad6ec",
+                  backgroundColor: "#f7fcf5",
+                  border: "1px solid #c7e9c0",
                 }}
               >
                 <p className="text-sm">
-                  <strong style={{ color: "#151269" }}>Selected User:</strong>{" "}
-                  <span style={{ color: "#0f1056" }}>
+                  <strong style={{ color: "#293842" }}>Selected User:</strong>{" "}
+                  <span style={{ color: "#006d2c" }}>
                     {selectedUser.fullName}
                   </span>
                 </p>
                 <p className="text-sm">
-                  <strong style={{ color: "#151269" }}>Current Role:</strong>{" "}
-                  <span className="capitalize" style={{ color: "#113065" }}>
+                  <strong style={{ color: "#293842" }}>Current Role:</strong>{" "}
+                  <span className="capitalize" style={{ color: "#41ab5d" }}>
                     {selectedUser.userRole}
                   </span>
                 </p>
                 <p className="text-sm">
-                  <strong style={{ color: "#151269" }}>Wallet:</strong>{" "}
-                  <span style={{ color: "#81b1ce" }}>
+                  <strong style={{ color: "#293842" }}>Wallet:</strong>{" "}
+                  <span style={{ color: "#6b7280" }}>
                     {selectedUser.walletAddress}
                   </span>
                 </p>
@@ -545,14 +545,14 @@ const AdminSetUserRole = () => {
           <div className="relative">
             <Search
               className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4"
-              style={{ color: "#81b1ce" }}
+              style={{ color: "#465465" }}
             />
             <Input
               placeholder="Search users by name, email, or wallet address..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10 border bg-white"
-              style={{ borderColor: "#aad6ec" }}
+              style={{ borderColor: "#a1d99b" }}
             />
           </div>
         </div>
@@ -562,26 +562,26 @@ const AdminSetUserRole = () => {
           <div className="flex items-center justify-center py-12">
             <Loader2
               className="w-8 h-8 animate-spin"
-              style={{ color: "#151269" }}
+              style={{ color: "#a1d99b" }}
             />
-            <span className="ml-2" style={{ color: "#81b1ce" }}>
+            <span className="ml-2" style={{ color: "#006d2c" }}>
               Loading users...
             </span>
           </div>
         ) : filteredUsers.length === 0 ? (
-          <Card className="bg-white border" style={{ borderColor: "#aad6ec" }}>
+          <Card className="bg-white border" style={{ borderColor: "#a1d99b" }}>
             <CardContent className="p-12 text-center">
               <Users
                 className="w-16 h-16 mx-auto mb-4"
-                style={{ color: "#81b1ce" }}
+                style={{ color: "#41ab5d" }}
               />
               <h3
                 className="text-xl font-semibold mb-2"
-                style={{ color: "#151269" }}
+                style={{ color: "#293842" }}
               >
                 No Users Found
               </h3>
-              <p style={{ color: "#81b1ce" }}>
+              <p style={{ color: "#465465" }}>
                 {searchTerm
                   ? "No users match your search criteria."
                   : "No verified users available."}
@@ -594,14 +594,14 @@ const AdminSetUserRole = () => {
               <Card
                 key={userData._id}
                 className="overflow-hidden bg-white shadow-sm border"
-                style={{ borderColor: "#aad6ec" }}
+                style={{ borderColor: "#a1d99b" }}
               >
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
                       <div
                         className="w-12 h-12 rounded-full flex items-center justify-center"
-                        style={{ backgroundColor: "#151269" }}
+                        style={{ backgroundColor: "#293842" }}
                       >
                         <span className="text-white font-semibold text-lg">
                           {userData.fullName.charAt(0).toUpperCase()}
@@ -611,13 +611,13 @@ const AdminSetUserRole = () => {
                       <div>
                         <h3
                           className="font-semibold text-lg"
-                          style={{ color: "#151269" }}
+                          style={{ color: "#293842" }}
                         >
                           {userData.fullName}
                         </h3>
                         <div
                           className="flex items-center space-x-4 text-sm"
-                          style={{ color: "#81b1ce" }}
+                          style={{ color: "#6b7280" }}
                         >
                           <div className="flex items-center">
                             <Wallet className="w-4 h-4 mr-1" />

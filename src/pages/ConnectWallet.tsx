@@ -26,17 +26,26 @@ const Login: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+      <Card
+        className="w-full max-w-md border"
+        style={{ borderColor: "#a1d99b" }}
+      >
         <CardHeader className="text-center space-y-4">
           <div className="flex justify-center">
-            <div className="p-3 bg-primary/10 rounded-full">
-              <Wallet className="w-8 h-8 text-primary" />
+            <div
+              className="p-3 rounded-full"
+              style={{ backgroundColor: "#f7fcf5" }}
+            >
+              <Wallet className="w-8 h-8" style={{ color: "#41ab5d" }} />
             </div>
           </div>
-          <CardTitle className="text-2xl font-bold">
-            Welcome to nijerJomi
+          <CardTitle
+            className="text-2xl font-bold"
+            style={{ color: "#465465" }}
+          >
+            Welcome to NijerJomi
           </CardTitle>
-          <CardDescription className="text-base">
+          <CardDescription className="text-base" style={{ color: "#293842" }}>
             Connect your wallet to access secure property management on the
             blockchain
           </CardDescription>
@@ -44,21 +53,31 @@ const Login: React.FC = () => {
 
         <CardContent className="space-y-6">
           <div className="space-y-4">
-            <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-              <Shield className="w-5 h-5 text-green-600" />
+            <div
+              className="flex items-center space-x-3 p-3 rounded-lg"
+              style={{ backgroundColor: "#f7fcf5" }}
+            >
+              <Shield className="w-5 h-5" style={{ color: "#41ab5d" }} />
               <div>
-                <p className="font-medium text-sm">Secure & Decentralized</p>
-                <p className="text-xs text-gray-600">
+                <p className="font-medium text-sm" style={{ color: "#465465" }}>
+                  Secure & Decentralized
+                </p>
+                <p className="text-xs" style={{ color: "#465465" }}>
                   Your data is protected by blockchain technology
                 </p>
               </div>
             </div>
 
-            <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-              <Lock className="w-5 h-5 text-blue-600" />
+            <div
+              className="flex items-center space-x-3 p-3 rounded-lg"
+              style={{ backgroundColor: "#f7fcf5" }}
+            >
+              <Lock className="w-5 h-5" style={{ color: "#293842" }} />
               <div>
-                <p className="font-medium text-sm">Non-Custodial</p>
-                <p className="text-xs text-gray-600">
+                <p className="font-medium text-sm" style={{ color: "#465465" }}>
+                  Non-Custodial
+                </p>
+                <p className="text-xs" style={{ color: "#465465" }}>
                   You maintain full control of your wallet
                 </p>
               </div>
@@ -79,13 +98,14 @@ const Login: React.FC = () => {
           </div>
 
           <div className="text-center">
-            <p className="text-xs text-gray-500">
+            <p className="text-xs" style={{ color: "#465465" }}>
               Don't have MetaMask?{" "}
               <a
                 href="https://metamask.io/download/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-primary hover:underline"
+                className="hover:underline"
+                style={{ color: "#41ab5d" }}
               >
                 Install it here
               </a>
