@@ -43,15 +43,15 @@ const PropertiesOverview: React.FC<PropertiesOverviewProps> = ({
   return (
     <Card
       className="bg-white border shadow-sm mb-8"
-      style={{ borderColor: "#aad6ec" }}
+      style={{ borderColor: "#a1d99b" }}
     >
-      <CardHeader className="border-b" style={{ borderColor: "#81b1ce" }}>
+      <CardHeader className="border-b" style={{ borderColor: "#a1d99b" }}>
         <div className="flex items-center justify-between">
           <CardTitle
             className="flex items-center text-xl font-bold"
-            style={{ color: "#151269" }}
+            style={{ color: "#006d2c" }}
           >
-            <Database className="w-5 h-5 mr-2" style={{ color: "#113065" }} />
+            <Database className="w-5 h-5 mr-2" style={{ color: "#41ab5d" }} />
             Properties Overview
           </CardTitle>
           <div className="flex items-center space-x-4">
@@ -59,14 +59,14 @@ const PropertiesOverview: React.FC<PropertiesOverviewProps> = ({
             <div className="relative">
               <Search
                 className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2"
-                style={{ color: "#81b1ce" }}
+                style={{ color: "#465465" }}
               />
               <input
                 type="text"
                 placeholder="Search properties..."
                 className="pl-10 pr-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2"
                 style={{
-                  borderColor: "#aad6ec",
+                  borderColor: "#a1d99b",
                 }}
                 value={filter.search}
                 onChange={(e) =>
@@ -78,8 +78,8 @@ const PropertiesOverview: React.FC<PropertiesOverviewProps> = ({
             <select
               className="px-3 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2"
               style={{
-                borderColor: "#aad6ec",
-                color: "#151269",
+                borderColor: "#a1d99b",
+                color: "#006d2c",
               }}
               value={filter.status}
               onChange={(e) =>
@@ -102,48 +102,48 @@ const PropertiesOverview: React.FC<PropertiesOverviewProps> = ({
           <table className="w-full">
             <thead
               className="bg-white border-b"
-              style={{ borderColor: "#aad6ec" }}
+              style={{ borderColor: "#a1d99b" }}
             >
               <tr>
                 <th
                   className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
-                  style={{ color: "#113065" }}
+                  style={{ color: "#41ab5d" }}
                 >
                   Property
                 </th>
                 <th
                   className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
-                  style={{ color: "#113065" }}
+                  style={{ color: "#41ab5d" }}
                 >
                   Owner
                 </th>
                 <th
                   className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
-                  style={{ color: "#113065" }}
+                  style={{ color: "#41ab5d" }}
                 >
                   Location
                 </th>
                 <th
                   className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
-                  style={{ color: "#113065" }}
+                  style={{ color: "#41ab5d" }}
                 >
                   Area
                 </th>
                 <th
                   className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
-                  style={{ color: "#113065" }}
+                  style={{ color: "#41ab5d" }}
                 >
                   Market Value
                 </th>
                 <th
                   className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
-                  style={{ color: "#113065" }}
+                  style={{ color: "#41ab5d" }}
                 >
                   Status
                 </th>
                 <th
                   className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider"
-                  style={{ color: "#113065" }}
+                  style={{ color: "#41ab5d" }}
                 >
                   Actions
                 </th>
@@ -151,7 +151,7 @@ const PropertiesOverview: React.FC<PropertiesOverviewProps> = ({
             </thead>
             <tbody
               className="bg-white divide-y"
-              style={{ borderColor: "#aad6ec" }}
+              style={{ borderColor: "#a1d99b" }}
             >
               {filteredProperties.map((property) => (
                 <tr
@@ -162,7 +162,7 @@ const PropertiesOverview: React.FC<PropertiesOverviewProps> = ({
                     <div className="flex items-center">
                       <div
                         className="h-12 w-12 rounded-lg overflow-hidden mr-3"
-                        style={{ backgroundColor: "#aad6ec" }}
+                        style={{ backgroundColor: "#a1d99b" }}
                       >
                         <img
                           src={property.imageUrl}
@@ -177,7 +177,7 @@ const PropertiesOverview: React.FC<PropertiesOverviewProps> = ({
                       <div>
                         <div
                           className="text-sm font-medium"
-                          style={{ color: "#151269" }}
+                          style={{ color: "#006d2c" }}
                         >
                           Property #{property.id}
                         </div>
@@ -232,7 +232,7 @@ const PropertiesOverview: React.FC<PropertiesOverviewProps> = ({
                     <Button
                       size="sm"
                       variant="outline"
-                      className="text-blue-600 border-blue-600 hover:bg-blue-50"
+                      className="text-green-600 border-green-600 hover:bg-green-300"
                       onClick={() => handleViewProperty(property)}
                     >
                       <Eye className="w-4 h-4 mr-1" />
