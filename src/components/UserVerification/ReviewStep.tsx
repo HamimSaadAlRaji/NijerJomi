@@ -28,11 +28,14 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ formData, imagePreview }) => {
   return (
     <div className="space-y-8">
       <div className="text-center mb-8">
-        <CheckCircle className="w-20 h-20 text-green-500 mx-auto mb-6" />
-        <h3 className="text-3xl font-bold text-black mb-2">
+        <CheckCircle
+          className="w-20 h-20 mx-auto mb-6"
+          style={{ color: "#41ab5d" }}
+        />
+        <h3 className="text-3xl font-bold mb-2" style={{ color: "#293842" }}>
           Review Your Information
         </h3>
-        <p className="text-gray-600 text-lg">
+        <p className="text-lg" style={{ color: "#465465" }}>
           Please verify all details before submitting
         </p>
       </div>
@@ -45,7 +48,8 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ formData, imagePreview }) => {
               <img
                 src={imagePreview}
                 alt="Profile preview"
-                className="w-32 h-32 rounded-full object-cover border-4 border-green-500 shadow-lg"
+                className="w-32 h-32 rounded-full object-cover border-4 shadow-lg"
+                style={{ borderColor: "#41ab5d" }}
               />
             </div>
           )}
@@ -55,10 +59,13 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ formData, imagePreview }) => {
       {/* Information Cards */}
       <div className="space-y-6">
         {/* Personal Information Card */}
-        <div className="bg-green-50 p-6 rounded-xl border-l-4 border-green-500 shadow-lg">
+        <div
+          className="p-6 rounded-xl border-l-4 shadow-lg"
+          style={{ backgroundColor: "#f7fcf5", borderColor: "#41ab5d" }}
+        >
           <div className="flex items-center mb-4">
-            <User className="w-6 h-6 text-green-500 mr-3" />
-            <h4 className="text-xl font-bold text-black">
+            <User className="w-6 h-6 mr-3" style={{ color: "#41ab5d" }} />
+            <h4 className="text-xl font-bold" style={{ color: "#293842" }}>
               Personal Information
             </h4>
           </div>
@@ -91,7 +98,7 @@ const ReviewStep: React.FC<ReviewStepProps> = ({ formData, imagePreview }) => {
         </div>
 
         {/* Address Information Card */}
-  <div className="bg-green-50 p-6 rounded-xl border-l-4 border-green-500 shadow-lg">
+        <div className="bg-green-50 p-6 rounded-xl border-l-4 border-green-500 shadow-lg">
           <div className="flex items-center mb-4">
             <MapPin className="w-6 h-6 text-green-500 mr-3" />
             <h4 className="text-xl font-bold text-black">

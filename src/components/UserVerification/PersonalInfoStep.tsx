@@ -27,14 +27,30 @@ const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({
     <div className="space-y-6">
       `{/* Image Upload */}
       <div className="text-center">
-        <Label className="text-lg font-semibold text-black mb-4 block">
+        <Label
+          className="text-lg font-semibold mb-4 block"
+          style={{ color: "#293842" }}
+        >
           Profile Image
         </Label>
         <div className="relative inline-block">
           <div
-            className={`w-32 h-32 border-4 border-dashed border-green-500 rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-105 hover:border-green-600 ${
+            className={`w-32 h-32 border-4 border-dashed rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-105 ${
               imagePreview ? "border-solid" : ""
             }`}
+            style={{
+              borderColor: imagePreview ? "#006d2c" : "#41ab5d",
+            }}
+            onMouseEnter={(e) => {
+              if (!imagePreview) {
+                e.currentTarget.style.borderColor = "#006d2c";
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!imagePreview) {
+                e.currentTarget.style.borderColor = "#41ab5d";
+              }
+            }}
             onClick={() => document.getElementById("image-upload")?.click()}
           >
             {imagePreview ? (
@@ -44,7 +60,7 @@ const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({
                 className="w-full h-full object-cover rounded-full"
               />
             ) : (
-              <Upload className="w-8 h-8 text-green-500" />
+              <Upload className="w-8 h-8" style={{ color: "#41ab5d" }} />
             )}
           </div>
           <input
@@ -60,7 +76,7 @@ const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({
             {errors.image}
           </p>
         )}
-        <p className="text-gray-500 text-sm mt-2 text-center">
+        <p className="text-sm mt-2 text-center" style={{ color: "#465465" }}>
           Supported formats: JPEG, JPG, PNG, HEIC (Max 2MB)
         </p>
       </div>
@@ -70,7 +86,8 @@ const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({
         <div className="">
           <Label
             htmlFor="fullName"
-            className="text-lg font-semibold text-black"
+            className="text-lg font-semibold"
+            style={{ color: "#293842" }}
           >
             Full Name
           </Label>
@@ -82,8 +99,11 @@ const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({
             className={`mt-2 h-12 text-lg border-2 transition-colors duration-300 ${
               errors.fullName
                 ? "border-red-500 focus:border-red-500"
-                : "border-gray-200 focus:border-green-500"
+                : "focus:border-green-600"
             }`}
+            style={{
+              borderColor: errors.fullName ? "#dc2626" : "#a1d99b",
+            }}
             placeholder="Enter your full name"
           />
           {errors.fullName && (
@@ -95,7 +115,8 @@ const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({
         <div className="">
           <Label
             htmlFor="phoneNumber"
-            className="text-lg font-semibold text-black"
+            className="text-lg font-semibold"
+            style={{ color: "#293842" }}
           >
             Phone Number
           </Label>
@@ -107,8 +128,11 @@ const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({
             className={`mt-2 h-12 text-lg border-2 transition-colors duration-300 ${
               errors.phoneNumber
                 ? "border-red-500 focus:border-red-500"
-                : "border-gray-200 focus:border-green-500"
+                : "focus:border-green-600"
             }`}
+            style={{
+              borderColor: errors.phoneNumber ? "#dc2626" : "#a1d99b",
+            }}
             placeholder="Enter your phone number"
           />
           {errors.phoneNumber && (
@@ -118,7 +142,11 @@ const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({
       </div>
       {/* NID Number - Full Width */}
       <div className="">
-        <Label htmlFor="nidNumber" className="text-lg font-semibold text-black">
+        <Label
+          htmlFor="nidNumber"
+          className="text-lg font-semibold"
+          style={{ color: "#293842" }}
+        >
           National ID Number
         </Label>
         <Input
@@ -129,8 +157,11 @@ const PersonalInfoStep: React.FC<PersonalInfoStepProps> = ({
           className={`mt-2 h-12 text-lg border-2 transition-colors duration-300 ${
             errors.nidNumber
               ? "border-red-500 focus:border-red-500"
-              : "border-gray-200 focus:border-green-500"
+              : "focus:border-green-600"
           }`}
+          style={{
+            borderColor: errors.nidNumber ? "#dc2626" : "#a1d99b",
+          }}
           placeholder="Enter your NID number"
         />
         {errors.nidNumber && (

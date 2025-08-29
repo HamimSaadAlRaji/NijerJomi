@@ -24,20 +24,33 @@ const UserVerification = () => {
     return (
       <BackgroundImage>
         <div className="flex items-center justify-center min-h-screen">
-          <Card className="bg-white border-2 border-gray-100 shadow-2xl max-w-md mx-4">
-            <CardHeader className="bg-red-500 text-white rounded-t-lg">
+          <Card
+            className="bg-white border-2 shadow-2xl max-w-md mx-4"
+            style={{ borderColor: "#a1d99b" }}
+          >
+            <CardHeader
+              className="text-white rounded-t-lg"
+              style={{ backgroundColor: "#dc2626" }}
+            >
               <CardTitle className="text-2xl text-center">
                 Wallet Not Connected
               </CardTitle>
             </CardHeader>
             <CardContent className="p-8 text-center">
-              <p className="text-gray-600 mb-4">
+              <p className="mb-4" style={{ color: "#465465" }}>
                 Please connect your wallet to access the user verification
                 process.
               </p>
               <button
                 onClick={() => (window.location.href = "/")}
-                className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors"
+                className="text-white px-6 py-2 rounded-lg transition-colors hover:-translate-y-1 hover:shadow-lg"
+                style={{ backgroundColor: "#006d2c" }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = "#005a24";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "#006d2c";
+                }}
               >
                 Go to Home
               </button>
@@ -269,80 +282,86 @@ const UserVerification = () => {
       <Navbar />
 
       <div className="container mx-auto px-4 py-8 mt-20">
-      {/* Header Section */}
-      <HeaderSection
-        title="User Verification"
-        subtitle={`Complete your profile to access secure land registry services\nWallet: ${walletAddress?.slice(
-          0,
-          6
-        )}...${walletAddress?.slice(-4)}`}
-      />
+        {/* Header Section */}
+        <HeaderSection
+          title="User Verification"
+          subtitle={`Complete your profile to access secure land registry services\nWallet: ${walletAddress?.slice(
+            0,
+            6
+          )}...${walletAddress?.slice(-4)}`}
+        />
 
-      {/* Progress Bar */}
-      <ProgressBar steps={steps} currentStep={currentStep} />
+        {/* Progress Bar */}
+        <ProgressBar steps={steps} currentStep={currentStep} />
 
-      {/* Main Form Card */}
-      <Card className="bg-white border-2 border-gray-100 shadow-2xl">
-        `
-        <CardHeader className="bg-black text-white rounded-t-lg">
-          <CardTitle className="text-2xl text-center">
-            Step {currentStep + 1}: {steps[currentStep].title}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="p-8">
-          <div className="min-h-[400px]">
-            {/* Step 0: Personal Info */}
-            {currentStep === 0 && (
-              <PersonalInfoStep
-                formData={formData}
-                imagePreview={imagePreview}
-                errors={errors}
-                onInputChange={handleInputChange}
-                onImageUpload={handleImageUpload}
-              />
-            )}
+        {/* Main Form Card */}
+        <Card
+          className="bg-white border-2 shadow-2xl"
+          style={{ borderColor: "#a1d99b" }}
+        >
+          `
+          <CardHeader
+            className="text-white rounded-t-lg"
+            style={{ backgroundColor: "#293842" }}
+          >
+            <CardTitle className="text-2xl text-center">
+              Step {currentStep + 1}: {steps[currentStep].title}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-8">
+            <div className="min-h-[400px]">
+              {/* Step 0: Personal Info */}
+              {currentStep === 0 && (
+                <PersonalInfoStep
+                  formData={formData}
+                  imagePreview={imagePreview}
+                  errors={errors}
+                  onInputChange={handleInputChange}
+                  onImageUpload={handleImageUpload}
+                />
+              )}
 
-            {/* Step 1: Address Information */}
-            {currentStep === 1 && (
-              <AddressInfoStep
-                formData={formData}
-                errors={errors}
-                sameAsPresent={sameAsPresent}
-                onInputChange={handleInputChange}
-                onBulkInputChange={handleBulkInputChange}
-                onSameAsPresentChange={setSameAsPresent}
-              />
-            )}
+              {/* Step 1: Address Information */}
+              {currentStep === 1 && (
+                <AddressInfoStep
+                  formData={formData}
+                  errors={errors}
+                  sameAsPresent={sameAsPresent}
+                  onInputChange={handleInputChange}
+                  onBulkInputChange={handleBulkInputChange}
+                  onSameAsPresentChange={setSameAsPresent}
+                />
+              )}
 
-            {/* Step 2: Review & Submit */}
-            {currentStep === 2 && (
-              <ReviewStep formData={formData} imagePreview={imagePreview} />
-            )}
-          </div>
+              {/* Step 2: Review & Submit */}
+              {currentStep === 2 && (
+                <ReviewStep formData={formData} imagePreview={imagePreview} />
+              )}
+            </div>
 
-          {/* Navigation Buttons */}
-          <NavigationButtons
-            currentStep={currentStep}
-            totalSteps={steps.length}
-            isSubmitting={isSubmitting}
-            onPrevStep={prevStep}
-            onNextStep={nextStep}
-            onSubmit={handleSubmit}
-          />
-        </CardContent>
-      </Card>
+            {/* Navigation Buttons */}
+            <NavigationButtons
+              currentStep={currentStep}
+              totalSteps={steps.length}
+              isSubmitting={isSubmitting}
+              onPrevStep={prevStep}
+              onNextStep={nextStep}
+              onSubmit={handleSubmit}
+            />
+          </CardContent>
+        </Card>
 
-      {/* Success Modal */}
-      <SuccessModal
-        isOpen={showSuccessModal}
-        walletAddress={walletAddress}
-        onDashboardClick={() => {
-          // Navigate to dashboard - you can replace this with your routing logic
-          window.location.href = "/dashboard";
-        }}
-      />
+        {/* Success Modal */}
+        <SuccessModal
+          isOpen={showSuccessModal}
+          walletAddress={walletAddress}
+          onDashboardClick={() => {
+            // Navigate to dashboard - you can replace this with your routing logic
+            window.location.href = "/dashboard";
+          }}
+        />
       </div>
-      </div>
+    </div>
   );
 };
 
