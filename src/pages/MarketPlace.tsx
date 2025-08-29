@@ -236,13 +236,15 @@ const MarketPlace: React.FC = () => {
                 <AlertCircle className="w-8 h-8" style={{ color: "#151269" }} />
               </div>
               <h2 className="text-2xl font-bold text-black mb-3">
-                Unable to Load Properties
+                <span style={{ color: "#465465" }}>
+                  Unable to Load Properties
+                </span>
               </h2>
               <p className="text-gray-600 mb-8 leading-relaxed">{error}</p>
               <Button
                 onClick={fetchProperties}
                 className="text-white px-6 py-3 rounded-xl transition-colors duration-200 flex items-center gap-3 mx-auto hover:opacity-90"
-                style={{ backgroundColor: "#151269" }}
+                style={{ backgroundColor: "#006d2c" }}
               >
                 <RefreshCw className="w-5 h-5" />
                 Try Again
@@ -268,12 +270,7 @@ const MarketPlace: React.FC = () => {
           <div className="text-center max-w-4xl mx-auto">
             <h1
               className="text-4xl lg:text-5xl font-bold mb-4"
-              style={{
-                background: `linear-gradient(to right, #151269, #0f1056, #113065)`,
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
+              style={{ color: "#465465" }}
             >
               Property Marketplace
             </h1>

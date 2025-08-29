@@ -321,8 +321,22 @@ const TransferManagement = () => {
             onClick={refreshData}
             disabled={refreshing}
             variant="outline"
-            className="hover:bg-blue-50 transition-colors"
-            style={{ borderColor: "#81b1ce", color: "#151269" }}
+            className="transition-colors"
+            style={{
+              borderColor: "#a1d99b",
+              color: "#006d2c",
+              backgroundColor: "#fff",
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.backgroundColor = "#e6f4ea";
+              e.currentTarget.style.color = "#006d2c";
+              e.currentTarget.style.borderColor = "#41ab5d";
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.backgroundColor = "#fff";
+              e.currentTarget.style.color = "#006d2c";
+              e.currentTarget.style.borderColor = "#a1d99b";
+            }}
           >
             <RefreshCw
               className={`w-4 h-4 mr-2 ${refreshing ? "animate-spin" : ""}`}
@@ -358,7 +372,7 @@ const TransferManagement = () => {
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <Card className="bg-white border" style={{ borderColor: "#aad6ec" }}>
+          <Card className="bg-white border" style={{ borderColor: "#a1d99b" }}>
             <CardContent className="p-6">
               <div className="flex items-center">
                 <Send className="w-8 h-8" style={{ color: "#151269" }} />
@@ -372,7 +386,7 @@ const TransferManagement = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-white border" style={{ borderColor: "#81b1ce" }}>
+          <Card className="bg-white border" style={{ borderColor: "#a1d99b" }}>
             <CardContent className="p-6">
               <div className="flex items-center">
                 <FileText className="w-8 h-8" style={{ color: "#0f1056" }} />
@@ -386,7 +400,7 @@ const TransferManagement = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-white border" style={{ borderColor: "#113065" }}>
+          <Card className="bg-white border" style={{ borderColor: "#a1d99b" }}>
             <CardContent className="p-6">
               <div className="flex items-center">
                 <Clock className="w-8 h-8" style={{ color: "#151269" }} />
@@ -405,7 +419,7 @@ const TransferManagement = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-white border" style={{ borderColor: "#aad6ec" }}>
+          <Card className="bg-white border" style={{ borderColor: "#a1d99b" }}>
             <CardContent className="p-6">
               <div className="flex items-center">
                 <CheckCircle className="w-8 h-8" style={{ color: "#113065" }} />
@@ -426,21 +440,21 @@ const TransferManagement = () => {
         </div>
 
         <Tabs defaultValue="as-buyer" className="w-full">
-          <TabsList 
+          <TabsList
             className="grid w-full grid-cols-2 bg-white border"
             style={{ borderColor: "#aad6ec" }}
           >
-            <TabsTrigger 
+            <TabsTrigger
               value="as-buyer"
-              className="data-[state=active]:bg-blue-300/20"
-              style={{ color: "#151269" }}
+              className="data-[state=active]:bg-green-300/20"
+              style={{ color: "#006d2c" }}
             >
               As Buyer ({userTransfers.asBuyer.length})
             </TabsTrigger>
-            <TabsTrigger             
+            <TabsTrigger
               value="as-seller"
-              className="data-[state=active]:bg-blue-300/20"
-              style={{ color: "#151269" }}
+              className="data-[state=active]:bg-green-300/20"
+              style={{ color: "#006d2c" }}
             >
               As Seller ({userTransfers.asSeller.length})
             </TabsTrigger>
@@ -570,10 +584,25 @@ const TransferManagement = () => {
                                   onClick={() =>
                                     showTransferDetails(transfer.id)
                                   }
-                                  className="hover:bg-blue-50 transition-colors"
+                                  className="transition-colors"
                                   style={{
-                                    borderColor: "#81b1ce",
-                                    color: "#151269",
+                                    borderColor: "#a1d99b",
+                                    color: "#006d2c",
+                                    backgroundColor: "#fff",
+                                  }}
+                                  onMouseOver={(e) => {
+                                    e.currentTarget.style.backgroundColor =
+                                      "#e6f4ea";
+                                    e.currentTarget.style.color = "#006d2c";
+                                    e.currentTarget.style.borderColor =
+                                      "#41ab5d";
+                                  }}
+                                  onMouseOut={(e) => {
+                                    e.currentTarget.style.backgroundColor =
+                                      "#fff";
+                                    e.currentTarget.style.color = "#006d2c";
+                                    e.currentTarget.style.borderColor =
+                                      "#a1d99b";
                                   }}
                                 >
                                   <Eye className="w-4 h-4 mr-2" />
@@ -717,10 +746,23 @@ const TransferManagement = () => {
                                 size="sm"
                                 variant="outline"
                                 onClick={() => showTransferDetails(transfer.id)}
-                                className="hover:bg-blue-50 transition-colors"
+                                className="transition-colors"
                                 style={{
-                                  borderColor: "#81b1ce",
-                                  color: "#151269",
+                                  borderColor: "#a1d99b",
+                                  color: "#006d2c",
+                                  backgroundColor: "#fff",
+                                }}
+                                onMouseOver={(e) => {
+                                  e.currentTarget.style.backgroundColor =
+                                    "#e6f4ea";
+                                  e.currentTarget.style.color = "#006d2c";
+                                  e.currentTarget.style.borderColor = "#41ab5d";
+                                }}
+                                onMouseOut={(e) => {
+                                  e.currentTarget.style.backgroundColor =
+                                    "#fff";
+                                  e.currentTarget.style.color = "#006d2c";
+                                  e.currentTarget.style.borderColor = "#a1d99b";
                                 }}
                               >
                                 <Eye className="w-4 h-4 mr-2" />
