@@ -172,6 +172,12 @@ const ChainExplorerPage: React.FC = () => {
                           scope="col"
                           className="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider"
                         >
+                          Transaction Hash
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider"
+                        >
                           Event
                         </th>
                         <th
@@ -207,6 +213,18 @@ const ChainExplorerPage: React.FC = () => {
                             key={index}
                             className="hover:bg-[#aad6ec]/10 transition-colors"
                           >
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <div className="font-mono text-xs font-semibold text-[#0f1056] bg-[#aad6ec]/20 px-3 py-1 rounded border border-[#81b1ce] max-w-fit">
+                                {event.transactionHash
+                                  ? `${event.transactionHash.substring(
+                                      0,
+                                      10
+                                    )}...${event.transactionHash.substring(
+                                      event.transactionHash.length - 8
+                                    )}`
+                                  : "N/A"}
+                              </div>
+                            </td>
                             <td className="px-6 py-4 whitespace-nowrap">
                               <Tag color={getEventTagColor(event.name)}>
                                 {event.name}
