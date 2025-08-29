@@ -270,7 +270,10 @@ const AdminPropertyManagement = () => {
     });
 
     // Only fetch data if we have contract and web3 is not loading
-    if (web3State.contract && !web3State.isLoading) {
+    // if (web3State.contract && web3State.isLoading) {
+    //   fetchData();
+    // }
+    if (web3State.contract && web3State.account) {
       fetchData();
     }
   }, [web3State.contract, web3State.isLoading]);
