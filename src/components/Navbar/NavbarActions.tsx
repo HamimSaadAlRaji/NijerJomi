@@ -37,8 +37,8 @@ const NavbarActions: React.FC<NavbarActionsProps> = ({
             showDropdown={true}
             className={`rounded-full text-xl px-8 py-3 border ${
               isDarkTheme
-                ? "bg-black hover:bg-gray-800 text-white border-gray-800"
-                : "bg-white hover:bg-gray-200 text-black border-gray-300"
+                ? "bg-[#036428] hover:bg-[#00441b] text-white border-[#238b45]"
+                : "bg-white hover:bg-gray-200 text-[#006d2c] border-gray-300"
             }`}
           />
         </>
@@ -49,8 +49,8 @@ const NavbarActions: React.FC<NavbarActionsProps> = ({
               size="lg"
               className={`rounded-full text-xl px-8 py-3 border ${
                 isDarkTheme
-                  ? "bg-black hover:bg-gray-800 text-white border-gray-800"
-                  : "bg-white hover:bg-gray-200 text-black border-gray-300"
+                  ? "bg-[#014b1f] hover:bg-[#038a39] text-white border-[#238b45]"
+                  : "bg-white hover:bg-gray-200 text-[#012810] border-gray-300"
               }`}
             >
               Connect Wallet

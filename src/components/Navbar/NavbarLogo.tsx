@@ -14,7 +14,9 @@ const NavbarLogo: React.FC<NavbarLogoProps> = ({ isDarkTheme = false }) => {
       <div>
         <h1
           className={`text-4xl font-roboto ${
-            isDarkTheme ? "text-black" : "text-white"
+            isDarkTheme
+              ? "bg-gradient-to-r from-[#006d2c] via-[#186733] to-[#74c476] bg-clip-text text-transparent"
+              : "text-white"
           }`}
         >
           nijerJomi

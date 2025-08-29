@@ -44,7 +44,7 @@ const GlobalReach = () => {
               headerVisible ? "animate-fade-in-up" : "opacity-0 translate-y-10"
             }`}
           >
-            GLOBAL TRUST
+            NATIONAL TRUST
           </h2>
           <p
             className={`text-xl text-[#c7e9c0] max-w-2xl mx-auto transition-all duration-500 delay-100 ${
@@ -53,7 +53,7 @@ const GlobalReach = () => {
                 : "opacity-0 translate-y-10"
             }`}
           >
-            Worldwide adoption. Universal access. Borderless verification.
+            Nationwide adoption. Universal access. Borderless verification.
           </p>
         </div>
 
@@ -76,7 +76,7 @@ const GlobalReach = () => {
             >
               50+
             </div>
-            <div className="text-[#a1d99b] text-sm">Countries</div>
+            <div className="text-[#f7fcf5] text-sm">Districts</div>
           </div>
 
           <div
@@ -96,7 +96,7 @@ const GlobalReach = () => {
             >
               10K+
             </div>
-            <div className="text-[#a1d99b] text-sm">Users</div>
+            <div className="text-[#f7fcf5] text-sm">Users</div>
           </div>
 
           <div
@@ -116,7 +116,7 @@ const GlobalReach = () => {
             >
               75K+
             </div>
-            <div className="text-[#a1d99b] text-sm">Properties</div>
+            <div className="text-[#f7fcf5] text-sm">Properties</div>
           </div>
 
           <div
@@ -136,7 +136,7 @@ const GlobalReach = () => {
             >
               24/7
             </div>
-            <div className="text-[#a1d99b] text-sm">Access</div>
+            <div className="text-[#f7fcf5] text-sm">Access</div>
           </div>
         </div>
 
@@ -239,7 +239,8 @@ const GlobalReach = () => {
               </Button>
               <Button
                 size="lg"
-                className="border-2 border-[#238b45] text-[#238b45] hover:bg-[#238b45] hover:text-white text-lg px-12 py-4 rounded-lg font-medium hover:scale-105 transition-all duration-300 hover:shadow-xl"
+                className="border-2 border-[#238b45] text-[#238b45] hover:bg-[#238b45] text-lg px-12 py-4 rounded-lg font-medium hover:scale-105 transition-all duration-300 hover:shadow-xl"
+                style={{ backgroundColor: "transparent" }}
               >
                 Learn More
               </Button>
