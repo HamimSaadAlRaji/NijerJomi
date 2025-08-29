@@ -540,7 +540,7 @@ const AdminPropertyManagement = () => {
               className="text-3xl font-bold mb-2"
               style={{
                 background:
-                  "linear-gradient(135deg, #151269 0%, #0f1056 50%, #113065 100%)",
+                  "linear-gradient(135deg, #e5f5e0 0%, #c7e9c0 50%, #a1d99b 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -548,7 +548,7 @@ const AdminPropertyManagement = () => {
             >
               Property Management System
             </h1>
-            <p style={{ color: "#81b1ce" }}>
+            <p style={{ color: "#74c476" }}>
               Admin controls for property registration and transfer management
             </p>
           </div>

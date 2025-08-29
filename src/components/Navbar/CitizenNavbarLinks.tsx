@@ -19,7 +19,7 @@ const CitizenNavbarLinks: React.FC<CitizenNavbarLinksProps> = ({
   const isActive = (path: string) => location.pathname === path;
 
   const linkBase = `text-xl font-medium transition-colors`;
-  const linkColor = "text-white hover:text-blue-200";
+  const linkColor = "text-white hover:text-green-200";
 
   return (
     <nav className="flex gap-6 items-center">

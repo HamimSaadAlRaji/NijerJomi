@@ -248,7 +248,7 @@ const AddressInfoStep: React.FC<AddressInfoStepProps> = ({
       <div className="">
         <div className="flex items-center justify-between mb-4">
           <h4 className="text-xl font-semibold text-black flex items-center">
-            <MapPin className="w-5 h-5 text-blue-500 mr-2" />
+            <MapPin className="w-5 h-5 text-green-500 mr-2" />
             Permanent Address
           </h4>
 
