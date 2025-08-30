@@ -179,7 +179,7 @@ const AdminDashboard: React.FC = () => {
           totalProperties,
           propertiesForSale,
           propertiesWithDisputes,
-          totalMarketValue: (totalMarketValue / 1e18).toFixed(2) + " ETH",
+          totalMarketValue: (totalMarketValue / 1e18).toFixed(2) + " BDT",
         };
 
         setStats(dashboardStats);
@@ -200,7 +200,7 @@ const AdminDashboard: React.FC = () => {
   };
 
   const formatMarketValue = (value: bigint) => {
-    return `${(Number(value) / 1e18).toFixed(4)} ETH`;
+    return `${(Number(value) / 1e18).toFixed(4)} BDT`;
   };
 
   if (!user || !isRole(user.userRole || "", UserRole.ADMIN)) {

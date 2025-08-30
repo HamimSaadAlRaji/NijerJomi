@@ -68,7 +68,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   };
 
   const formatBidAmount = (amount: number) => {
-    return `${(amount / 1e18).toFixed(4)} ETH`;
+    return `${(amount / 1e18).toFixed(4)} BDT`;
   };
 
   // Get property type based on area (for land properties)
