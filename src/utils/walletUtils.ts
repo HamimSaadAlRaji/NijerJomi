@@ -22,7 +22,7 @@ export const safeRequestAccounts = async (maxRetries = 2): Promise<string[]> => 
       const timeoutPromise = new Promise<never>((_, reject) => {
         setTimeout(() => {
           reject(new Error("Connection timeout - please try again"));
-        }, 60000); // 60 second timeout
+        }, 180000); // 180 second timeout
       });
 
       // Race between getting accounts and timeout
