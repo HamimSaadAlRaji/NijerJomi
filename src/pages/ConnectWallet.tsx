@@ -15,7 +15,7 @@ import { Wallet, Shield, Lock } from "lucide-react";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
-  const { isConnected, user, isLoading } = useWalletContext();
+  const { isConnected, user } = useWalletContext();
 
   // Redirect if already connected and has user data
   useEffect(() => {
@@ -23,25 +23,6 @@ const Login: React.FC = () => {
       navigate("/dashboard");
     }
   }, [isConnected, user, navigate]);
-
-  // Show loading state while connecting
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center p-4">
-        <Card
-          className="w-full max-w-md border"
-          style={{ borderColor: "#a1d99b" }}
-        >
-          <CardContent className="flex flex-col items-center justify-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 mb-4" style={{ borderColor: "#41ab5d" }}></div>
-            <p className="text-center" style={{ color: "#465465" }}>
-              Connecting to wallet...
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center p-4">
