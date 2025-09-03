@@ -23,24 +23,67 @@ export interface ConnectWalletResponse {
 }
 
 export const walletAPI = {
-  // Connect wallet and check if user exists
+  // Connect wallet and check if user exists with retry logic
   connectWallet: async (
-    walletAddress: string
+    walletAddress: string,
+    retryCount = 3
   ): Promise<ConnectWalletResponse> => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/connect-wallet`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ walletAddress }),
-      });
+    let lastError: Error | null = null;
 
-      const data = await response.json();
-      return data;
-    } catch (error: any) {
-      throw new Error(`Failed to connect wallet: ${error.message}`);
+    for (let attempt = 1; attempt <= retryCount; attempt++) {
+      try {
+        // Add a small delay for subsequent attempts to handle timing issues
+        if (attempt > 1) {
+          await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+        }
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+        const response = await fetch(`${API_BASE_URL}/connect-wallet`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ walletAddress }),
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+          // Handle specific HTTP status codes
+          if (response.status === 404) {
+            throw new Error("API endpoint not found. Please check your connection and try again.");
+          } else if (response.status >= 500) {
+            throw new Error("Server error. Please try again in a moment.");
+          } else if (response.status === 429) {
+            throw new Error("Too many requests. Please wait a moment and try again.");
+          }
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        lastError = error instanceof Error ? error : new Error(String(error));
+        
+        // Don't retry on abort errors or client errors (except 404)
+        if (lastError.name === 'AbortError') {
+          throw new Error("Request timed out. Please check your connection and try again.");
+        }
+        
+        // Log the attempt for debugging
+        console.warn(`Wallet connection attempt ${attempt} failed:`, lastError.message);
+        
+        // If this is the last attempt, throw the error
+        if (attempt === retryCount) {
+          break;
+        }
+      }
     }
+
+    throw new Error(`Failed to connect wallet after ${retryCount} attempts: ${lastError?.message || 'Unknown error'}`);
   },
 
   // Get user data by wallet address
@@ -60,8 +103,9 @@ export const walletAPI = {
       }
 
       return data;
-    } catch (error: any) {
-      throw new Error(`Failed to fetch user: ${error.message}`);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new Error(`Failed to fetch user: ${errorMessage}`);
     }
   },
 
@@ -87,8 +131,9 @@ export const walletAPI = {
 
       const data = await response.json();
       return data;
-    } catch (error: any) {
-      throw new Error(`Failed to register user: ${error.message}`);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new Error(`Failed to register user: ${errorMessage}`);
     }
   },
 
@@ -114,8 +159,9 @@ export const walletAPI = {
 
       const data = await response.json();
       return data;
-    } catch (error: any) {
-      throw new Error(`Failed to register user: ${error.message}`);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new Error(`Failed to register user: ${errorMessage}`);
     }
   },
 };

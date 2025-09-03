@@ -6,6 +6,7 @@ import { UserRole } from "../../types";
 import { isRole } from "@/lib/roleUtils";
 import { Loader2, Wallet, ChevronDown, User, LogOut } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { isNetworkConnected, getConnectionErrorMessage } from "@/utils/connectionUtils";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -81,6 +82,17 @@ const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
 
     // If not connected, try to connect
     if (!isConnected) {
+      // Check network connectivity first
+      const networkConnected = await isNetworkConnected();
+      if (!networkConnected) {
+        toast({
+          title: "No Internet Connection",
+          description: "Please check your internet connection and try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
       // Check if MetaMask is installed
       if (!isMetaMaskInstalled()) {
         toast({
@@ -93,41 +105,57 @@ const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
         return;
       }
 
-      // Connect wallet
-      const result = await connectWallet();
+      try {
+        // Connect wallet with improved error handling
+        const result = await connectWallet();
 
-      if (result) {
-        if (result.userExists) {
-          // User exists in database - wallet connected and data retrieved
-          toast({
-            title: "Wallet Connected",
-            description: `Welcome back! Connected to ${result.walletAddress.slice(
-              0,
-              6
-            )}...${result.walletAddress.slice(-4)}`,
-          });
+        if (result) {
+          if (result.userExists) {
+            // User exists in database - wallet connected and data retrieved
+            toast({
+              title: "Wallet Connected",
+              description: `Welcome back! Connected to ${result.walletAddress.slice(
+                0,
+                6
+              )}...${result.walletAddress.slice(-4)}`,
+            });
 
-          // Navigate based on user role
-          if (
-            result.userData &&
-            isRole(result.userData.userRole || "", UserRole.ADMIN)
-          ) {
-            navigate("/admin/dashboard");
+            // Navigate based on user role
+            if (
+              result.userData &&
+              isRole(result.userData.userRole || "", UserRole.ADMIN)
+            ) {
+              navigate("/admin/dashboard");
+            } else {
+              navigate("/dashboard");
+            }
           } else {
-            navigate("/dashboard");
+            // New wallet - not in database, needs registration
+            toast({
+              title: "New Wallet Detected",
+              description: "Please complete your registration to continue.",
+            });
+            navigate("/user-verification");
           }
-        } else {
-          // New wallet - not in database, needs registration
+        } else if (error) {
+          // Use improved error messaging
+          const errorInfo = getConnectionErrorMessage(new Error(error));
           toast({
-            title: "New Wallet Detected",
-            description: "Please complete your registration to continue.",
+            title: errorInfo.title,
+            description: errorInfo.description,
+            variant: "destructive",
           });
-          navigate("/user-verification");
         }
-      } else if (error) {
+      } catch (connectionError) {
+        // Handle any unexpected errors during connection
+        const err = connectionError instanceof Error 
+          ? connectionError 
+          : new Error("An unexpected error occurred");
+        
+        const errorInfo = getConnectionErrorMessage(err);
         toast({
-          title: "Connection Failed",
-          description: error,
+          title: errorInfo.title,
+          description: errorInfo.description,
           variant: "destructive",
         });
       }
