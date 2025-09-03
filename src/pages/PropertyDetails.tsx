@@ -167,7 +167,7 @@ const PropertyDetails: React.FC = () => {
   const highestBid = bids.length > 0 ? bids[0] : null;
   const minimumBidAmount = highestBid
     ? Math.ceil(highestBid.bidAmount * 1.05)
-    : Number(marketValue) / 1e18; // 5% more than highest bid
+    : Math.ceil(Number(marketValue) / 1e18); // 5% more than highest bid
 
   console.log("Market Value:", marketValue);
   console.log("Minimum bid amount:", minimumBidAmount);
