@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useWalletContext } from "@/contexts/WalletContext";
@@ -6,6 +6,7 @@ import { UserRole } from "../../types";
 import { isRole } from "@/lib/roleUtils";
 import { Loader2, Wallet, ChevronDown, User, LogOut } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { WalletErrorDisplay } from "@/components/WalletErrorDisplay";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -57,6 +58,7 @@ const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
 }) => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [isRetrying, setIsRetrying] = useState(false);
   const {
     isConnected,
     walletAddress,
@@ -69,6 +71,8 @@ const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
   } = useWalletContext();
 
   const handleWalletAction = async () => {
+    setIsRetrying(false); // Reset retry state
+    
     // If wallet is connected and user exists, go to appropriate dashboard
     if (isConnected && user) {
       if (isRole(user.userRole || "", UserRole.ADMIN)) {
@@ -81,57 +85,64 @@ const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
 
     // If not connected, try to connect
     if (!isConnected) {
-      // Check if MetaMask is installed
-      if (!isMetaMaskInstalled()) {
-        toast({
-          title: "MetaMask Not Found",
-          description: "Please install MetaMask to connect your wallet.",
-          variant: "destructive",
-        });
-        // Open MetaMask website
-        window.open("https://metamask.io/download/", "_blank");
-        return;
-      }
-
-      // Connect wallet
-      const result = await connectWallet();
-
-      if (result) {
-        if (result.userExists) {
-          // User exists in database - wallet connected and data retrieved
-          toast({
-            title: "Wallet Connected",
-            description: `Welcome back! Connected to ${result.walletAddress.slice(
-              0,
-              6
-            )}...${result.walletAddress.slice(-4)}`,
-          });
-
-          // Navigate based on user role
-          if (
-            result.userData &&
-            isRole(result.userData.userRole || "", UserRole.ADMIN)
-          ) {
-            navigate("/admin/dashboard");
-          } else {
-            navigate("/dashboard");
-          }
-        } else {
-          // New wallet - not in database, needs registration
-          toast({
-            title: "New Wallet Detected",
-            description: "Please complete your registration to continue.",
-          });
-          navigate("/user-verification");
-        }
-      } else if (error) {
-        toast({
-          title: "Connection Failed",
-          description: error,
-          variant: "destructive",
-        });
-      }
+      await attemptConnection();
     }
+  };
+
+  const attemptConnection = async () => {
+    // Check if MetaMask is installed
+    if (!isMetaMaskInstalled()) {
+      toast({
+        title: "MetaMask Not Found",
+        description: "Please install MetaMask to connect your wallet.",
+        variant: "destructive",
+      });
+      // Open MetaMask website
+      window.open("https://metamask.io/download/", "_blank");
+      return;
+    }
+
+    // Connect wallet
+    const result = await connectWallet();
+
+    if (result) {
+      if (result.userExists) {
+        // User exists in database - wallet connected and data retrieved
+        toast({
+          title: "Wallet Connected",
+          description: `Welcome back! Connected to ${result.walletAddress.slice(
+            0,
+            6
+          )}...${result.walletAddress.slice(-4)}`,
+        });
+
+        // Navigate based on user role
+        if (
+          result.userData &&
+          isRole(result.userData.userRole || "", UserRole.ADMIN)
+        ) {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/dashboard");
+        }
+      } else {
+        // New wallet - not in database, needs registration
+        toast({
+          title: "New Wallet Detected",
+          description: "Please complete your registration to continue.",
+        });
+        navigate("/user-verification");
+      }
+    } else {
+      // Connection failed - error state will be handled by the error display
+      console.log("Connection failed, error state:", error);
+    }
+  };
+
+  const handleRetry = async () => {
+    setIsRetrying(true);
+    await attemptConnection();
+    setIsRetrying(false);
   };
 
   const handleDisconnect = () => {
@@ -159,6 +170,19 @@ const WalletConnectButton: React.FC<WalletConnectButtonProps> = ({
       user?.fullName || "User"
     )}&background=0D8ABC&color=fff&size=128`;
   };
+
+  // Show error display if there's an error and we're not connected
+  if (error && !isConnected && !isLoading) {
+    return (
+      <div className="space-y-4">
+        <WalletErrorDisplay 
+          error={error} 
+          onRetry={handleRetry} 
+          isRetrying={isRetrying || isLoading}
+        />
+      </div>
+    );
+  }
 
   // Single button with different text based on connection status
   if (showDropdown && isConnected && user) {
