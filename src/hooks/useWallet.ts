@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { ethers } from "ethers";
 import { walletAPI } from "../services/walletAPI";
 import { UserRole, Web3State } from "../../types";
@@ -7,12 +7,7 @@ import LandRegistryABI from "../../LandRegistryABI.json";
 // Extend Window interface to include ethereum
 declare global {
   interface Window {
-    ethereum?: {
-      request: (args: { method: string; params?: unknown[] }) => Promise<unknown>;
-      on: (event: string, handler: (...args: unknown[]) => void) => void;
-      removeListener: (event: string, handler: (...args: unknown[]) => void) => void;
-      isMetaMask?: boolean;
-    };
+    ethereum?: any;
     APP_CONFIG: {
       CONTRACT_ADDRESS: string;
     };
@@ -46,13 +41,13 @@ export interface WalletState {
 }
 
 export const useWallet = () => {
-  const initialWeb3State: Web3State = useMemo(() => ({
+  const initialWeb3State: Web3State = {
     isLoading: true, // Start in loading state
     account: null,
     role: UserRole.NONE,
     provider: null,
     contract: null,
-  }), []);
+  };
 
   const [walletState, setWalletState] = useState<WalletState>({
     isConnected: false,
@@ -134,7 +129,7 @@ export const useWallet = () => {
         web3State: { ...initialWeb3State, isLoading: false },
       }));
     }
-  }, [initialWeb3State]);
+  }, []);
 
   // Check if MetaMask is installed
   const isMetaMaskInstalled = () => {
@@ -158,11 +153,11 @@ export const useWallet = () => {
       setWalletState((prev) => ({ ...prev, isLoading: true, error: null }));
 
       // Request account access
-      const accounts = await window.ethereum?.request({
+      const accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
-      }) as string[];
+      });
 
-      if (!accounts || accounts.length === 0) {
+      if (accounts.length === 0) {
         throw new Error("No accounts found");
       }
 
@@ -172,10 +167,7 @@ export const useWallet = () => {
       const provider = new ethers.BrowserProvider(window.ethereum);
       await setupWeb3(provider);
 
-      // Add a small delay to ensure wallet is fully connected before API call
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-      // Call backend API to check if user exists with retry logic
+      // Call backend API to check if user exists
       const data = await walletAPI.connectWallet(walletAddress);
 
       if (!data.success) {
@@ -205,12 +197,11 @@ export const useWallet = () => {
             }
           : null,
       };
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
+    } catch (error: any) {
       setWalletState((prev) => ({
         ...prev,
         isLoading: false,
-        error: errorMessage,
+        error: error.message,
       }));
       return null;
     }
@@ -231,23 +222,23 @@ export const useWallet = () => {
   // Manual connect for Web3 (used by Web3 context compatibility)
   const connect = useCallback(async () => {
     await connectWallet();
-  }, [connectWallet]);
+  }, []);
 
   // Disconnect for Web3 context compatibility
   const disconnect = useCallback(() => {
     disconnectWallet();
-  }, [disconnectWallet]);
+  }, []);
 
   // Check if wallet is already connected on component mount
   useEffect(() => {
     const checkConnection = async () => {
       if (isMetaMaskInstalled()) {
         try {
-          const accounts = await window.ethereum?.request({
+          const accounts = await window.ethereum.request({
             method: "eth_accounts",
-          }) as string[];
+          });
 
-          if (accounts && accounts.length > 0) {
+          if (accounts.length > 0) {
             const walletAddress = accounts[0];
 
             // Set up Web3 provider

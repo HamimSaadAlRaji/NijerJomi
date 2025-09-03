@@ -15,11 +15,11 @@ const Hero = () => {
         />
       </div>
 
-      <div className="container mx-auto px-4 relative z-20 h-full">
+      <div className="container mx-auto px-4 relative z-20 h-full pt-10">
         {/* Hero Content */}
         <div className="grid lg:grid-cols-2 gap-12 items-center h-full">
           {/* Left Content - Text Section */}
-          <div className="space-y-7">
+          <div className="space-y-5">
             <div className="space-y-16">
               <div>
                 <div className="space-y-2">
@@ -112,24 +112,24 @@ const Hero = () => {
 
                 {/* Bottom Transaction Card */}
                 <div className="flex justify-center -mt-8">
-                  <div className="bg-white rounded-2xl p-8 w-full max-w-md">
+                  <div className="bg-white rounded-2xl p-8">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-5">
                         {/* Icon Circle */}
                         <div className="w-14 h-14 bg-green-400 rounded-full flex items-center justify-center">
                           <Shield className="w-7 h-7 text-white" />
                         </div>
-                        <div className="min-w-0 flex-1">
-                          <p className="font-semibold text-foreground text-xl text-left">
+                        <div>
+                          <p className="font-semibold text-foreground text-xl">
                             Property Verified
                           </p>
-                          <p className="text-lg text-muted-foreground text-left">
+                          <p className="text-lg text-muted-foreground">
                             Today, 11:28
                           </p>
                         </div>
                       </div>
-                      <div className="flex items-center ml-4">
-                        <span className="font-bold text-green-600 text-2xl whitespace-nowrap">
+                      <div className="flex items-center">
+                        <span className="font-bold text-green-600 text-2xl">
                           Verified✓
                         </span>
                       </div>
